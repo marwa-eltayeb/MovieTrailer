@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/movies_poster"
+        android:id="@+id/movie_poster"
         android:layout_width="124dp"
         android:layout_height="180dp"
         android:adjustViewBounds="true"
@@ -15,7 +15,7 @@
         android:src="@drawable/maze_ruuner" />
 
     <TextView
-        android:id="@+id/movies_title"
+        android:id="@+id/movie_title"
         android:layout_width="124dp"
         android:layout_height="30dp"
         android:gravity="center"
@@ -25,7 +25,7 @@
         android:padding="3dp"/>
 
     <TextView
-        android:id="@+id/movies_rating"
+        android:id="@+id/movie_rating"
         android:layout_width="124dp"
         android:layout_height="25dp"
         android:drawableStart="@drawable/ic_star_black_24dp"
