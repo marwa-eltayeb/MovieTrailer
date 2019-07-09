@@ -1,15 +1,18 @@
 package com.marwaeltayeb.movietrailer;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
+import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.network.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,20 +21,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RetrofitClient.getInstance()
-                .getMovieService().getMovies("19cc511b297f733789a2a3bf0bc6a3b3",1)
-                .enqueue(new Callback<MovieApiResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
-                        MovieApiResponse movieApiResponse = response.body();
-                        Toast.makeText(MainActivity.this, movieApiResponse.movies.size() + "", Toast.LENGTH_SHORT).show();
-                    }
+        // Set up recyclerView
+        RecyclerView recyclerView = findViewById(R.id.movie_list);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
+        recyclerView.setHasFixedSize(true);
 
-                    @Override
-                    public void onFailure(Call<MovieApiResponse> call, Throwable t) {
+        // Get movieViewModel
+        MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-                    }
-                });
+        // Create the Adapter
+        final MovieAdapter adapter = new MovieAdapter(this);
+
+        // Observe the moviePagedList from ViewModel
+        movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<Movie> movies) {
+                // In case of any changes, submitting the movies to adapter
+                adapter.submitList(movies);
+            }
+        });
+
+        // Set the adapter
+        recyclerView.setAdapter(adapter);
 
     }
 }
