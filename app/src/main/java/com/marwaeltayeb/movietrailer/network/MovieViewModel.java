@@ -15,17 +15,17 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 public class MovieViewModel extends ViewModel {
 
     // Create liveData for PagedList and PagedKeyedDataSource
-    public LiveData<PagedList<Movie>> itemPagedList;
+    public LiveData<PagedList<Movie>> moviePagedList;
     private LiveData<PageKeyedDataSource<Integer, Movie>> liveDataSource;
 
     // Constructor
     public MovieViewModel() {
 
         // Get our data source factory
-        MovieDataSourceFactory itemDataSourceFactory = new MovieDataSourceFactory();
+        MovieDataSourceFactory movieDataSourceFactory = new MovieDataSourceFactory();
 
         // Get the live data source from data source factory
-        liveDataSource = itemDataSourceFactory.getItemLiveDataSource();
+        liveDataSource = movieDataSourceFactory.getMovieLiveDataSource();
 
         // Get PagedList configuration
         PagedList.Config pagedListConfig =
@@ -34,6 +34,6 @@ public class MovieViewModel extends ViewModel {
                         .setPageSize(MovieDataSource.PAGE_SIZE).build();
 
         // Build the paged list
-        itemPagedList = (new LivePagedListBuilder(itemDataSourceFactory, pagedListConfig)).build();
+        moviePagedList = (new LivePagedListBuilder(movieDataSourceFactory, pagedListConfig)).build();
     }
 }
