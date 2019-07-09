@@ -24,11 +24,17 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     def support_version = "28.0.0"
+    def retrofit_version = "2.4.0"
+
     compile "com.android.support:appcompat-v7:$support_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     // RecyclerView and CardView
     compile "com.android.support:cardview-v7:$support_version"
     compile "com.android.support:recyclerview-v7:$support_version"
+    // Adding retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     testCompile 'junit:junit:4.12'
 }
