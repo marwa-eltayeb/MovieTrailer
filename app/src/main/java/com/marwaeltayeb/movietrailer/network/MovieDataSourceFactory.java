@@ -9,7 +9,7 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 public class MovieDataSourceFactory extends DataSource.Factory {
 
     // Creating the mutable live data
-    private MutableLiveData<PageKeyedDataSource<Integer, Movie>> itemLiveDataSource = new MutableLiveData<>();
+    private MutableLiveData<PageKeyedDataSource<Integer, Movie>> movieLiveDataSource = new MutableLiveData<>();
 
     @Override
     public DataSource<Integer, Movie> create() {
@@ -17,7 +17,7 @@ public class MovieDataSourceFactory extends DataSource.Factory {
         MovieDataSource movieDataSource = new MovieDataSource();
 
         // Posting the Data source to get the values
-        itemLiveDataSource.postValue(movieDataSource);
+        movieLiveDataSource.postValue(movieDataSource);
 
         // Returning the Data source
         return movieDataSource;
@@ -25,7 +25,7 @@ public class MovieDataSourceFactory extends DataSource.Factory {
 
 
     // Getter for Movie live DataSource
-    public MutableLiveData<PageKeyedDataSource<Integer, Movie>> getItemLiveDataSource() {
-        return itemLiveDataSource;
+    public MutableLiveData<PageKeyedDataSource<Integer, Movie>> getMovieLiveDataSource() {
+        return movieLiveDataSource;
     }
 }
