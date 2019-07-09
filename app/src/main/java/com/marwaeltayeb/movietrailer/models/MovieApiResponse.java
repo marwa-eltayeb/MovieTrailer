@@ -4,28 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class Movie {
-    @SerializedName("id")
-    public int movieId;
-    @SerializedName("vote_average")
-    public double movieVote;
-    @SerializedName("title")
-    public String movieTitle;
-    @SerializedName("poster_path")
-    public String moviePoster;
-    @SerializedName("overview")
-    public String movieDescription;
-    @SerializedName("release_date")
-    public String movieReleaseDate;
-    @SerializedName("original_language")
-    public String movieLanguage;
-    @SerializedName("genre_ids")
-    public List genreIds;
-}
-
 public class MovieApiResponse {
     @SerializedName("page")
-    public int pageNumber;
+    private int pageNumber;
     @SerializedName("results")
-    public List<Movie> movies;
+    private List<Movie> movies;
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
 }
