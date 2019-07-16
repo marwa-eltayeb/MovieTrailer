@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
@@ -20,8 +23,9 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
 
     private Context mContext;
+    String imageUrl = "https://image.tmdb.org/t/p/w500";
 
-    protected MovieAdapter(Context mContext) {
+    public MovieAdapter(Context mContext) {
         super(DIFF_CALLBACK);
         this.mContext = mContext;
     }
@@ -40,9 +44,20 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         if (movie != null) {
             holder.movieTitle.setText(movie.getMovieTitle());
             holder.movieRating.setText(movie.getMovieVote());
+
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.maze_ruuner)
+                    .error(R.drawable.maze_ruuner)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+
             // Load the Movie poster into ImageView
             Glide.with(mContext)
-                    .load(movie.getMoviePoster())
+                    .load(imageUrl + movie.getMoviePoster())
+                    .apply(options)
                     .into(holder.moviePoster);
         } else {
             Toast.makeText(mContext, "Movie is null", Toast.LENGTH_LONG).show();
