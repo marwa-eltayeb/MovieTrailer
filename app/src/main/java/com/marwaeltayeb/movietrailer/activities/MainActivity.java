@@ -3,8 +3,11 @@ package com.marwaeltayeb.movietrailer.activities;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
@@ -16,6 +19,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
@@ -47,17 +51,19 @@ public class MainActivity extends AppCompatActivity {
         // Create the Adapter
         final MovieAdapter adapter = new MovieAdapter(this);
 
-        // Observe the moviePagedList from ViewModel
-        movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
-            @Override
-            public void onChanged(@Nullable PagedList<Movie> movies) {
-                // In case of any changes, submitting the movies to adapter
-                adapter.submitList(movies);
-            }
-        });
+        if (isNetworkConnected()) {
+            // Observe the moviePagedList from ViewModel
+            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
+                @Override
+                public void onChanged(@Nullable PagedList<Movie> movies) {
+                    // In case of any changes, submitting the movies to adapter
+                    adapter.submitList(movies);
+                }
+            });
 
-        // Set the adapter
-        recyclerView.setAdapter(adapter);
+            // Set the adapter
+            recyclerView.setAdapter(adapter);
+        }
 
     }
 
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 
                 //adapter.getFilter().filter(query);
-                if(adapter.getItemCount()==0) {
+                if (adapter.getItemCount() == 0) {
                     getNoResult();
                 }
                 return true;
@@ -113,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    private void getNoResult(){
+    private void getNoResult() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setMessage("No Match. Please try again");
 
@@ -129,6 +134,19 @@ public class MainActivity extends AppCompatActivity {
                 timer.cancel(); // This will cancel the timer of the system
             }
         }, 2000); // the timer will count 2 seconds....
+    }
+
+    private boolean isNetworkConnected() {
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 
 }
