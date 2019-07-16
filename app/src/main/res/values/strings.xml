@@ -3,4 +3,7 @@
     <string name="movie_poster">Movie Poster</string>
     <string name="the_maze_runner">The Maze Runner</string>
     <string name="_8_4">8.4</string>
+    <string name="settings">Settings</string>
+    <string name="dots">dots</string>
+    <string name="search">Search</string>
 </resources>

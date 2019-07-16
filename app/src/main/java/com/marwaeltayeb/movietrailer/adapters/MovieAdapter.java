@@ -92,4 +92,3 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         }
     }
 }
-

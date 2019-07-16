@@ -53,4 +53,9 @@ public class Movie {
     public List getGenreIds() {
         return genreIds;
     }
+
+    @Override
+    public String toString() {
+        return this.movieTitle;
+    }
 }
