@@ -6,4 +6,6 @@
     <string name="settings">Settings</string>
     <string name="dots">dots</string>
     <string name="search">Search</string>
+    <string name="search_for_movies">Search for Movies</string>
+    <string name="no_match">"No Match. Please try again"</string>
 </resources>
