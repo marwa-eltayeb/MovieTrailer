@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="125dp"
+    android:layout_width="115dp"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#282828"
-    android:layout_margin="5dp"
+    android:layout_margin="3dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/movie_poster"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="175dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/movie_poster"
         android:scaleType="fitXY"
@@ -19,10 +19,12 @@
     <TextView
         android:id="@+id/movie_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:gravity="center"
         tools:text="@string/the_maze_runner"
         android:textColor="#fff"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textSize="14sp"
         android:padding="3dp"/>
 
@@ -37,6 +39,6 @@
         android:paddingLeft="35dp"
         android:gravity="center"
         android:textColor="#fff"
-        android:textSize="14sp" />
+        android:textSize="13sp" />
 </LinearLayout>
 
