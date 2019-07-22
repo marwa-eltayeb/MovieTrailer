@@ -10,12 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,9 +31,8 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
     MovieAdapter adapter;
+    PagedList<Movie> moviesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
                     adapter.submitList(movies);
+                    moviesList = adapter.getCurrentList();
                 }
             });
 
@@ -74,31 +74,32 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search, menu);
+
         MenuItem searchViewItem = menu.findItem(R.id.search);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        final SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.search_for_movies));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
                 //adapter.getFilter().filter(query);
-                if (adapter.getItemCount() == 0) {
+                if (moviesList.size() == 0) {
                     getNoResult();
                 }
-                return true;
+
+                Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
+                Log.d("Movies List", moviesList.size() + "");
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 //adapter.getFilter().filter(newText);
-                return true;
+                return false;
             }
         });
-
-        searchView.setOnQueryTextListener(queryTextListener);
-        searchView.setQueryHint("Search for Movies");
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.setting) {
-            // Display the SettingsActivity
+            // Display the SettingActivity
             Intent settingsIntent = new Intent(this, SettingActivity.class);
             startActivity(settingsIntent);
             return true;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getNoResult() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        builder.setMessage("No Match. Please try again");
+        builder.setMessage(getResources().getString(R.string.no_match));
 
         // Create and show the AlertDialog
         final AlertDialog alertDialog = builder.create();
@@ -131,9 +132,9 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             public void run() {
                 alertDialog.dismiss();
-                timer.cancel(); // This will cancel the timer of the system
+                timer.cancel();
             }
-        }, 2000); // the timer will count 2 seconds....
+        }, 2000);
     }
 
     private boolean isNetworkConnected() {
