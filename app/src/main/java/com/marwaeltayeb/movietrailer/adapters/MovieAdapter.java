@@ -1,5 +1,6 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
+import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -20,10 +21,8 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
-
-
+    
     private Context mContext;
-    String imageUrl = "https://image.tmdb.org/t/p/w500";
 
     public MovieAdapter(Context mContext) {
         super(DIFF_CALLBACK);
@@ -48,24 +47,30 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
             RequestOptions options = new RequestOptions()
                     .centerCrop()
                     .placeholder(R.drawable.maze_ruuner)
-                    .error(R.drawable.maze_ruuner)
+                    .error(R.drawable.dots)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH)
                     .dontAnimate()
                     .dontTransform();
 
             // Load the Movie poster into ImageView
+            String imageUrl = "https://image.tmdb.org/t/p/w500";
             Glide.with(mContext)
                     .load(imageUrl + movie.getMoviePoster())
-                    .apply(options)
+                    //.apply(options)
                     .into(holder.moviePoster);
         } else {
             Toast.makeText(mContext, "Movie is null", Toast.LENGTH_LONG).show();
         }
     }
 
+    @Override
+    public PagedList<Movie> getCurrentList() {
+        return super.getCurrentList();
+    }
+
     // It determine if two list objects are the same or not
-    private static DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>(){
+    private static DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
         public boolean areItemsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
             return oldMovie.movieId == newMovie.movieId;
