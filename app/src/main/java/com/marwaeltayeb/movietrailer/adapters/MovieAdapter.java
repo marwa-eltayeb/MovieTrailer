@@ -20,13 +20,32 @@ import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
+import java.util.List;
+
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     
     private Context mContext;
+    private List<Movie> movieList;
+    // Create a final private MovieAdapterOnClickHandler called mClickHandler
+    private MovieAdapterOnClickHandler clickHandler;
 
-    public MovieAdapter(Context mContext) {
+    /**
+     * The interface that receives onClick messages.
+     */
+    public interface MovieAdapterOnClickHandler {
+        void onClick(String titleOfMovie);
+    }
+
+    public MovieAdapter(Context mContext, MovieAdapterOnClickHandler clickHandler) {
         super(DIFF_CALLBACK);
         this.mContext = mContext;
+        this.clickHandler = clickHandler;
+    }
+
+    public MovieAdapter(Context mContext,List<Movie> movieList) {
+        super(DIFF_CALLBACK);
+        this.mContext = mContext;
+        this.movieList = movieList;
     }
 
     @NonNull
@@ -69,6 +88,15 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         return super.getCurrentList();
     }
 
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList = movieList;
+        notifyDataSetChanged();
+    }
+
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
     // It determine if two list objects are the same or not
     private static DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
@@ -82,7 +110,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         }
     };
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         // Create view instances
         TextView movieTitle;
@@ -94,6 +122,17 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
             movieTitle = (TextView) itemView.findViewById(R.id.movie_title);
             movieRating = (TextView) itemView.findViewById(R.id.movie_rating);
             moviePoster = (ImageView) itemView.findViewById(R.id.movie_poster);
+            // Register a callback to be invoked when this view is clicked.
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            // Get the title of the movie
+            String movieName = movieTitle.getText().toString();
+            // Send title through click
+            clickHandler.onClick(movieName);
         }
     }
 }
