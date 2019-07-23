@@ -31,8 +31,8 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    MovieAdapter adapter;
     PagedList<Movie> moviesList;
+    MovieAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         // Create the Adapter
-        final MovieAdapter adapter = new MovieAdapter(this);
+        adapter = new MovieAdapter(this);
 
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
@@ -84,10 +84,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                //adapter.getFilter().filter(query);
                 if (moviesList.size() == 0) {
                     getNoResult();
                 }
+
+                /*
+                RetrofitClient.getInstance()
+                        .getMovieService().searchForMovies(query, API_KEY)
+                        .enqueue(new Callback<MovieApiResponse>() {
+                            @Override
+                            public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
+                                if (response.body() != null) {
+                                    // Fetch data and pass the result null for the previous page
+                                   response.body().getMovies();
+                                   Toast.makeText(getApplicationContext(), "Movies", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<MovieApiResponse> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                */
 
                 Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
                 Log.d("Movies List", moviesList.size() + "");
@@ -96,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //adapter.getFilter().filter(newText);
                 return false;
             }
         });
