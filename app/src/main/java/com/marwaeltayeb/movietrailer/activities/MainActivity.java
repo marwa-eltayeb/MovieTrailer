@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,14 +23,25 @@ import android.widget.Toast;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.network.MovieViewModel;
+import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
+
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     PagedList<Movie> moviesList;
+    RecyclerView recyclerView;
     MovieAdapter adapter;
 
     @Override
@@ -40,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Set up recyclerView
-        RecyclerView recyclerView = findViewById(R.id.movie_list);
+        recyclerView = findViewById(R.id.movie_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
         recyclerView.setHasFixedSize(true);
 
@@ -48,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         // Create the Adapter
-        adapter = new MovieAdapter(this);
+        adapter = new MovieAdapter(this,this);
+
 
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
@@ -60,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
                     moviesList = adapter.getCurrentList();
                 }
             });
-
-            // Set the adapter
-            recyclerView.setAdapter(adapter);
         }
 
+        // Set the adapter
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -84,20 +94,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
+                /*
                 if (moviesList.size() == 0) {
                     getNoResult();
                 }
+                */
 
-                /*
+
+
                 RetrofitClient.getInstance()
                         .getMovieService().searchForMovies(query, API_KEY)
                         .enqueue(new Callback<MovieApiResponse>() {
                             @Override
                             public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
                                 if (response.body() != null) {
-                                    // Fetch data and pass the result null for the previous page
-                                   response.body().getMovies();
-                                   Toast.makeText(getApplicationContext(), "Movies", Toast.LENGTH_SHORT).show();
+                                    List<Movie> movieList = new ArrayList<>();
+                                    MovieAdapter MovieAdapter = new MovieAdapter(getApplicationContext(),movieList);
+                                    recyclerView.setAdapter(MovieAdapter);
+                                    movieList = response.body().getMovies();
+                                    MovieAdapter.setMovieList(movieList);
+                                    Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -106,10 +122,9 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
                             }
                         });
-                */
 
-                Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
-                Log.d("Movies List", moviesList.size() + "");
+                //Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
+                //Log.d("Movies List", moviesList.size() + "");
                 return false;
             }
 
@@ -168,4 +183,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(String titleOfMovie) {
+        Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+        //intent.putExtra(Constant.TITLE, titleOfMovies);
+        startActivity(intent);
+    }
 }
