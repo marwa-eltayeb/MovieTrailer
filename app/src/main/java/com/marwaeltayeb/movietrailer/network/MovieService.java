@@ -4,6 +4,7 @@ import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -12,7 +13,12 @@ import retrofit2.http.Query;
 
 public interface MovieService {
 
-    @GET("movie/popular")
-    Call<MovieApiResponse> getMovies(@Query("page") int page,@Query("api_key") String apiKey);
+    String API_KEY = "19cc511b297f733789a2a3bf0bc6a3b3";
+
+    @GET("movie/{sort}")
+    Call<MovieApiResponse> getMovies(@Path("sort") String sortBy,@Query("page") int page,@Query("api_key") String apiKey);
+
+    @GET("search/movie")
+    Call<MovieApiResponse> searchForMovies(@Query("query") String query ,@Query("api_key") String apiKey);
 
 }
