@@ -10,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
+
 /**
  * Created by Marwa on 7/10/2019.
  */
@@ -19,15 +21,14 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE = 1;
 
-    public static final int PAGE_SIZE = 20;
+    static final int PAGE_SIZE = 20;
 
-    private static final String API_KEY = "19cc511b297f733789a2a3bf0bc6a3b3";
-
+    private String SORT_BY = "popular";
 
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(FIRST_PAGE, API_KEY)
+                .getMovieService().getMovies(SORT_BY,FIRST_PAGE, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -47,7 +48,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(params.key, API_KEY)
+                .getMovieService().getMovies(SORT_BY,params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -74,7 +75,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(params.key, API_KEY)
+                .getMovieService().getMovies(SORT_BY,params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
