@@ -20,8 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MovieActivity" />
-        <activity android:name=".activities.SettingActivity"></activity>
+        <activity android:name=".activities.MovieActivity"
+                  android:label="@string/movie_details" />
+        <activity android:name=".activities.SettingActivity"
+                  android:label="@string/settings" />
     </application>
 
 </manifest>
