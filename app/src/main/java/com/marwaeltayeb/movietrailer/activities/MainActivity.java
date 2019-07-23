@@ -23,20 +23,10 @@ import android.widget.Toast;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
-import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.network.MovieViewModel;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
@@ -58,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         // Create the Adapter
-        adapter = new MovieAdapter(this,this);
+        adapter = new MovieAdapter(this, this);
 
 
         if (isNetworkConnected()) {
@@ -94,37 +84,38 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                /*
-                if (moviesList.size() == 0) {
-                    getNoResult();
-                }
-                */
+                if (isNetworkConnected()) {
 
+                    if (moviesList.size() == 0) {
+                        getNoResult();
+                    }
 
-
-                RetrofitClient.getInstance()
-                        .getMovieService().searchForMovies(query, API_KEY)
-                        .enqueue(new Callback<MovieApiResponse>() {
-                            @Override
-                            public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
-                                if (response.body() != null) {
-                                    List<Movie> movieList = new ArrayList<>();
-                                    MovieAdapter MovieAdapter = new MovieAdapter(getApplicationContext(),movieList);
-                                    recyclerView.setAdapter(MovieAdapter);
-                                    movieList = response.body().getMovies();
-                                    MovieAdapter.setMovieList(movieList);
-                                    Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
+                    /*
+                    RetrofitClient.getInstance()
+                            .getMovieService().searchForMovies(query, API_KEY)
+                            .enqueue(new Callback<MovieApiResponse>() {
+                                @Override
+                                public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
+                                    if (response.body() != null) {
+                                        List<Movie> movieList = new ArrayList<>();
+                                        MovieAdapter MovieAdapter = new MovieAdapter(getApplicationContext(), movieList);
+                                        recyclerView.setAdapter(MovieAdapter);
+                                        movieList = response.body().getMovies();
+                                        MovieAdapter.setMovieList(movieList);
+                                        Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<MovieApiResponse> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    */
+                    Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
+                    //Log.d("Movies List", moviesList.size() + "");
+                }
 
-                //Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
-                //Log.d("Movies List", moviesList.size() + "");
                 return false;
             }
 
