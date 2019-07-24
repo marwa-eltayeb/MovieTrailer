@@ -26,18 +26,29 @@ import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
+import com.marwaeltayeb.movietrailer.adapters.SearchAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.network.MovieViewModel;
+import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
+
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, SearchAdapter.SearchAdapterOnClickHandler {
 
     public static Dialog progressDialog;
-    PagedList<Movie> moviesList;
     RecyclerView recyclerView;
-    MovieAdapter adapter;
+    MovieAdapter movieAdapter;
+    SearchAdapter searchAdapter;
+    List<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         // Create the Adapter
-        adapter = new MovieAdapter(this, this);
+        movieAdapter = new MovieAdapter(this, this);
+
 
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
@@ -63,19 +75,25 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 @Override
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
-                    adapter.submitList(movies);
-                    moviesList = adapter.getCurrentList();
+                    movieAdapter.submitList(movies);
                 }
             });
         }
 
         // Set the adapter
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(movieAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //recyclerView.setAdapter(movieAdapter);
     }
 
     /**
      * Initialize the contents of the Activity's options menu.
      */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -89,50 +107,54 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 if (isNetworkConnected()) {
-
-                    if (moviesList.size() == 0) {
-                        getNoResult();
-                    }
-
-                    /*
-                    RetrofitClient.getInstance()
-                            .getMovieService().searchForMovies(query, API_KEY)
-                            .enqueue(new Callback<MovieApiResponse>() {
-                                @Override
-                                public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
-                                    if (response.body() != null) {
-                                        List<Movie> movieList = new ArrayList<>();
-                                        MovieAdapter MovieAdapter = new MovieAdapter(getApplicationContext(), movieList);
-                                        recyclerView.setAdapter(MovieAdapter);
-                                        movieList = response.body().getMovies();
-                                        MovieAdapter.setMovieList(movieList);
-                                        Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                                    Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                    */
-                    Toast.makeText(MainActivity.this, moviesList.size() + "", Toast.LENGTH_SHORT).show();
-                    //Log.d("Movies List", moviesList.size() + "");
+                    Search(query);
                 }
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (isNetworkConnected()) {
+                    Search(newText);
+                }
                 return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    private String Search(String query){
+        RetrofitClient.getInstance()
+                .getMovieService().searchForMovies(query, API_KEY)
+                .enqueue(new Callback<MovieApiResponse>() {
+                    @Override
+                    public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
+                        if (response.body() != null) {
+                            movieList = response.body().getMovies();
+                            if(movieList.isEmpty()){
+                                getNoResult();
+                            }
+                            Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
+                            searchAdapter = new SearchAdapter(getApplicationContext(),movieList,new SearchAdapter.SearchAdapterOnClickHandler(){
+                                @Override
+                                public void onClick(String titleOfMovie, String ratingOfMovie) {
+                                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                        recyclerView.setAdapter(searchAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Call<MovieApiResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        return query;
+    }
 
     /**
      * Setup the specific action that occurs when any of the items in the Options Menu are selected.
