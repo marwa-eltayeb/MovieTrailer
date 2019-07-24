@@ -3,7 +3,7 @@
     android:layout_width="115dp"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#282828"
+    android:background="@drawable/touch_feedback"
     android:layout_margin="3dp"
     android:orientation="vertical">
 
