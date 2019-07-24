@@ -3,6 +3,7 @@ package com.marwaeltayeb.movietrailer.network;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 
+import com.marwaeltayeb.movietrailer.activities.MainActivity;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 
@@ -32,6 +33,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
+                        MainActivity.progressDialog.dismiss();
                         if (response.body() != null) {
                             // Fetch data and pass the result null for the previous page
                             callback.onResult(response.body().getMovies(), null, FIRST_PAGE + 1);
@@ -41,6 +43,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
                         //Toast.makeText(Context.getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                        MainActivity.progressDialog.dismiss();
                     }
                 });
     }

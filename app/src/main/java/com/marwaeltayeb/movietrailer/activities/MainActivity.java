@@ -1,11 +1,14 @@
 package com.marwaeltayeb.movietrailer.activities;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
@@ -30,6 +34,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
+    public static Dialog progressDialog;
     PagedList<Movie> moviesList;
     RecyclerView recyclerView;
     MovieAdapter adapter;
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressDialog = createProgressDialog(MainActivity.this);
 
         // Set up recyclerView
         recyclerView = findViewById(R.id.movie_list);
@@ -49,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         // Create the Adapter
         adapter = new MovieAdapter(this, this);
-
 
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
@@ -175,9 +181,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
-    public void onClick(String titleOfMovie) {
+    public void onClick(String titleOfMovie, String ratingOfMovie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
         //intent.putExtra(Constant.TITLE, titleOfMovies);
         startActivity(intent);
+    }
+
+    public static Dialog createProgressDialog(Context context) {
+        Dialog progressDialog = new Dialog(context);
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setCancelable(false);
+        progressDialog.setContentView(R.layout.dialog_layout);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialog.show();
+        return progressDialog;
     }
 }
