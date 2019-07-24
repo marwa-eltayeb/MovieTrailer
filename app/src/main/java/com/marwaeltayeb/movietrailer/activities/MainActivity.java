@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         } else {
+            progressDialog.dismiss();
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
             return false;
         }
