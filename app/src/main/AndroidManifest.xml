@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".activities.MainActivity"
                   android:launchMode="singleTop">
             <intent-filter>
@@ -21,10 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activities.MovieActivity"
-                  android:label="@string/movie_details" />
+                  android:label="@string/movie_details"
+                  android:parentActivityName=".activities.MainActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.MainActivity" />
+        </activity>
+
         <activity android:name=".activities.SettingActivity"
-                  android:label="@string/settings" />
+                  android:label="@string/settings"
+                  android:parentActivityName=".activities.MainActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
