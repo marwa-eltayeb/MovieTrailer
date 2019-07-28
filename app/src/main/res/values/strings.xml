@@ -10,4 +10,23 @@
     <string name="no_match">"No Match. Please try again"</string>
     <string name="movie_details">Movie Details</string>
     <string name="logo">Logo</string>
+
+    <!--Settings For RateBy Preference-->
+    <string name="sort_default">popular</string>
+    <string name="sort_key">sort</string>
+    <string name="sort_label">Sort By</string>
+
+    <!--Sort Label-->
+    <string name="popular_label">Popular</string>
+    <string name="top_rated_label">Top Rated</string>
+    <string name="now_playing_label">Now Playing</string>
+    <string name="upcoming_label">Upcoming</string>
+    <string name="latest_label">Latest</string>
+
+    <!--Sort Values-->
+    <string name="popular_value">popular</string>
+    <string name="top_rated_value">top_rated</string>
+    <string name="now_playing_value">now_playing</string>
+    <string name="upcoming_value">upcoming</string>
+    <string name="latest_value">latest</string>
 </resources>

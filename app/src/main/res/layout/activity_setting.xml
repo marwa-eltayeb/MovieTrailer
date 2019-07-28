@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_setting"
+    android:name="com.marwaeltayeb.movietrailer.activities.SettingActivity$SettingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.marwaeltayeb.movietrailer.activities.SettingActivity">
+    tools:layout="@layout/activity_main"
+    tools:context="com.marwaeltayeb.movietrailer.activities.SettingActivity" />
 
-</android.support.constraint.ConstraintLayout>
