@@ -47,6 +47,8 @@ dependencies {
     // ViewModel
     compile "android.arch.lifecycle:extensions:$view_model_version"
     compile "android.arch.lifecycle:viewmodel:$view_model_version"
+    // Preferences
+    compile "com.android.support:preference-v7:$support_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
