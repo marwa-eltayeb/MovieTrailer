@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop">
         </activity>
         <activity
