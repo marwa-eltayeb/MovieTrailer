@@ -62,10 +62,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Register the listener
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
-
         contextOfApplication = getApplicationContext();
 
         progressDialog = createProgressDialog(MainActivity.this);
@@ -82,7 +78,25 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this, this);
 
         // Road Movies
-        loadMovies();
+        //loadMovies();
+        if (isNetworkConnected()) {
+            // Observe the moviePagedList from ViewModel
+            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
+                @Override
+                public void onChanged(@Nullable PagedList<Movie> movies) {
+                    // In case of any changes, submitting the movies to adapter
+                    movieAdapter.submitList(movies);
+                }
+            });
+        }
+
+        // Set the adapter
+        recyclerView.setAdapter(movieAdapter);
+        movieAdapter.notifyDataSetChanged();
+
+        // Register the listener
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
 
@@ -242,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
-            sortValueHasChanged = true;
             loadMovies();
         }
     }
@@ -266,6 +279,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
+                    if (movies != null) {
+                        Toast.makeText(getApplicationContext(), movies.get(0) + "", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
