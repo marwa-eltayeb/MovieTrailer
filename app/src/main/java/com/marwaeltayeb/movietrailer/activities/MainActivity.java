@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -42,18 +44,29 @@ import retrofit2.Response;
 
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, SearchAdapter.SearchAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, SearchAdapter.SearchAdapterOnClickHandler,
+                                                               SharedPreferences.OnSharedPreferenceChangeListener{
 
+    public static boolean sortValueHasChanged = false;
     public static Dialog progressDialog;
+    public static Context contextOfApplication;
+
     RecyclerView recyclerView;
     MovieAdapter movieAdapter;
     SearchAdapter searchAdapter;
     List<Movie> movieList;
+    MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Register the listener
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
+
+        contextOfApplication = getApplicationContext();
 
         progressDialog = createProgressDialog(MainActivity.this);
 
@@ -63,31 +76,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setHasFixedSize(true);
 
         // Get movieViewModel
-        MovieViewModel movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
         // Create the Adapter
         movieAdapter = new MovieAdapter(this, this);
 
-
-        if (isNetworkConnected()) {
-            // Observe the moviePagedList from ViewModel
-            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
-                @Override
-                public void onChanged(@Nullable PagedList<Movie> movies) {
-                    // In case of any changes, submitting the movies to adapter
-                    movieAdapter.submitList(movies);
-                }
-            });
-        }
-
-        // Set the adapter
-        recyclerView.setAdapter(movieAdapter);
+        // Road Movies
+        loadMovies();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //recyclerView.setAdapter(movieAdapter);
+
+    /**
+     * Get Context.
+     */
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 
     /**
@@ -124,7 +127,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onCreateOptionsMenu(menu);
     }
 
-
+    /**
+     * Search for movies.
+     */
     private String Search(String query){
         RetrofitClient.getInstance()
                 .getMovieService().searchForMovies(query, API_KEY)
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.setting) {
-            // Display the SettingActivity
+            // Display the Setting Activity
             Intent settingsIntent = new Intent(this, SettingActivity.class);
             startActivity(settingsIntent);
             return true;
@@ -171,7 +176,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
-
+    /**
+     * Get no result for search.
+     */
     private void getNoResult() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setMessage(getResources().getString(R.string.no_match));
@@ -189,6 +196,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }, 2000);
     }
 
+    /**
+     * Check if there is a network.
+     */
     private boolean isNetworkConnected() {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -203,6 +213,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    /**
+     * Click on the movie for details.
+     */
     @Override
     public void onClick(String titleOfMovie, String ratingOfMovie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
@@ -210,6 +223,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
+    /**
+     * Create Progress Dialog.
+     */
     public static Dialog createProgressDialog(Context context) {
         Dialog progressDialog = new Dialog(context);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -219,4 +235,45 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         progressDialog.show();
         return progressDialog;
     }
+
+    /**
+     * Listen to any changes
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.sort_key))) {
+            sortValueHasChanged = true;
+            loadMovies();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks.
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    /**
+     * Load movies
+     */
+    private void loadMovies(){
+        if (isNetworkConnected()) {
+            // Observe the moviePagedList from ViewModel
+            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
+                @Override
+                public void onChanged(@Nullable PagedList<Movie> movies) {
+                    // In case of any changes, submitting the movies to adapter
+                    movieAdapter.submitList(movies);
+                }
+            });
+        }
+
+        // Set the adapter
+        recyclerView.setAdapter(movieAdapter);
+        movieAdapter.notifyDataSetChanged();
+    }
+
+
 }
