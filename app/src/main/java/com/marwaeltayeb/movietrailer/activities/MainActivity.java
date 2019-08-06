@@ -42,6 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.marwaeltayeb.movietrailer.Util.Constant.RATING_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.TITLE_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, SearchAdapter.SearchAdapterOnClickHandler,
@@ -233,7 +235,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onClick(String titleOfMovie, String ratingOfMovie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-        //intent.putExtra(Constant.TITLE, titleOfMovies);
+        intent.putExtra(TITLE_OF_MOVIE, titleOfMovie);
+        intent.putExtra(RATING_OF_MOVIE, ratingOfMovie);
         startActivity(intent);
     }
 
