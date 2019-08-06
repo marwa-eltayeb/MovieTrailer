@@ -13,6 +13,8 @@ public class Movie {
     private String movieTitle;
     @SerializedName("poster_path")
     private String moviePoster;
+    @SerializedName("backdrop_path")
+    private String movieBackdrop;
     @SerializedName("overview")
     private String movieDescription;
     @SerializedName("release_date")
@@ -36,6 +38,10 @@ public class Movie {
 
     public String getMoviePoster() {
         return moviePoster;
+    }
+
+    public String getMovieBackdrop() {
+        return movieBackdrop;
     }
 
     public String getMovieDescription() {
