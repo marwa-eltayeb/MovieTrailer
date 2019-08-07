@@ -3,12 +3,20 @@ package com.marwaeltayeb.movietrailer.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.Util.Utility;
+import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
+import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
+import com.marwaeltayeb.movietrailer.models.Review;
+import com.marwaeltayeb.movietrailer.models.Trailer;
+
+import java.util.List;
 
 import static com.marwaeltayeb.movietrailer.R.id.languageOfMovie;
 import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
@@ -27,6 +35,12 @@ public class MovieActivity extends AppCompatActivity {
     TextView movieDescription;
     TextView moveReleaseDate;
     TextView movieLanguage;
+
+    List<Review> reviewList;
+    List<Trailer> trailerList;
+    ReviewAdapter reviewAdapter;
+    TrailerAdapter trailerAdapter;
+    RecyclerView reviewsRecyclerView, trailersRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,5 +74,23 @@ public class MovieActivity extends AppCompatActivity {
                 .into(backdropImage);
 
 
+        setupRecyclerView();
+
+    }
+
+    private void setupRecyclerView() {
+        // Trailers
+        trailersRecyclerView = findViewById(R.id.listOfTrailers);
+        trailerAdapter = new TrailerAdapter(this,trailerList);
+        trailersRecyclerView.setHasFixedSize(true);
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        trailersRecyclerView.setAdapter(trailerAdapter);
+
+        // Reviews
+        reviewsRecyclerView = findViewById(R.id.listOfReviews);
+        reviewAdapter = new ReviewAdapter(this,reviewList);
+        reviewsRecyclerView.setHasFixedSize(true);
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewsRecyclerView.setAdapter(reviewAdapter);
     }
 }
