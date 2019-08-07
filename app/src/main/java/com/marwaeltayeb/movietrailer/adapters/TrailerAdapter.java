@@ -25,8 +25,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     // Declare an arrayList for trailers
     private List<Trailer> trailerList;
 
-    // Create a final private MovieAdapterOnClickHandler called mClickHandler
+    // Create a final private TrailerAdapterOnClickHandler called mClickHandler
     private TrailerAdapterOnClickHandler clickHandler;
+
+    public TrailerAdapter(Context mContext, List<Trailer> trailerList) {
+        this.mContext = mContext;
+        this.trailerList = trailerList;
+    }
 
     @NonNull
     @Override
