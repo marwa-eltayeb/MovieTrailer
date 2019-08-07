@@ -42,12 +42,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.DESCRIPTION_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.LANGUAGE_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.RATING_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.RELEASE_DATE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.TITLE_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, SearchAdapter.SearchAdapterOnClickHandler,
-                                                               SharedPreferences.OnSharedPreferenceChangeListener{
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static boolean sortValueHasChanged = false;
     public static Dialog progressDialog;
@@ -233,10 +237,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      * Click on the movie for details.
      */
     @Override
-    public void onClick(String titleOfMovie, String ratingOfMovie) {
+    public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-        intent.putExtra(TITLE_OF_MOVIE, titleOfMovie);
-        intent.putExtra(RATING_OF_MOVIE, ratingOfMovie);
+        intent.putExtra(TITLE_OF_MOVIE, movie.getMovieTitle());
+        intent.putExtra(RATING_OF_MOVIE, movie.getMovieVote());
+        intent.putExtra(BACKDROP_OF_MOVIE, movie.getMovieBackdrop());
+        intent.putExtra(DESCRIPTION_OF_MOVIE, movie.getMovieDescription());
+        intent.putExtra(RELEASE_DATE, movie.getMovieReleaseDate());
+        intent.putExtra(LANGUAGE_OF_MOVIE, movie.getMovieLanguage());
+        //intent.putExtra(GENRES_OF_MOVIE, (Parcelable) movie.getGenreIds());
         startActivity(intent);
     }
 
@@ -293,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setAdapter(movieAdapter);
         movieAdapter.notifyDataSetChanged();
     }
+
 
 
 }

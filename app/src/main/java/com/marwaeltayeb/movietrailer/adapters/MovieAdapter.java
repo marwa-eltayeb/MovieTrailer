@@ -20,9 +20,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
+import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
+
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     
     private Context mContext;
+    Movie movie;
 
     // Create a final private MovieAdapterOnClickHandler called mClickHandler
     private MovieAdapterOnClickHandler clickHandler;
@@ -31,7 +34,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
      * The interface that receives onClick messages.
      */
     public interface MovieAdapterOnClickHandler {
-        void onClick(String titleOfMovie, String ratingOfMovie);
+        void onClick(Movie movie);
     }
 
     public MovieAdapter(Context mContext, MovieAdapterOnClickHandler clickHandler) {
@@ -49,7 +52,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        Movie movie = getItem(position);
+        movie = getItem(position);
 
         if (movie != null) {
             holder.movieTitle.setText(movie.getMovieTitle());
@@ -65,9 +68,8 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
                     .dontTransform();
 
             // Load the Movie poster into ImageView
-            String imageUrl = "https://image.tmdb.org/t/p/w500";
             Glide.with(mContext)
-                    .load(imageUrl + movie.getMoviePoster())
+                    .load(IMAGE_URL + movie.getMoviePoster())
                     //.apply(options)
                     .into(holder.moviePoster);
         } else {
@@ -111,12 +113,11 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
         @Override
         public void onClick(View v) {
-            // Get the title of the movie
-            String movieName = movieTitle.getText().toString();
-            // Get the rating of the movie
-            String movieVote = movieRating.getText().toString();
-            // Send title through click
-            clickHandler.onClick(movieName,movieVote);
+            int position = getAdapterPosition();
+            // Get position of the movie
+            movie = getItem(position);
+            // Send movie through click
+            clickHandler.onClick(movie);
         }
     }
 }
