@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
+import com.marwaeltayeb.movietrailer.Util.Utility;
 
+import static com.marwaeltayeb.movietrailer.R.id.languageOfMovie;
 import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.DESCRIPTION_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
@@ -36,7 +38,7 @@ public class MovieActivity extends AppCompatActivity {
         movieRating = findViewById(R.id.ratingOfMovie);
         movieDescription = findViewById(R.id.descriptionOfMovie);
         moveReleaseDate = findViewById(R.id.releaseDateOfMovie);
-        movieLanguage = findViewById(R.id.languageOfMovie);
+        movieLanguage = findViewById(languageOfMovie);
 
         Intent intent = getIntent();
         String titleOfMovie = intent.getStringExtra(TITLE_OF_MOVIE);
@@ -44,12 +46,13 @@ public class MovieActivity extends AppCompatActivity {
         String imageOfMovie = intent.getStringExtra(BACKDROP_OF_MOVIE);
         String descriptionOfMovie = intent.getStringExtra(DESCRIPTION_OF_MOVIE);
         String releaseDateOfMovie = intent.getStringExtra(RELEASE_DATE);
+        String formattedDate = Utility.formatDate(releaseDateOfMovie);
         String languageOfMovie = intent.getStringExtra(LANGUAGE_OF_MOVIE);
 
         movieTitle.setText(titleOfMovie);
         movieRating.setText(ratingOfMovie);
         movieDescription.setText(descriptionOfMovie);
-        moveReleaseDate.setText(releaseDateOfMovie  + " " + "|");
+        moveReleaseDate.setText(formattedDate  + " " + "|");
         movieLanguage.setText(languageOfMovie);
 
         Glide.with(this)
