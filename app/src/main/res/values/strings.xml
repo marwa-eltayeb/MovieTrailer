@@ -29,4 +29,9 @@
     <string name="now_playing_value">now_playing</string>
     <string name="upcoming_value">upcoming</string>
     <string name="latest_value">latest</string>
+    <string name="backdrop_picture">Backdrop Picture</string>
+
+    <string name="description">Thomas wakes up in an ascending elevator. With him are supply containers marked WCKD. When the elevator reaches the top, a door above him opens and he\'s surrounded by a Lord of the Flies type gaggle of young men/boys. Thomas takes off running, but stops when he realizes he\'s in a small glade surrounded by huge walls.</string>
+    <string name="en">| en</string>
+
 </resources>
