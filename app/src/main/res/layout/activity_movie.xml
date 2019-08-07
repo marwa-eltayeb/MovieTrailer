@@ -24,23 +24,56 @@
             android:id="@+id/titleOfMovie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textStyle="bold|italic"
             android:textColor="#fff"
-            android:textSize="22sp"
-            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
             tools:text="@string/the_maze_runner" />
-        
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/releaseDateOfMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#aeaeae"
+                android:textSize="18sp"
+                android:layout_marginEnd="5dp"
+                tools:text="2016-08-03" />
+
+            <TextView
+                android:id="@+id/languageOfMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#aeaeae"
+                android:textSize="18sp"
+                tools:text="@string/en" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/ratingOfMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_star_black_24dp"
-            tools:text="@string/_8_4"
             android:textColor="#aeaeae"
             android:textSize="18sp"
-            android:layout_margin="5dp" />
+            tools:text="@string/_8_4" />
+
+        <TextView
+            android:id="@+id/descriptionOfMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#1d1d1d"
+            android:textColor="#fff"
+            android:textSize="17sp"
+            tools:text="@string/description" />
     </LinearLayout>
 
 </ScrollView>
