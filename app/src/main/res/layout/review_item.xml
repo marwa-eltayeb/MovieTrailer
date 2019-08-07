@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1d1d1d"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/reviewOfMovie"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:padding="10dp"
+        android:text="@string/reviewDescription"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/authorOfReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/mohamedelsharkawy"
+        android:textColor="#bebebe"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/urlOfReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/read_more"
+        android:textColor="#d90000"
+        android:textSize="18sp" />
+</LinearLayout>
