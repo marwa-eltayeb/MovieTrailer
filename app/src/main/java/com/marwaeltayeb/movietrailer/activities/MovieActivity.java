@@ -74,23 +74,23 @@ public class MovieActivity extends AppCompatActivity {
                 .into(backdropImage);
 
 
-        setupRecyclerView();
+        setupRecyclerViews();
 
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerViews() {
         // Trailers
         trailersRecyclerView = findViewById(R.id.listOfTrailers);
         trailerAdapter = new TrailerAdapter(this,trailerList);
         trailersRecyclerView.setHasFixedSize(true);
-        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         trailersRecyclerView.setAdapter(trailerAdapter);
 
         // Reviews
         reviewsRecyclerView = findViewById(R.id.listOfReviews);
         reviewAdapter = new ReviewAdapter(this,reviewList);
         reviewsRecyclerView.setHasFixedSize(true);
-        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         reviewsRecyclerView.setAdapter(reviewAdapter);
     }
 }
