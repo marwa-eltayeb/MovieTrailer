@@ -15,5 +15,5 @@ public class Constant {
     public static String GENRES_OF_MOVIE = "language";
 
     public static String URL_OF_REVIEW = "url";
-    
+
 }
