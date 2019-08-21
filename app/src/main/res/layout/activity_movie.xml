@@ -85,17 +85,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="5dp"
+                android:text="@string/videos"
                 android:textColor="#fff"
                 android:textSize="25sp"
-                android:textStyle="bold"
-                android:text="@string/videos" />
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/listOfTrailers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#1d1d1d"/>
+                android:background="#1d1d1d" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,17 +108,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="5dp"
+                android:text="@string/reviews"
                 android:textColor="#fff"
                 android:textSize="25sp"
-                android:textStyle="bold"
-                android:text="@string/reviews" />
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/listOfReviews"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#1d1d1d" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>
