@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1d1d1d">
+    android:layout_margin="5dp"
+    android:background="#1d1d1d"
+    android:orientation="vertical">
 
     <VideoView
         android:id="@+id/trailerOfMovie"
@@ -14,8 +15,8 @@
         android:id="@+id/nameOfTrailer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="#fff"
         android:padding="10dp"
-        android:text="@string/toy_story_4_official_teaser_trailer"/>
+        android:text="@string/toy_story_4_official_teaser_trailer"
+        android:textColor="#fff"
+        android:textSize="18sp" />
 </LinearLayout>
