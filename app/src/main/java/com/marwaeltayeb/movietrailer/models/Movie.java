@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Movie {
     @SerializedName("id")
-    public int movieId;
+    public String movieId;
     @SerializedName("vote_average")
     private String movieVote;
     @SerializedName("title")
@@ -24,7 +24,7 @@ public class Movie {
     @SerializedName("genre_ids")
     private List genreIds;
 
-    public int getMovieId() {
+    public String getMovieId() {
         return movieId;
     }
 
