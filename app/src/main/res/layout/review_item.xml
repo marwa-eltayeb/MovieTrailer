@@ -13,6 +13,8 @@
         android:padding="10dp"
         android:text="@string/reviewDescription"
         android:textColor="#fff"
+        android:maxLines="7"
+        android:ellipsize="end"
         android:textSize="18sp" />
 
     <TextView
