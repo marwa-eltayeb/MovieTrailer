@@ -44,6 +44,7 @@ import retrofit2.Response;
 
 import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.DESCRIPTION_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.ID_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.LANGUAGE_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.RATING_OF_MOVIE;
 import static com.marwaeltayeb.movietrailer.Util.Constant.RELEASE_DATE;
@@ -239,13 +240,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+        intent.putExtra(ID_OF_MOVIE, movie.getMovieId());
         intent.putExtra(TITLE_OF_MOVIE, movie.getMovieTitle());
         intent.putExtra(RATING_OF_MOVIE, movie.getMovieVote());
         intent.putExtra(BACKDROP_OF_MOVIE, movie.getMovieBackdrop());
         intent.putExtra(DESCRIPTION_OF_MOVIE, movie.getMovieDescription());
         intent.putExtra(RELEASE_DATE, movie.getMovieReleaseDate());
         intent.putExtra(LANGUAGE_OF_MOVIE, movie.getMovieLanguage());
-        //intent.putExtra(GENRES_OF_MOVIE, (Parcelable) movie.getGenreIds());
         startActivity(intent);
     }
 
