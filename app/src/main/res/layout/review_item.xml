@@ -34,5 +34,6 @@
         android:padding="10dp"
         android:text="@string/read_more"
         android:textColor="#d90000"
+        android:textStyle="italic"
         android:textSize="18sp" />
 </LinearLayout>
