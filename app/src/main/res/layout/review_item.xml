@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#1d1d1d"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/reviewOfMovie"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:padding="10dp"
         android:text="@string/reviewDescription"
         android:textColor="#fff"
