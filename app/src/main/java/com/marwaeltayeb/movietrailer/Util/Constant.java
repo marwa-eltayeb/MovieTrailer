@@ -1,9 +1,5 @@
 package com.marwaeltayeb.movietrailer.Util;
 
-/**
- * Created by Marwa on 8/6/2019.
- */
-
 public class Constant {
 
     public static String IMAGE_URL = "https://image.tmdb.org/t/p/w500";
@@ -18,8 +14,6 @@ public class Constant {
     public static String LANGUAGE_OF_MOVIE = "language";
     public static String GENRES_OF_MOVIE = "language";
 
-
-
-
-
+    public static String URL_OF_REVIEW = "url";
+    
 }
