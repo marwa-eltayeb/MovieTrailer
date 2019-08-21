@@ -9,6 +9,7 @@ public class Constant {
     public static String IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
     // Constant Variables
+    public static String ID_OF_MOVIE = "id";
     public static String TITLE_OF_MOVIE = "title";
     public static String RATING_OF_MOVIE = "rating";
     public static String BACKDROP_OF_MOVIE = "backdrop";
