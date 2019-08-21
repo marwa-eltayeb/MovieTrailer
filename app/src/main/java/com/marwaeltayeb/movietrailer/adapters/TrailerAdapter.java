@@ -63,11 +63,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         void onClick();
     }
 
+    /*
     public TrailerAdapter(Context mContext, List<Trailer> trailerList, TrailerAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
         this.trailerList = trailerList;
         this.clickHandler = clickHandler;
     }
+    */
 
 
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
