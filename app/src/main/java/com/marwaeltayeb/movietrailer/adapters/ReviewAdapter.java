@@ -15,6 +15,8 @@ import com.marwaeltayeb.movietrailer.models.Review;
 
 import java.util.List;
 
+import static com.marwaeltayeb.movietrailer.Util.Constant.URL_OF_REVIEW;
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>{
 
     private Context mContext;
@@ -38,8 +40,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         currentReview = reviewList.get(position);
         holder.reviewOfMovie.setText(currentReview.getContent());
-        holder.authorOfReview.setText(currentReview.getAuthor());
-        //holder.urlOfReview.setText(currentReview.getUrl());
+        holder.authorOfReview.setText("written by" + " " + currentReview.getAuthor());
     }
 
     @Override
@@ -68,9 +69,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), WebViewActivity.class);
                     String url = currentReview.getUrl();
-                    intent.putExtra("url", url);
+                    intent.putExtra(URL_OF_REVIEW , url);
                     v.getContext().startActivity(intent);
-
                 }
             });
         }
