@@ -22,7 +22,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     private Context mContext;
     // Declare an arrayList for trailers
     private List<Review> reviewList;
-    private Review currentReview;
+
+    private int mItemSelected= -1;
+
 
     public ReviewAdapter(Context mContext, List<Review> reviewList) {
         this.mContext = mContext;
@@ -38,10 +40,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        currentReview = reviewList.get(position);
+        Review currentReview = reviewList.get(position);
         holder.reviewOfMovie.setText(currentReview.getContent());
         holder.authorOfReview.setText("written by" + " " + currentReview.getAuthor());
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -68,16 +72,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), WebViewActivity.class);
-                    String url = currentReview.getUrl();
+                    // Get the position of the view in the adapter
+                    mItemSelected = getAdapterPosition();
+                    notifyDataSetChanged();
+                    // Get url of the review
+                    String url = reviewList.get(mItemSelected).getUrl();
+                    // Send the url with the intent
                     intent.putExtra(URL_OF_REVIEW , url);
                     v.getContext().startActivity(intent);
+
+
                 }
             });
         }
 
 
     }
-
-
 
 }
