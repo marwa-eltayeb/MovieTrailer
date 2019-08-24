@@ -70,7 +70,6 @@ public class MovieActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         idOfMovie = intent.getStringExtra(ID_OF_MOVIE);
-        //Toast.makeText(this, idOfMovie + "", Toast.LENGTH_SHORT).show();
         String titleOfMovie = intent.getStringExtra(TITLE_OF_MOVIE);
         String ratingOfMovie = intent.getStringExtra(RATING_OF_MOVIE);
         String imageOfMovie = intent.getStringExtra(BACKDROP_OF_MOVIE);
@@ -88,10 +87,6 @@ public class MovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(IMAGE_URL + imageOfMovie)
                 .into(backdropImage);
-
-
-        //.setMovementMethod(new ScrollingMovementMethod());
-
 
         setupRecyclerViews();
         getReviews();
@@ -111,18 +106,15 @@ public class MovieActivity extends AppCompatActivity {
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    //420818
-    //301528
     private void getReviews() {
         RetrofitClient.getInstance()
-                .getMovieService().getReviews(("420818"), API_KEY)
+                .getMovieService().getReviews((idOfMovie), API_KEY)
                 .enqueue(new Callback<ReviewApiResponse>() {
                     @Override
                     public void onResponse(Call<ReviewApiResponse> call, Response<ReviewApiResponse> response) {
                         if (response.body() != null) {
                             reviewList = response.body().getReviews();
                             reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
-                            //Toast.makeText(MovieActivity.this, reviewList.size() + " ", Toast.LENGTH_SHORT).show();
                         }
                         reviewsRecyclerView.setAdapter(reviewAdapter);
                     }
@@ -137,7 +129,7 @@ public class MovieActivity extends AppCompatActivity {
 
     private void getTrailers() {
         RetrofitClient.getInstance()
-                .getMovieService().getTrailers(("301528"), API_KEY)
+                .getMovieService().getTrailers((idOfMovie), API_KEY)
                 .enqueue(new Callback<TrailerApiResponse>() {
 
                     @Override
@@ -145,7 +137,6 @@ public class MovieActivity extends AppCompatActivity {
                         if (response.body() != null) {
                             trailerList = response.body().getTrailers();
                             trailerAdapter = new TrailerAdapter(getApplicationContext(), trailerList);
-                            //Toast.makeText(MovieActivity.this, trailerList.size() + " ", Toast.LENGTH_SHORT).show();
                         }
                         trailersRecyclerView.setAdapter(trailerAdapter);
                     }
