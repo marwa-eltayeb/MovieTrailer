@@ -7,10 +7,16 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 
+import static com.marwaeltayeb.movietrailer.R.id.webView;
+import static com.marwaeltayeb.movietrailer.Util.Constant.URL_OF_REVIEW;
+
 public class WebViewActivity extends AppCompatActivity {
+
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +24,12 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         final ProgressBar loadingIndicator = findViewById(R.id.indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
+        WebView web = findViewById(webView);
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra("url");
-        loadingIndicator.setVisibility(View.VISIBLE);
-        WebView web = findViewById(R.id.webView);
+        url = intent.getStringExtra(URL_OF_REVIEW);
+        Toast.makeText(this, url + "", Toast.LENGTH_SHORT).show();
         web.setWebViewClient(new WebViewClient());
         web.loadUrl(url);
 
@@ -32,8 +39,7 @@ public class WebViewActivity extends AppCompatActivity {
                 loadingIndicator.setVisibility(View.GONE);
             }
         });
-
-
-
     }
+
+
 }
