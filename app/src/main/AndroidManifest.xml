@@ -12,13 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop"/>
+
         <activity
             android:name=".activities.MovieActivity"
             android:label="@string/movie_details"
+            android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -47,7 +50,7 @@
             android:parentActivityName=".activities.MovieActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.MovieActivity" />
         </activity>
     </application>
 
