@@ -1,6 +1,8 @@
 package com.marwaeltayeb.movietrailer.network;
 
 import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
+import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
+import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,9 +24,9 @@ public interface MovieService {
     Call<MovieApiResponse> searchForMovies(@Query("query") String query ,@Query("api_key") String apiKey);
 
     @GET("movie/{movieId}/videos")
-    Call<MovieApiResponse> getTrailers(@Path("movieId") int movieId ,@Query("api_key") String apiKey);
+    Call<TrailerApiResponse> getTrailers(@Path("movieId") String movieId , @Query("api_key") String apiKey);
 
     @GET("movie/{movieId}/reviews")
-    Call<MovieApiResponse> getReviews(@Path("movieId") int movieId ,@Query("api_key") String apiKey);
+    Call<ReviewApiResponse> getReviews(@Path("movieId") String movieId , @Query("api_key") String apiKey);
 
 }
