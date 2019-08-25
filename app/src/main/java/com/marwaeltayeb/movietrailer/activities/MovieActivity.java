@@ -186,13 +186,7 @@ public class MovieActivity extends AppCompatActivity {
         map.put(53, "Thriller");
         map.put(10752, "War");
         map.put(37, "Western");
-
-        /*
-        if(map.get(genre_one) == null|| map.get(genre_two) == null || map.get(genre_three) == null){
-            return;
-        }
-        */
-
+        
         genreOne.setText(map.get(genre_one));
         genreTwo.setText(map.get(genre_two));
         genreThree.setText(map.get(genre_three));
