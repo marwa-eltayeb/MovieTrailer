@@ -12,13 +12,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/backdropImage"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:contentDescription="@string/backdrop_picture"
-            android:scaleType="fitXY"
-            android:src="@drawable/backdrop" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/backdropImage"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:contentDescription="@string/backdrop_picture"
+                android:scaleType="fitXY"
+                android:src="@drawable/backdrop" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_star_yellow"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/titleOfMovie"
@@ -94,7 +108,7 @@
             android:id="@+id/ratingOfMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_star_black_24dp"
+            android:drawableStart="@drawable/ic_star_yellow"
             android:textColor="#aeaeae"
             android:textSize="18sp"
             tools:text="@string/_8_4" />
