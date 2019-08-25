@@ -9,7 +9,8 @@
     <VideoView
         android:id="@+id/trailerOfMovie"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        android:layout_margin="3dp"/>
 
     <TextView
         android:id="@+id/nameOfTrailer"
