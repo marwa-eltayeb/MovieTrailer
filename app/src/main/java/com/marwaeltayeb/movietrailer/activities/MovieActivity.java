@@ -14,6 +14,7 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.Util.Utility;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
+import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
 import com.marwaeltayeb.movietrailer.models.Trailer;
@@ -26,16 +27,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.marwaeltayeb.movietrailer.R.id.descriptionOfMovie;
 import static com.marwaeltayeb.movietrailer.R.id.languageOfMovie;
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
-import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.DESCRIPTION_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.ID_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.R.id.ratingOfMovie;
+import static com.marwaeltayeb.movietrailer.R.id.titleOfMovie;
 import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
-import static com.marwaeltayeb.movietrailer.Util.Constant.LANGUAGE_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.RATING_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.RELEASE_DATE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.TITLE_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MovieActivity extends AppCompatActivity {
@@ -61,31 +59,26 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
 
         backdropImage = findViewById(R.id.backdropImage);
-        movieTitle = findViewById(R.id.titleOfMovie);
-        movieRating = findViewById(R.id.ratingOfMovie);
-        movieDescription = findViewById(R.id.descriptionOfMovie);
+        movieTitle = findViewById(titleOfMovie);
+        movieRating = findViewById(ratingOfMovie);
+        movieDescription = findViewById(descriptionOfMovie);
         moveReleaseDate = findViewById(R.id.releaseDateOfMovie);
         movieLanguage = findViewById(languageOfMovie);
 
+        // Receive the movie object
         Intent intent = getIntent();
+        Movie movie = (Movie) intent.getSerializableExtra(MOVIE);
 
-        idOfMovie = intent.getStringExtra(ID_OF_MOVIE);
-        String titleOfMovie = intent.getStringExtra(TITLE_OF_MOVIE);
-        String ratingOfMovie = intent.getStringExtra(RATING_OF_MOVIE);
-        String imageOfMovie = intent.getStringExtra(BACKDROP_OF_MOVIE);
-        String descriptionOfMovie = intent.getStringExtra(DESCRIPTION_OF_MOVIE);
-        String releaseDateOfMovie = intent.getStringExtra(RELEASE_DATE);
-        String formattedDate = Utility.formatDate(releaseDateOfMovie);
-        String languageOfMovie = intent.getStringExtra(LANGUAGE_OF_MOVIE);
-
-        movieTitle.setText(titleOfMovie);
-        movieRating.setText(ratingOfMovie);
-        movieDescription.setText(descriptionOfMovie);
+        idOfMovie = movie.getMovieId();
+        movieTitle.setText(movie.getMovieTitle());
+        movieRating.setText(movie.getMovieVote());
+        movieDescription.setText(movie.getMovieDescription());
+        String formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
         moveReleaseDate.setText(formattedDate + " " + "|");
-        movieLanguage.setText(languageOfMovie);
+        movieLanguage.setText(movie.getMovieLanguage());
 
         Glide.with(this)
-                .load(IMAGE_URL + imageOfMovie)
+                .load(IMAGE_URL + movie.getMovieBackdrop())
                 .into(backdropImage);
 
         setupRecyclerViews();

@@ -2,9 +2,10 @@ package com.marwaeltayeb.movietrailer.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Serializable {
     @SerializedName("id")
     public String movieId;
     @SerializedName("vote_average")
@@ -23,6 +24,8 @@ public class Movie {
     private String movieLanguage;
     @SerializedName("genre_ids")
     private List genreIds;
+
+    public Movie(){}
 
     public String getMovieId() {
         return movieId;

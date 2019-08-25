@@ -44,13 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.marwaeltayeb.movietrailer.Util.Constant.BACKDROP_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.DESCRIPTION_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.ID_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.LANGUAGE_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.RATING_OF_MOVIE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.RELEASE_DATE;
-import static com.marwaeltayeb.movietrailer.Util.Constant.TITLE_OF_MOVIE;
+import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
@@ -87,21 +81,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this, this);
 
         // Road Movies
-        //loadMovies();
-        if (isNetworkConnected()) {
-            // Observe the moviePagedList from ViewModel
-            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
-                @Override
-                public void onChanged(@Nullable PagedList<Movie> movies) {
-                    // In case of any changes, submitting the movies to adapter
-                    movieAdapter.submitList(movies);
-                }
-            });
-        }
-
-        // Set the adapter
-        recyclerView.setAdapter(movieAdapter);
-        movieAdapter.notifyDataSetChanged();
+        loadMovies();
 
         // Register the listener
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -233,16 +213,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return true;
         } else {
             progressDialog.dismiss();
-            //Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
-            Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("CLOSE", new View.OnClickListener() {
+            Snackbar snack = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
+            snack.setAction("CLOSE", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
                         }
-                    })
-                    .setActionTextColor(getResources().getColor(R.color.colorAccent))
-                    .show();
+                    });
+            snack.setActionTextColor(getResources().getColor(R.color.colorAccent));
+            snack.show();
             return false;
         }
     }
@@ -250,16 +229,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * Click on the movie for details.
      */
+
     @Override
     public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-        intent.putExtra(ID_OF_MOVIE, movie.getMovieId());
-        intent.putExtra(TITLE_OF_MOVIE, movie.getMovieTitle());
-        intent.putExtra(RATING_OF_MOVIE, movie.getMovieVote());
-        intent.putExtra(BACKDROP_OF_MOVIE, movie.getMovieBackdrop());
-        intent.putExtra(DESCRIPTION_OF_MOVIE, movie.getMovieDescription());
-        intent.putExtra(RELEASE_DATE, movie.getMovieReleaseDate());
-        intent.putExtra(LANGUAGE_OF_MOVIE, movie.getMovieLanguage());
+        // Pass an object of movie class
+        intent.putExtra(MOVIE, (movie));
         startActivity(intent);
     }
 
@@ -305,9 +280,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
+                    /*
                     if (movies != null) {
                         Toast.makeText(getApplicationContext(), movies.get(0) + "", Toast.LENGTH_SHORT).show();
                     }
+                    */
                 }
             });
         }
