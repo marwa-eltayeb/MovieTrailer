@@ -21,6 +21,7 @@ import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
 import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,6 +45,9 @@ public class MovieActivity extends AppCompatActivity {
     TextView movieDescription;
     TextView moveReleaseDate;
     TextView movieLanguage;
+    TextView genreOne;
+    TextView genreTwo;
+    TextView genreThree;
 
     List<Review> reviewList;
     List<Trailer> trailerList;
@@ -52,6 +56,7 @@ public class MovieActivity extends AppCompatActivity {
     RecyclerView reviewsRecyclerView, trailersRecyclerView;
 
     String idOfMovie;
+    Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +70,13 @@ public class MovieActivity extends AppCompatActivity {
         moveReleaseDate = findViewById(R.id.releaseDateOfMovie);
         movieLanguage = findViewById(languageOfMovie);
 
+        genreOne = findViewById(R.id.genreOne);
+        genreTwo = findViewById(R.id.genreTwo);
+        genreThree = findViewById(R.id.genreThree);
+
         // Receive the movie object
         Intent intent = getIntent();
-        Movie movie = (Movie) intent.getSerializableExtra(MOVIE);
+        movie = (Movie) intent.getSerializableExtra(MOVIE);
 
         idOfMovie = movie.getMovieId();
         movieTitle.setText(movie.getMovieTitle());
@@ -80,6 +89,8 @@ public class MovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(IMAGE_URL + movie.getMovieBackdrop())
                 .into(backdropImage);
+
+        getGenres();
 
         setupRecyclerViews();
         getReviews();
@@ -140,6 +151,52 @@ public class MovieActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void getGenres() {
+        int genre_one = 0;
+        int genre_two = 0;
+        int genre_three = 0;
+
+        try {
+            genre_one = movie.getGenreIds().get(0);
+            genre_two = movie.getGenreIds().get(1);
+            genre_three = movie.getGenreIds().get(2);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        HashMap<Integer, String> map = new HashMap<Integer, String>();
+        map.put(28, "Action");
+        map.put(12, "Adventure");
+        map.put(16, "Animation");
+        map.put(35, "Comedy");
+        map.put(80, "Crime");
+        map.put(99, "Documentary");
+        map.put(18, "Drama");
+        map.put(10751, "Family");
+        map.put(14, "Fantasy");
+        map.put(36, "History");
+        map.put(27, "Horror");
+        map.put(10402, "Music");
+        map.put(9648, "Mystery");
+        map.put(10749, "Romance");
+        map.put(878, "Science Fiction");
+        map.put(10770, "TV Movie");
+        map.put(53, "Thriller");
+        map.put(10752, "War");
+        map.put(37, "Western");
+
+        /*
+        if(map.get(genre_one) == null|| map.get(genre_two) == null || map.get(genre_three) == null){
+            return;
+        }
+        */
+
+        genreOne.setText(map.get(genre_one));
+        genreTwo.setText(map.get(genre_two));
+        genreThree.setText(map.get(genre_three));
+
     }
 
 }
