@@ -3,7 +3,7 @@ package com.marwaeltayeb.movietrailer.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Movie implements Serializable {
     @SerializedName("id")
@@ -23,7 +23,7 @@ public class Movie implements Serializable {
     @SerializedName("original_language")
     private String movieLanguage;
     @SerializedName("genre_ids")
-    private List genreIds;
+    private ArrayList<Integer> genreIds;
 
     public Movie(){}
 
@@ -59,7 +59,7 @@ public class Movie implements Serializable {
         return movieLanguage;
     }
 
-    public List getGenreIds() {
+    public ArrayList<Integer> getGenreIds() {
         return genreIds;
     }
 
