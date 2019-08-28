@@ -10,7 +10,9 @@
         android:id="@+id/trailerOfMovie"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="5dp"
+        android:scaleType="centerCrop"
+        android:layout_margin="10dp"
+        android:src="@drawable/backdrop"
         android:contentDescription="@string/trailer_of_the_movie" />
 
     <TextView
@@ -20,5 +22,5 @@
         android:padding="10dp"
         android:text="@string/toy_story_4_official_teaser_trailer"
         android:textColor="#fff"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 </LinearLayout>
