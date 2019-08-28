@@ -6,11 +6,12 @@
     android:background="#1d1d1d"
     android:orientation="vertical">
 
-    <VideoView
+    <ImageView
         android:id="@+id/trailerOfMovie"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="3dp"/>
+        android:layout_margin="5dp"
+        android:contentDescription="@string/trailer_of_the_movie" />
 
     <TextView
         android:id="@+id/nameOfTrailer"
