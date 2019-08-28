@@ -40,4 +40,6 @@
     <string name="read_more">Read more</string>
     <string name="mohamedelsharkawy">MohamedElsharkawy</string>
     <string name="movie_review">Review</string>
+    <string name="youtube_url">https://www.youtube.com/watch?v=</string>
+    <string name="trailer_of_the_movie">Trailer Of the movie</string>
 </resources>
