@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         contextOfApplication = getApplicationContext();
 
         progressDialog = createProgressDialog(MainActivity.this);
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         // Create the Adapter
         movieAdapter = new MovieAdapter(this, this);
+
+        //getLandscape();
 
         // Road Movies
         loadMovies();
@@ -280,11 +283,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
-                    /*
-                    if (movies != null) {
-                        Toast.makeText(getApplicationContext(), movies.get(0) + "", Toast.LENGTH_SHORT).show();
+                    if (movies != null && !movies.isEmpty()) {
+                        //Toast.makeText(getApplicationContext(), movies.get(0) + "", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
-                    */
                 }
             });
         }
@@ -293,7 +295,4 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setAdapter(movieAdapter);
         movieAdapter.notifyDataSetChanged();
     }
-
-
-
 }
