@@ -1,19 +1,25 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Trailer;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Marwa on 8/7/2019.
@@ -25,8 +31,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     // Declare an arrayList for trailers
     private List<Trailer> trailerList;
 
-    // Create a final private TrailerAdapterOnClickHandler called mClickHandler
-    private TrailerAdapterOnClickHandler clickHandler;
+
+
+    private int mItemSelected= -1;
 
     public TrailerAdapter(Context mContext, List<Trailer> trailerList) {
         this.mContext = mContext;
@@ -43,8 +50,18 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
         Trailer currentMovie = trailerList.get(position);
-        holder.trailerOfMovie.setVideoURI(Uri.parse("https://www.youtube.com/watch?v=" + currentMovie.getKeyOfTrailer()));
-        //holder.trailerOfMovie.start();
+        // Get key of the trailer
+        String key = currentMovie.getKeyOfTrailer();
+        // Get url of the trailer
+        String url = mContext.getString(R.string.youtube_url) + key;
+        // Get id of the thumbnails
+        String imageId = getYouTubeId(url);
+        Toast.makeText(mContext, imageId + "", Toast.LENGTH_SHORT).show();
+        Log.d("imageId",imageId);
+        // Load the thumbnails into ImageView
+        Glide.with(mContext)
+                .load("https://i1.ytimg.com/vi/"+imageId+"/hqdefault.jpg")
+                .into(holder.trailerOfMovie);
         holder.nameOfTrailer.setText(currentMovie.getNameOfTrailer());
     }
 
@@ -56,40 +73,43 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         return trailerList.size();
     }
 
-    /**
-     * The interface that receives onClick messages.
-     */
-    public interface TrailerAdapterOnClickHandler {
-        void onClick();
-    }
 
-    /*
-    public TrailerAdapter(Context mContext, List<Trailer> trailerList, TrailerAdapterOnClickHandler clickHandler) {
-        this.mContext = mContext;
-        this.trailerList = trailerList;
-        this.clickHandler = clickHandler;
-    }
-    */
-
-
-    class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class TrailerViewHolder extends RecyclerView.ViewHolder{
 
         // Create view instances
-        VideoView trailerOfMovie;
+        ImageView trailerOfMovie;
         TextView nameOfTrailer;
 
         private TrailerViewHolder(View itemView) {
             super(itemView);
             trailerOfMovie = itemView.findViewById(R.id.trailerOfMovie);
             nameOfTrailer = itemView.findViewById(R.id.nameOfTrailer);
-            // Register a callback to be invoked when this view is clicked.
-            itemView.setOnClickListener(this);
-        }
 
-        @Override
-        public void onClick(View v) {
-            // Send title through click
-            clickHandler.onClick();
+            trailerOfMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get the position of the view in the adapter
+                    mItemSelected = getAdapterPosition();
+                    // Get key of the trailer
+                    String key = trailerList.get(mItemSelected).getKeyOfTrailer();
+                    String url = v.getContext().getString(R.string.youtube_url) + key;
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    if (intent.resolveActivity(v.getContext().getPackageManager()) != null) {
+                        v.getContext().startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
+    private String getYouTubeId (String youTubeUrl) {
+        String pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youTubeUrl);
+        if(matcher.find()){
+            return matcher.group();
+        } else {
+            return "error";
         }
     }
 }
