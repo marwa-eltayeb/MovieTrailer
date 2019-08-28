@@ -14,8 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/backdropImage"
@@ -29,11 +28,12 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="14dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="195dp"
+                android:layout_marginTop="200dp"
                 android:src="@drawable/favorite_border_red"
                 app:backgroundTint="@color/colorAccent"
                 app:fabSize="mini" />
