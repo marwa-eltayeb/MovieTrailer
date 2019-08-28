@@ -32,7 +32,7 @@
         android:id="@+id/movie_rating"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:drawableStart="@drawable/ic_star_black_24dp"
+        android:drawableStart="@drawable/ic_star_yellow"
         android:drawablePadding="0dp"
         tools:text="@string/_8_4"
         android:paddingRight="35dp"
