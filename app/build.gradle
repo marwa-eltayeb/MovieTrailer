@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
@@ -34,6 +37,10 @@ dependencies {
     compile "com.android.support:appcompat-v7:$support_version"
     // Design Support
     compile "com.android.support:design:$support_version"
+
+    compile "com.android.support:animated-vector-drawable:$support_version"
+    compile "com.android.support:support-v4:$support_version"
+
     // CardView
     compile "com.android.support:cardview-v7:$support_version"
     // RecyclerView
