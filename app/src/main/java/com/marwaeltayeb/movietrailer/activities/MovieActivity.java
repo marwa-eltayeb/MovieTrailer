@@ -1,12 +1,11 @@
 package com.marwaeltayeb.movietrailer.activities;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +13,7 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.Util.Utility;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
+import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
@@ -28,26 +28,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.marwaeltayeb.movietrailer.R.id.descriptionOfMovie;
-import static com.marwaeltayeb.movietrailer.R.id.languageOfMovie;
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
-import static com.marwaeltayeb.movietrailer.R.id.ratingOfMovie;
-import static com.marwaeltayeb.movietrailer.R.id.titleOfMovie;
 import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
 import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MovieActivity extends AppCompatActivity {
 
-    ImageView backdropImage;
-    TextView movieTitle;
-    TextView movieRating;
-    TextView movieDescription;
-    TextView moveReleaseDate;
-    TextView movieLanguage;
-    TextView genreOne;
-    TextView genreTwo;
-    TextView genreThree;
+    private ActivityMovieBinding binding;
 
     List<Review> reviewList;
     List<Trailer> trailerList;
@@ -55,40 +43,31 @@ public class MovieActivity extends AppCompatActivity {
     TrailerAdapter trailerAdapter;
     RecyclerView reviewsRecyclerView, trailersRecyclerView;
 
-    String idOfMovie;
-    Movie movie;
+    private String idOfMovie;
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie);
+        //setContentView(R.layout.activity_movie);
 
-        backdropImage = findViewById(R.id.backdropImage);
-        movieTitle = findViewById(titleOfMovie);
-        movieRating = findViewById(ratingOfMovie);
-        movieDescription = findViewById(descriptionOfMovie);
-        moveReleaseDate = findViewById(R.id.releaseDateOfMovie);
-        movieLanguage = findViewById(languageOfMovie);
-
-        genreOne = findViewById(R.id.genreOne);
-        genreTwo = findViewById(R.id.genreTwo);
-        genreThree = findViewById(R.id.genreThree);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
 
         // Receive the movie object
         Intent intent = getIntent();
         movie = (Movie) intent.getSerializableExtra(MOVIE);
 
         idOfMovie = movie.getMovieId();
-        movieTitle.setText(movie.getMovieTitle());
-        movieRating.setText(movie.getMovieVote());
-        movieDescription.setText(movie.getMovieDescription());
+        binding.titleOfMovie.setText(movie.getMovieTitle());
+        binding.ratingOfMovie.setText(movie.getMovieVote());
+        binding.descriptionOfMovie.setText(movie.getMovieDescription());
         String formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
-        moveReleaseDate.setText(formattedDate + " " + "|");
-        movieLanguage.setText(movie.getMovieLanguage());
+        binding.releaseDateOfMovie.setText(formattedDate + " " + "|");
+        binding.languageOfMovie.setText(movie.getMovieLanguage());
 
         Glide.with(this)
                 .load(IMAGE_URL + movie.getMovieBackdrop())
-                .into(backdropImage);
+                .into(binding.backdropImage);
 
         getGenres();
 
@@ -186,10 +165,10 @@ public class MovieActivity extends AppCompatActivity {
         map.put(53, "Thriller");
         map.put(10752, "War");
         map.put(37, "Western");
-        
-        genreOne.setText(map.get(genre_one));
-        genreTwo.setText(map.get(genre_two));
-        genreThree.setText(map.get(genre_three));
+
+        binding.genreOne.setText(map.get(genre_one));
+        binding.genreTwo.setText(map.get(genre_two));
+        binding.genreThree.setText(map.get(genre_three));
 
     }
 
