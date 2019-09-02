@@ -47,6 +47,8 @@ public class MovieActivity extends AppCompatActivity {
     private String idOfMovie;
     private Movie movie;
 
+    private boolean isFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,13 @@ public class MovieActivity extends AppCompatActivity {
         getReviews();
         getTrailers();
 
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavourite();
+            }
+        });
+
     }
 
     private void setupRecyclerViews() {
@@ -101,7 +110,7 @@ public class MovieActivity extends AppCompatActivity {
                             reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
                         }
 
-                        if(reviewList.isEmpty()){
+                        if (reviewList.isEmpty()) {
                             reviewsRecyclerView.setVisibility(View.GONE);
                             binding.noReviews.setVisibility(View.VISIBLE);
                         }
@@ -128,7 +137,7 @@ public class MovieActivity extends AppCompatActivity {
                             trailerAdapter = new TrailerAdapter(getApplicationContext(), trailerList);
                         }
 
-                        if(trailerList.isEmpty()){
+                        if (trailerList.isEmpty()) {
                             trailersRecyclerView.setVisibility(View.GONE);
                             binding.noTrailers.setVisibility(View.VISIBLE);
                         }
@@ -181,6 +190,17 @@ public class MovieActivity extends AppCompatActivity {
         binding.genreOne.setText(map.get(genre_one));
         binding.genreTwo.setText(map.get(genre_two));
         binding.genreThree.setText(map.get(genre_three));
+
+    }
+
+    private void toggleFavourite() {
+        if (isFavorite) {
+            binding.fab.setImageResource(R.drawable.favorite_red);
+            isFavorite = false;
+        } else {
+            binding.fab.setImageResource(R.drawable.favorite_border_red);
+            isFavorite = true;
+        }
 
     }
 
