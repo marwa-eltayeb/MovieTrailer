@@ -51,6 +51,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MovieActivity" />
         </activity>
+
+        <receiver android:name=".receiver.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
