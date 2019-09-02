@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -99,6 +100,11 @@ public class MovieActivity extends AppCompatActivity {
                             reviewList = response.body().getReviews();
                             reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
                         }
+
+                        if(reviewList.isEmpty()){
+                            reviewsRecyclerView.setVisibility(View.GONE);
+                            binding.noReviews.setVisibility(View.VISIBLE);
+                        }
                         reviewsRecyclerView.setAdapter(reviewAdapter);
                     }
 
@@ -121,6 +127,12 @@ public class MovieActivity extends AppCompatActivity {
                             trailerList = response.body().getTrailers();
                             trailerAdapter = new TrailerAdapter(getApplicationContext(), trailerList);
                         }
+
+                        if(trailerList.isEmpty()){
+                            trailersRecyclerView.setVisibility(View.GONE);
+                            binding.noTrailers.setVisibility(View.VISIBLE);
+                        }
+
                         trailersRecyclerView.setAdapter(trailerAdapter);
                     }
 
