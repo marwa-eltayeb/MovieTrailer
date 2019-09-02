@@ -151,6 +151,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp" />
+
+                <TextView
+                    android:id="@+id/noTrailers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:padding="10dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/no_available_trailers"
+                    android:textSize="20sp"
+                    android:textColor="#fff"
+                    android:background="#1d1d1d"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
@@ -172,6 +185,19 @@
                     android:id="@+id/listOfReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/noReviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:padding="10dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/no_available_reviews"
+                    android:textSize="20sp"
+                    android:textColor="#fff"
+                    android:background="#1d1d1d"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>
