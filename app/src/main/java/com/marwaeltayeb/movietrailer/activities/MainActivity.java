@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         progressDialog = createProgressDialog(MainActivity.this);
 
+        snack = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
+
         // Set up recyclerView
         recyclerView = findViewById(R.id.movie_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
@@ -226,19 +228,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return true;
         } else {
             progressDialog.dismiss();
-            snack = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
-            snack.setAction("CLOSE", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                        }
-                    });
-            snack.setActionTextColor(getResources().getColor(R.color.colorAccent));
-            snack.show();
+            showSnackBar();
             return false;
         }
     }
 
+    public static void showSnackBar(){
+        snack.setAction("CLOSE", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snack.dismiss();
+            }
+        });
+        snack.setActionTextColor(contextOfApplication.getResources().getColor(R.color.colorAccent));
+        snack.show();
+    }
+    //getWindow().getDecorView().getRootView()
 
     /**
      * Click on the movie for details.
@@ -282,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
         // unregister broadcast receiver
-        unregisterNetworkChanges();
+        unregisterReceiver(mNetworkReceiver);
     }
 
     /**
@@ -318,12 +323,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    protected void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 }

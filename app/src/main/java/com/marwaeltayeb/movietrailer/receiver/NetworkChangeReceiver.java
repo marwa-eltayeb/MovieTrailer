@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import static com.marwaeltayeb.movietrailer.activities.MainActivity.showSnackBar;
 import static com.marwaeltayeb.movietrailer.activities.MainActivity.snack;
 
 
@@ -13,13 +14,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
-            if (isOnline(context)) {
+            if (!isOnline(context)) {
+                snack.show();
+            }else {
                 snack.dismiss();
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -28,7 +27,14 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            showSnackBar();
+            return false;
+        }
     }
+
+
 
 }
