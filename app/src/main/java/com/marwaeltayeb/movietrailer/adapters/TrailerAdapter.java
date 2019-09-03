@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
@@ -21,10 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Marwa on 8/7/2019.
- */
-
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
 
     private Context mContext;
@@ -32,8 +27,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     private List<Trailer> trailerList;
 
 
-
-    private int mItemSelected= -1;
+    private int mItemSelected = -1;
 
     public TrailerAdapter(Context mContext, List<Trailer> trailerList) {
         this.mContext = mContext;
@@ -56,11 +50,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         String url = mContext.getString(R.string.youtube_url) + key;
         // Get id of the thumbnails
         String imageId = getYouTubeId(url);
-        Toast.makeText(mContext, imageId + "", Toast.LENGTH_SHORT).show();
-        Log.d("imageId",imageId);
+        Log.d("imageId", imageId);
         // Load the thumbnails into ImageView
         Glide.with(mContext)
-                .load("https://i1.ytimg.com/vi/"+imageId+"/hqdefault.jpg")
+                .load(mContext.getString(R.string.thumbnail_firstPart) + imageId + mContext.getString(R.string.thumbnail_secondPart))
                 .into(holder.trailerOfMovie);
         holder.nameOfTrailer.setText(currentMovie.getNameOfTrailer());
     }
@@ -74,7 +67,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     }
 
 
-    class TrailerViewHolder extends RecyclerView.ViewHolder{
+    class TrailerViewHolder extends RecyclerView.ViewHolder {
 
         // Create view instances
         ImageView trailerOfMovie;
@@ -102,11 +95,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         }
     }
 
-    private String getYouTubeId (String youTubeUrl) {
+    private String getYouTubeId(String youTubeUrl) {
         String pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(youTubeUrl);
-        if(matcher.find()){
+        if (matcher.find()) {
             return matcher.group();
         } else {
             return "error";
