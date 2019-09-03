@@ -47,7 +47,7 @@ public class MovieActivity extends AppCompatActivity {
     private String idOfMovie;
     private Movie movie;
 
-    private boolean isFavorite;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,12 +194,12 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void toggleFavourite() {
-        if (isFavorite) {
+        if (!isFavorite) {
             binding.fab.setImageResource(R.drawable.favorite_red);
-            isFavorite = false;
+            isFavorite = true;
         } else {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
-            isFavorite = true;
+            isFavorite = false;
         }
 
     }
