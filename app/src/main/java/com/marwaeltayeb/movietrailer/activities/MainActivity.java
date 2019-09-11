@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         contextOfApplication = getApplicationContext();
 
         progressDialog = createProgressDialog(MainActivity.this);
@@ -88,12 +87,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Get movieViewModel
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-        // Create the Adapter
         movieAdapter = new MovieAdapter(this, this);
 
-        //getLandscape();
-
-        // Road Movies
         loadMovies();
 
         // Register the listener
@@ -243,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         snack.setActionTextColor(contextOfApplication.getResources().getColor(R.color.colorAccent));
         snack.show();
     }
-    //getWindow().getDecorView().getRootView()
 
     /**
      * Click on the movie for details.
@@ -269,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         progressDialog.show();
         return progressDialog;
     }
+
 
     /**
      * Listen to any changes
