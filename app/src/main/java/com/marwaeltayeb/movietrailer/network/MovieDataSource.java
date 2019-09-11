@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.activities.MainActivity;
@@ -37,7 +37,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
                         MainActivity.progressDialog.dismiss();
-                        Toast.makeText(applicationContext, sort + "", Toast.LENGTH_SHORT).show();
+                        Log.v("onResponse", "Succeeded movies");
                         if (response.body() != null) {
                             // Fetch data and pass the result null for the previous page
                             callback.onResult(response.body().getMovies(), null, FIRST_PAGE + 1);
@@ -46,7 +46,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                        //Toast.makeText(Context.getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                        Log.v("onFailure", "Failed to get Movies");
                         MainActivity.progressDialog.dismiss();
                     }
                 });
@@ -102,4 +102,3 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                 });
     }
 }
-
