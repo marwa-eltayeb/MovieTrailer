@@ -1,50 +1,47 @@
 package com.marwaeltayeb.movietrailer.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
+import com.marwaeltayeb.movietrailer.Util.Genres;
 import com.marwaeltayeb.movietrailer.Util.Utility;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
-import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
 import com.marwaeltayeb.movietrailer.models.Trailer;
-import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
+import com.marwaeltayeb.movietrailer.network.ReviewViewModel;
+import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
 
-import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
 import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
 import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
-import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MovieActivity extends AppCompatActivity {
 
     private ActivityMovieBinding binding;
 
-    List<Review> reviewList;
-    List<Trailer> trailerList;
     ReviewAdapter reviewAdapter;
     TrailerAdapter trailerAdapter;
     RecyclerView reviewsRecyclerView, trailersRecyclerView;
 
-    private String idOfMovie;
+    private ReviewViewModel reviewViewModel;
+    private TrailerViewModel trailerViewModel;
+
+    public static String idOfMovie;
     private Movie movie;
 
     private boolean isFavorite = false;
@@ -52,9 +49,10 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_movie);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
+
+        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
+        trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
 
         // Receive the movie object
         Intent intent = getIntent();
@@ -99,58 +97,34 @@ public class MovieActivity extends AppCompatActivity {
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void getReviews() {
-        RetrofitClient.getInstance()
-                .getMovieService().getReviews((idOfMovie), API_KEY)
-                .enqueue(new Callback<ReviewApiResponse>() {
-                    @Override
-                    public void onResponse(Call<ReviewApiResponse> call, Response<ReviewApiResponse> response) {
-                        if (response.body() != null) {
-                            reviewList = response.body().getReviews();
-                            reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
-                        }
+    public void getTrailers() {
+        trailerViewModel.getAllTrailers().observe(this, new Observer<List<Trailer>>() {
+            @Override
+            public void onChanged(@Nullable List<Trailer> trailers) {
+                trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
 
-                        if (reviewList.isEmpty()) {
-                            reviewsRecyclerView.setVisibility(View.GONE);
-                            binding.noReviews.setVisibility(View.VISIBLE);
-                        }
-                        reviewsRecyclerView.setAdapter(reviewAdapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ReviewApiResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Failed to get Reviews", Toast.LENGTH_SHORT).show();
-                        t.printStackTrace();
-                    }
-                });
+                if (trailers != null && trailers.isEmpty()) {
+                    trailersRecyclerView.setVisibility(View.GONE);
+                    binding.noTrailers.setVisibility(View.VISIBLE);
+                }
+                trailersRecyclerView.setAdapter(trailerAdapter);
+            }
+        });
     }
 
-    private void getTrailers() {
-        RetrofitClient.getInstance()
-                .getMovieService().getTrailers((idOfMovie), API_KEY)
-                .enqueue(new Callback<TrailerApiResponse>() {
+    public void getReviews() {
+        reviewViewModel.getAllReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(@Nullable List<Review> reviews) {
+                reviewAdapter = new ReviewAdapter(getApplicationContext(), reviews);
 
-                    @Override
-                    public void onResponse(Call<TrailerApiResponse> call, Response<TrailerApiResponse> response) {
-                        if (response.body() != null) {
-                            trailerList = response.body().getTrailers();
-                            trailerAdapter = new TrailerAdapter(getApplicationContext(), trailerList);
-                        }
-
-                        if (trailerList.isEmpty()) {
-                            trailersRecyclerView.setVisibility(View.GONE);
-                            binding.noTrailers.setVisibility(View.VISIBLE);
-                        }
-
-                        trailersRecyclerView.setAdapter(trailerAdapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TrailerApiResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Failed to get Trailers", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+                if (reviews != null && reviews.isEmpty()) {
+                    reviewsRecyclerView.setVisibility(View.GONE);
+                    binding.noReviews.setVisibility(View.VISIBLE);
+                }
+                reviewsRecyclerView.setAdapter(reviewAdapter);
+            }
+        });
     }
 
     private void getGenres() {
@@ -166,30 +140,9 @@ public class MovieActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        HashMap<Integer, String> map = new HashMap<Integer, String>();
-        map.put(28, "Action");
-        map.put(12, "Adventure");
-        map.put(16, "Animation");
-        map.put(35, "Comedy");
-        map.put(80, "Crime");
-        map.put(99, "Documentary");
-        map.put(18, "Drama");
-        map.put(10751, "Family");
-        map.put(14, "Fantasy");
-        map.put(36, "History");
-        map.put(27, "Horror");
-        map.put(10402, "Music");
-        map.put(9648, "Mystery");
-        map.put(10749, "Romance");
-        map.put(878, "Science Fiction");
-        map.put(10770, "TV Movie");
-        map.put(53, "Thriller");
-        map.put(10752, "War");
-        map.put(37, "Western");
-
-        binding.genreOne.setText(map.get(genre_one));
-        binding.genreTwo.setText(map.get(genre_two));
-        binding.genreThree.setText(map.get(genre_three));
+        binding.genreOne.setText(Genres.getGenres().get(genre_one));
+        binding.genreTwo.setText(Genres.getGenres().get(genre_two));
+        binding.genreThree.setText(Genres.getGenres().get(genre_three));
 
     }
 
@@ -201,7 +154,5 @@ public class MovieActivity extends AppCompatActivity {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
             isFavorite = false;
         }
-
     }
-
 }
