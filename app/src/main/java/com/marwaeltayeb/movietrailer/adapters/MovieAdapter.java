@@ -25,7 +25,7 @@ import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     
     private Context mContext;
-    Movie movie;
+    private Movie movie;
 
     // Create a final private MovieAdapterOnClickHandler called mClickHandler
     private MovieAdapterOnClickHandler clickHandler;

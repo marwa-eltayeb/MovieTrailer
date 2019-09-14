@@ -15,16 +15,13 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 
 import java.util.List;
 
-
-/**
- * Created by Marwa on 7/24/2019.
- */
-
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder>{
 
     private Context mContext;
     // Declare an arrayList for movies
     private List<Movie> movieList;
+
+    private Movie currentMovie;
 
     // Create a final private MovieAdapterOnClickHandler called mClickHandler
     private SearchAdapterOnClickHandler clickHandler;
@@ -33,7 +30,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
      * The interface that receives onClick messages.
      */
     public interface SearchAdapterOnClickHandler {
-        void onClick(String titleOfMovie, String ratingOfMovie);
+        void onClick(Movie movie);
     }
 
     public SearchAdapter(Context mContext,List<Movie> movieList,SearchAdapterOnClickHandler clickHandler) {
@@ -51,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        Movie currentMovie = movieList.get(position);
+        currentMovie = movieList.get(position);
         holder.movieTitle.setText(currentMovie.getMovieTitle());
         holder.movieRating.setText(currentMovie.getMovieVote());
         // Load the Movie poster into ImageView
@@ -88,12 +85,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         @Override
         public void onClick(View v) {
-            // Get the title of the movie
-            String movieName = movieTitle.getText().toString();
-            // Get the rating of the movie
-            String movieVote = movieRating.getText().toString();
-            // Send title through click
-            clickHandler.onClick(movieName,movieVote);
+            int position = getAdapterPosition();
+            // Get position of the movie
+            currentMovie = movieList.get(position);
+            // Send movie through click
+            clickHandler.onClick(currentMovie);
         }
     }
 

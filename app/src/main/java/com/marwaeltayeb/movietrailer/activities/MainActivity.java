@@ -24,12 +24,12 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
@@ -156,11 +156,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                             if(movieList.isEmpty()){
                                 getNoResult();
                             }
-                            Toast.makeText(getApplicationContext(), movieList.size() + " Movies", Toast.LENGTH_SHORT).show();
+                            Log.v("onResponse", movieList.size() + " Movies");
                             searchAdapter = new SearchAdapter(getApplicationContext(),movieList,new SearchAdapter.SearchAdapterOnClickHandler(){
                                 @Override
-                                public void onClick(String titleOfMovie, String ratingOfMovie) {
+                                public void onClick(Movie movie) {
                                     Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                                    // Pass an object of movie class
+                                    intent.putExtra(MOVIE, (movie));
                                     startActivity(intent);
                                 }
                             });
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "No Movies", Toast.LENGTH_SHORT).show();
+                        Log.v("onFailure"," Failed to get movies");
                     }
                 });
         return query;
@@ -317,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
 
 
 }
