@@ -8,6 +8,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/favorites"
+        android:title="@string/favorites"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search"

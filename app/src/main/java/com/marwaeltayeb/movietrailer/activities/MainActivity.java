@@ -52,7 +52,7 @@ import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
-        SharedPreferences.OnSharedPreferenceChangeListener{
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static boolean sortValueHasChanged = false;
     public static Dialog progressDialog;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * Get Context.
      */
-    public static Context getContextOfApplication(){
+    public static Context getContextOfApplication() {
         return contextOfApplication;
     }
 
@@ -143,9 +143,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     /**
+     * Setup the specific action that occurs when any of the items in the Options Menu are selected.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting:
+                Intent settingsIntent = new Intent(this, SettingActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
+            case R.id.favorites:
+                Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+                startActivity(favoriteIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Search for movies.
      */
-    private String Search(String query){
+    private String Search(String query) {
         RetrofitClient.getInstance()
                 .getMovieService().searchForMovies(query, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
@@ -153,11 +172,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
                         if (response.body() != null) {
                             movieList = response.body().getMovies();
-                            if(movieList.isEmpty()){
+                            if (movieList.isEmpty()) {
                                 getNoResult();
                             }
                             Log.v("onResponse", movieList.size() + " Movies");
-                            searchAdapter = new SearchAdapter(getApplicationContext(),movieList,new SearchAdapter.SearchAdapterOnClickHandler(){
+                            searchAdapter = new SearchAdapter(getApplicationContext(), movieList, new SearchAdapter.SearchAdapterOnClickHandler() {
                                 @Override
                                 public void onClick(Movie movie) {
                                     Intent intent = new Intent(MainActivity.this, MovieActivity.class);
@@ -172,25 +191,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                        Log.v("onFailure"," Failed to get movies");
+                        Log.v("onFailure", " Failed to get movies");
                     }
                 });
         return query;
-    }
-
-    /**
-     * Setup the specific action that occurs when any of the items in the Options Menu are selected.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.setting) {
-            // Display the Setting Activity
-            Intent settingsIntent = new Intent(this, SettingActivity.class);
-            startActivity(settingsIntent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -230,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    public static void showSnackBar(){
+    public static void showSnackBar() {
         snack.setAction("CLOSE", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * Load movies
      */
-    private void loadMovies(){
+    private void loadMovies() {
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
             movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
