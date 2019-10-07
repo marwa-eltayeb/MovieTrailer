@@ -1,4 +1,4 @@
-package com.marwaeltayeb.movietrailer.Util;
+package com.marwaeltayeb.movietrailer.utils;
 
 public class Constant {
 

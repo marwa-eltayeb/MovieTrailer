@@ -1,4 +1,4 @@
-package com.marwaeltayeb.movietrailer.Util;
+package com.marwaeltayeb.movietrailer.utils;
 
 import android.net.ParseException;
 import android.util.Log;
