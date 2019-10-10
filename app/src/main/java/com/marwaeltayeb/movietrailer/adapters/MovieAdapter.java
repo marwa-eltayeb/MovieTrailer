@@ -20,7 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
-import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
+import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     

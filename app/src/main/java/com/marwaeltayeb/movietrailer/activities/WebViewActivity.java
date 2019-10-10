@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.marwaeltayeb.movietrailer.R;
 
 import static com.marwaeltayeb.movietrailer.R.id.webView;
-import static com.marwaeltayeb.movietrailer.Util.Constant.URL_OF_REVIEW;
+import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 
 public class WebViewActivity extends AppCompatActivity {
 

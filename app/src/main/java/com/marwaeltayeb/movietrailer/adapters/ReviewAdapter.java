@@ -15,7 +15,7 @@ import com.marwaeltayeb.movietrailer.models.Review;
 
 import java.util.List;
 
-import static com.marwaeltayeb.movietrailer.Util.Constant.URL_OF_REVIEW;
+import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>{
 

@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
-import com.marwaeltayeb.movietrailer.Util.Genres;
-import com.marwaeltayeb.movietrailer.Util.Utility;
+import com.marwaeltayeb.movietrailer.utils.Genres;
+import com.marwaeltayeb.movietrailer.utils.Utility;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
@@ -27,8 +27,8 @@ import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
 import java.util.List;
 
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
-import static com.marwaeltayeb.movietrailer.Util.Constant.IMAGE_URL;
-import static com.marwaeltayeb.movietrailer.Util.Constant.MOVIE;
+import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
+import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 
 public class MovieActivity extends AppCompatActivity {
 
