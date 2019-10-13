@@ -10,11 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
-import com.marwaeltayeb.movietrailer.utils.Genres;
-import com.marwaeltayeb.movietrailer.utils.Utility;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
@@ -23,6 +22,8 @@ import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.network.ReviewViewModel;
 import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
+import com.marwaeltayeb.movietrailer.utils.Genres;
+import com.marwaeltayeb.movietrailer.utils.Utility;
 
 import java.util.List;
 
@@ -150,9 +151,11 @@ public class MovieActivity extends AppCompatActivity {
         if (!isFavorite) {
             binding.fab.setImageResource(R.drawable.favorite_red);
             isFavorite = true;
+            Toast.makeText(this, "Bookmark Added", Toast.LENGTH_SHORT).show();
         } else {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
             isFavorite = false;
+            Toast.makeText(this, "Bookmark Removed", Toast.LENGTH_SHORT).show();
         }
     }
 }
