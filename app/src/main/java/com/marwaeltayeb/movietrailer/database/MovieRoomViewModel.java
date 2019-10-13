@@ -18,7 +18,7 @@ public class MovieRoomViewModel extends AndroidViewModel {
         mAllMovies = mRepository.getAllMovies();
     }
 
-    public LiveData<List<MovieEntry>> getAllMovies() {
+    public LiveData<List<MovieEntry>> getAllFavoriteMovies() {
         return mAllMovies;
     }
 
