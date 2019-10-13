@@ -54,7 +54,6 @@ import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static boolean sortValueHasChanged = false;
     public static Dialog progressDialog;
     public static Context contextOfApplication;
 
@@ -84,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
         recyclerView.setHasFixedSize(true);
 
+        movieAdapter = new MovieAdapter(this, this);
+
         // Get movieViewModel
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-
-        movieAdapter = new MovieAdapter(this, this);
 
         loadMovies();
 
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private boolean isNetworkConnected() {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Get details on the currently active default data network
+        // Get details on the currently active default database network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
@@ -248,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * Click on the movie for details.
      */
-
     @Override
     public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
