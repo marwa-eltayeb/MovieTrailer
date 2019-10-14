@@ -11,8 +11,10 @@ import java.util.ArrayList;
 @Entity(tableName = "movie_table")
 public class MovieEntry {
 
+    private boolean isFavorite;
     @PrimaryKey(autoGenerate = true)
     private int id;
+    private String movieId;
     private String title;
     private String vote;
     private String backdrop;
@@ -23,13 +25,31 @@ public class MovieEntry {
     @Ignore
     private ArrayList<Integer> genreIds;
 
-    public MovieEntry(int id, @NonNull String title, String vote, String description, String releaseDate, String language) {
+    public MovieEntry(boolean isFavorite,String movieId, @NonNull String title, String vote, String description, String releaseDate, String language) {
+        this.isFavorite = isFavorite;
         this.id = id;
+        this.movieId =movieId;
         this.title = title;
         this.vote = vote;
         this.description = description;
         this.releaseDate = releaseDate;
         this.language = language;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
     }
 
     public int getId() {
