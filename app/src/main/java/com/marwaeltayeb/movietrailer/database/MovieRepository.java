@@ -22,20 +22,39 @@ public class MovieRepository {
     }
 
     public void insert(MovieEntry movieEntry) {
-        new insertAsyncTask(mMovieDao).execute(movieEntry);
+        new InsertAsyncTask(mMovieDao).execute(movieEntry);
     }
 
-    private static class insertAsyncTask extends AsyncTask<MovieEntry, Void, Void> {
+    private static class InsertAsyncTask extends AsyncTask<MovieEntry, Void, Void> {
 
         private MovieDao mAsyncTaskDao;
 
-        insertAsyncTask(MovieDao dao) {
+        InsertAsyncTask(MovieDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
         protected Void doInBackground(final MovieEntry... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    public void delete(MovieEntry movieEntry) {
+        new DeleteAsyncTask(mMovieDao).execute(movieEntry);
+    }
+
+    private static class DeleteAsyncTask extends AsyncTask<MovieEntry, Void, Void> {
+
+        private MovieDao mAsyncTaskDao;
+
+        DeleteAsyncTask(MovieDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final MovieEntry... params) {
+            mAsyncTaskDao.delete(params[0]);
             return null;
         }
     }

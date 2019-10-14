@@ -25,4 +25,8 @@ public class MovieRoomViewModel extends AndroidViewModel {
     public void insert(MovieEntry movieEntry) {
         mRepository.insert(movieEntry);
     }
+
+    public void delete(MovieEntry movieEntry) {
+        mRepository.delete(movieEntry);
+    }
 }
