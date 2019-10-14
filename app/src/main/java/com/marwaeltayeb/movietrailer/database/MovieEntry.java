@@ -6,10 +6,11 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "movie_table")
-public class MovieEntry {
+public class MovieEntry implements Serializable {
 
     private boolean isFavorite;
     @PrimaryKey(autoGenerate = true)
@@ -24,6 +25,9 @@ public class MovieEntry {
     @ColumnInfo(name = "genres")
     @Ignore
     private ArrayList<Integer> genreIds;
+
+    @Ignore
+    public MovieEntry(){}
 
     public MovieEntry(boolean isFavorite,String movieId, @NonNull String title, String vote, String description, String releaseDate, String language) {
         this.isFavorite = isFavorite;
@@ -117,6 +121,7 @@ public class MovieEntry {
     public void setGenreIds(ArrayList<Integer> genreIds) {
         this.genreIds = genreIds;
     }
+
 
 
 }
