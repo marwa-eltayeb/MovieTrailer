@@ -8,7 +8,7 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 
 public class MovieDataSourceFactory extends DataSource.Factory {
 
-    // Creating the mutable live data
+    // Creating the mutable live database
     private MutableLiveData<PageKeyedDataSource<Integer, Movie>> movieLiveDataSource = new MutableLiveData<>();
 
     @Override

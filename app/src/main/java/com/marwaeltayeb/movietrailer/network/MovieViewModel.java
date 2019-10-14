@@ -21,10 +21,10 @@ public class MovieViewModel extends ViewModel {
     // Constructor
     public MovieViewModel() {
 
-        // Get our data source factory
+        // Get our database source factory
         MovieDataSourceFactory movieDataSourceFactory = new MovieDataSourceFactory();
 
-        // Get the live data source from data source factory
+        // Get the live database source from database source factory
         liveDataSource = movieDataSourceFactory.getMovieLiveDataSource();
 
         // Get PagedList configuration

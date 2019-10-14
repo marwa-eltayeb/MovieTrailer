@@ -39,7 +39,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                         MainActivity.progressDialog.dismiss();
                         Log.v("onResponse", "Succeeded movies");
                         if (response.body() != null) {
-                            // Fetch data and pass the result null for the previous page
+                            // Fetch database and pass the result null for the previous page
                             callback.onResult(response.body().getMovies(), null, FIRST_PAGE + 1);
                         }
                     }
@@ -67,7 +67,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                         Integer adjacentKey = (params.key > 1) ? params.key - 1 : null;
                         if (response.body() != null) {
 
-                            // Passing the loaded data and the previous page key
+                            // Passing the loaded database and the previous page key
                             callback.onResult(response.body().getMovies(), adjacentKey);
                         }
                     }
@@ -90,7 +90,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                             // If the response has next page, increment the next page number
                             Integer key = response.body().getMovies().size() == PAGE_SIZE ? params.key + 1 : null;
 
-                            // Passing the loaded data and next page value
+                            // Passing the loaded database and next page value
                             callback.onResult(response.body().getMovies(), key);
                         }
                     }
