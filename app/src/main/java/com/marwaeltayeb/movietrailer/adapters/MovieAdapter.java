@@ -1,5 +1,6 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
+import android.annotation.SuppressLint;
 import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
@@ -86,9 +87,10 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
     private static DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
         public boolean areItemsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
-            return oldMovie.movieId == newMovie.movieId;
+            return oldMovie.movieId.equals(newMovie.movieId);
         }
 
+        @SuppressLint("DiffUtilEquals")
         @Override
         public boolean areContentsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
             return oldMovie.equals(newMovie);
