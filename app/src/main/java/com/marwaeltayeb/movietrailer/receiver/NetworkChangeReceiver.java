@@ -25,7 +25,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     private boolean isOnline(Context context) {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Get details on the currently active default data network
+        // Get details on the currently active default database network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
