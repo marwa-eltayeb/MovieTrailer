@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
+import com.marwaeltayeb.movietrailer.database.MovieEntry;
+import com.marwaeltayeb.movietrailer.database.MovieRoomViewModel;
 import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
@@ -41,9 +43,11 @@ public class MovieActivity extends AppCompatActivity {
 
     private ReviewViewModel reviewViewModel;
     private TrailerViewModel trailerViewModel;
+    private MovieRoomViewModel mMovieRoomViewModel;
 
     public static String idOfMovie;
     private Movie movie;
+    MovieEntry favoriteMovie;
 
     private boolean isFavorite = false;
 
@@ -54,6 +58,8 @@ public class MovieActivity extends AppCompatActivity {
 
         reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
+        mMovieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+
 
         // Receive the movie object
         Intent intent = getIntent();
@@ -148,14 +154,29 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void toggleFavourite() {
+        // If movie is not bookmarked
         if (!isFavorite) {
             binding.fab.setImageResource(R.drawable.favorite_red);
             isFavorite = true;
             Toast.makeText(this, "Bookmark Added", Toast.LENGTH_SHORT).show();
+            favoriteMovie = new MovieEntry(isFavorite,idOfMovie ,movie.getMovieTitle(), movie.getMovieVote(), movie.getMovieDescription(), movie.getMovieReleaseDate(),movie.getMovieLanguage());
+            mMovieRoomViewModel.insert(favoriteMovie);
         } else {
+            // If movie is in my Favorites
             binding.fab.setImageResource(R.drawable.favorite_border_red);
             isFavorite = false;
             Toast.makeText(this, "Bookmark Removed", Toast.LENGTH_SHORT).show();
+            favoriteMovie = new MovieEntry(isFavorite,idOfMovie ,movie.getMovieTitle(), movie.getMovieVote(), movie.getMovieDescription(), movie.getMovieReleaseDate(),movie.getMovieLanguage());
+            mMovieRoomViewModel.delete(favoriteMovie);
         }
+        Toast.makeText(this, isFavorite + "", Toast.LENGTH_SHORT).show();
+
     }
+
+
+
+
+
+
+
 }
