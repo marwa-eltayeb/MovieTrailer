@@ -1,11 +1,22 @@
 package com.marwaeltayeb.movietrailer.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@Entity(tableName = "movie_table")
 public class Movie implements Serializable {
+    private boolean isFavorite;
+
+    @PrimaryKey(autoGenerate = true)
+    private int databaseId;
     @SerializedName("id")
     public String movieId;
     @SerializedName("vote_average")
@@ -22,10 +33,32 @@ public class Movie implements Serializable {
     private String movieReleaseDate;
     @SerializedName("original_language")
     private String movieLanguage;
+    @ColumnInfo(name = "genres")
+    @Ignore
     @SerializedName("genre_ids")
     private ArrayList<Integer> genreIds;
 
+    public Movie(boolean isFavorite, String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage) {
+        this.isFavorite = isFavorite;
+        this.databaseId = databaseId;
+        this.movieId =movieId;
+        this.movieTitle = movieTitle;
+        this.movieVote = movieVote;
+        this.movieDescription = movieDescription;
+        this.movieReleaseDate = movieReleaseDate;
+        this.movieLanguage = movieLanguage;
+    }
+
+    @Ignore
     public Movie(){}
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public int getDatabaseId() {
+        return databaseId;
+    }
 
     public String getMovieId() {
         return movieId;
@@ -59,6 +92,7 @@ public class Movie implements Serializable {
         return movieLanguage;
     }
 
+    @Ignore
     public ArrayList<Integer> getGenreIds() {
         return genreIds;
     }
@@ -67,4 +101,49 @@ public class Movie implements Serializable {
     public String toString() {
         return this.movieTitle;
     }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public void setDatabaseId(int databaseId) {
+        this.databaseId = databaseId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    public void setMovieVote(String movieVote) {
+        this.movieVote = movieVote;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public void setMoviePoster(String moviePoster) {
+        this.moviePoster = moviePoster;
+    }
+
+    public void setMovieBackdrop(String movieBackdrop) {
+        this.movieBackdrop = movieBackdrop;
+    }
+
+    public void setMovieDescription(String movieDescription) {
+        this.movieDescription = movieDescription;
+    }
+
+    public void setMovieReleaseDate(String movieReleaseDate) {
+        this.movieReleaseDate = movieReleaseDate;
+    }
+
+    public void setMovieLanguage(String movieLanguage) {
+        this.movieLanguage = movieLanguage;
+    }
+
+    public void setGenreIds(ArrayList<Integer> genreIds) {
+        this.genreIds = genreIds;
+    }
+
 }

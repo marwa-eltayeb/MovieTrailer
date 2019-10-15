@@ -78,6 +78,10 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         }
     }
 
+    public Movie getMovieAt(int position) {
+        return getItem(position);
+    }
+
     @Override
     public PagedList<Movie> getCurrentList() {
         return super.getCurrentList();

@@ -4,12 +4,14 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import com.marwaeltayeb.movietrailer.models.Movie;
+
 import java.util.List;
 
 public class MovieRepository {
 
     private MovieDao mMovieDao;
-    private LiveData<List<MovieEntry>> mAllMovies;
+    private LiveData<List<Movie>> mAllMovies;
 
     MovieRepository(Application application) {
         MovieRoomDatabase db = MovieRoomDatabase.getDatabase(application);
@@ -17,15 +19,15 @@ public class MovieRepository {
         mAllMovies = mMovieDao.getAllMovies();
     }
 
-    LiveData<List<MovieEntry>> getAllMovies() {
+    LiveData<List<Movie>> getAllMovies() {
         return mAllMovies;
     }
 
-    public void insert(MovieEntry movieEntry) {
-        new InsertAsyncTask(mMovieDao).execute(movieEntry);
+    public void insert(Movie movie) {
+        new InsertAsyncTask(mMovieDao).execute(movie);
     }
 
-    private static class InsertAsyncTask extends AsyncTask<MovieEntry, Void, Void> {
+    private static class InsertAsyncTask extends AsyncTask<Movie, Void, Void> {
 
         private MovieDao mAsyncTaskDao;
 
@@ -34,17 +36,17 @@ public class MovieRepository {
         }
 
         @Override
-        protected Void doInBackground(final MovieEntry... params) {
+        protected Void doInBackground(final Movie... params) {
             mAsyncTaskDao.insert(params[0]);
             return null;
         }
     }
 
-    public void delete(MovieEntry movieEntry) {
-        new DeleteAsyncTask(mMovieDao).execute(movieEntry);
+    public void delete(Movie movie) {
+        new DeleteAsyncTask(mMovieDao).execute(movie);
     }
 
-    private static class DeleteAsyncTask extends AsyncTask<MovieEntry, Void, Void> {
+    private static class DeleteAsyncTask extends AsyncTask<Movie, Void, Void> {
 
         private MovieDao mAsyncTaskDao;
 
@@ -53,7 +55,7 @@ public class MovieRepository {
         }
 
         @Override
-        protected Void doInBackground(final MovieEntry... params) {
+        protected Void doInBackground(final Movie... params) {
             mAsyncTaskDao.delete(params[0]);
             return null;
         }

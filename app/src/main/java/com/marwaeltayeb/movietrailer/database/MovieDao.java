@@ -6,18 +6,20 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import com.marwaeltayeb.movietrailer.models.Movie;
+
 import java.util.List;
 
 @Dao
 public interface MovieDao {
 
     @Insert
-    void insert(MovieEntry movieEntry);
+    void insert(Movie movie);
 
     @Delete
-    void delete(MovieEntry movieEntry);
+    void delete(Movie movie);
 
     @Query("SELECT * from movie_table")
-    LiveData<List<MovieEntry>> getAllMovies();
+    LiveData<List<Movie>> getAllMovies();
 
 }

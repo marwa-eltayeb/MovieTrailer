@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.FavoriteAdapter;
-import com.marwaeltayeb.movietrailer.database.MovieEntry;
 import com.marwaeltayeb.movietrailer.database.MovieRoomViewModel;
+import com.marwaeltayeb.movietrailer.models.Movie;
 
 import java.util.List;
 
@@ -49,9 +49,9 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
      */
     private void loadMoviesFromDatabase() {
         // Observe the movieList from ViewModel
-        mMovieRoomViewModel.getAllFavoriteMovies().observe(this, new Observer<List<MovieEntry>>() {
+        mMovieRoomViewModel.getAllFavoriteMovies().observe(this, new Observer<List<Movie>>() {
             @Override
-            public void onChanged(@Nullable final List<MovieEntry> favoriteMovies) {
+            public void onChanged(@Nullable final List<Movie> favoriteMovies) {
                 // Update the cached copy of the movies in the adapter.
                 favoriteAdapter.submitList(favoriteMovies);
                 //if(movieAdapter.getCurrentList() != null) {
@@ -67,10 +67,10 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     }
 
     @Override
-    public void onClick(MovieEntry movieEntry) {
+    public void onClick(Movie movie) {
         Intent intent = new Intent(FavoriteActivity.this, MovieActivity.class);
         // Pass an object of movie class
-        intent.putExtra(MOVIE, (movieEntry));
+        intent.putExtra(MOVIE, (movie));
         startActivity(intent);
     }
 }

@@ -15,12 +15,12 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
-import com.marwaeltayeb.movietrailer.database.MovieEntry;
+import com.marwaeltayeb.movietrailer.models.Movie;
 
-public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.FavoriteHolder> {
+public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.FavoriteHolder> {
 
     private Context mContext;
-    private MovieEntry favoriteMovie;
+    private Movie movie;
 
     // Create a final private FavoriteAdapterOnClickHandler called mClickHandler
     private FavoriteAdapter.FavoriteAdapterOnClickHandler clickHandler;
@@ -29,7 +29,7 @@ public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.Fav
      * The interface that receives onClick messages.
      */
     public interface FavoriteAdapterOnClickHandler {
-        void onClick(MovieEntry movieEntry);
+        void onClick(Movie movie);
     }
 
     public FavoriteAdapter(Context mContext, FavoriteAdapter.FavoriteAdapterOnClickHandler clickHandler) {
@@ -38,16 +38,16 @@ public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.Fav
         this.clickHandler = clickHandler;
     }
 
-    private static final DiffUtil.ItemCallback<MovieEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<MovieEntry>() {
+    private static final DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
-        public boolean areItemsTheSame(@NonNull MovieEntry oldItem, @NonNull MovieEntry newItem) {
-            return oldItem.getId() == newItem.getId();
+        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.getMovieId() == newItem.getMovieId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull MovieEntry oldItem, @NonNull MovieEntry newItem) {
-            return oldItem.getTitle().equals(newItem.getTitle()) &&
-                    oldItem.getDescription().equals(newItem.getDescription());
+        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.getMovieTitle().equals(newItem.getMovieTitle()) &&
+                    oldItem.getMovieDescription().equals(newItem.getMovieDescription());
         }
     };
 
@@ -60,11 +60,11 @@ public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.Fav
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteHolder holder, int position) {
-        favoriteMovie = getItem(position);
+        movie = getItem(position);
 
-        if (favoriteMovie != null) {
-            holder.movieTitle.setText(favoriteMovie.getTitle());
-            holder.movieRating.setText(favoriteMovie.getVote());
+        if (movie != null) {
+            holder.movieTitle.setText(movie.getMovieTitle());
+            holder.movieRating.setText(movie.getMovieVote());
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
@@ -78,14 +78,15 @@ public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.Fav
             // Load the Movie poster into ImageView
             /*
             Glide.with(mContext)
-                    .load(IMAGE_URL + favoriteMovie.getPoster())
+                    .load(IMAGE_URL + favoriteMovie.getMoviePoster())
                     //.apply(options)
                     .into(holder.moviePoster);
             */
+
         }
     }
 
-    public MovieEntry getMovieAt(int position) {
+    public Movie getMovieAt(int position) {
         return getItem(position);
     }
 
@@ -108,9 +109,9 @@ public class FavoriteAdapter extends ListAdapter<MovieEntry, FavoriteAdapter.Fav
         public void onClick(View v) {
             int position = getAdapterPosition();
             // Get position of the movie
-            favoriteMovie = getItem(position);
+            movie = getItem(position);
             // Send movie through click
-            clickHandler.onClick(favoriteMovie);
+            clickHandler.onClick(movie);
         }
     }
 
