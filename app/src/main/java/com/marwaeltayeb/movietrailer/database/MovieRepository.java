@@ -60,4 +60,23 @@ public class MovieRepository {
             return null;
         }
     }
+
+    public void deleteAll(){
+        new DeleteAllAsyncTask(mMovieDao).execute();
+    }
+
+    private static class DeleteAllAsyncTask extends AsyncTask<Void,Void,Void>{
+
+        private MovieDao mAsyncTaskDao;
+
+        private DeleteAllAsyncTask(MovieDao deo){
+            this.mAsyncTaskDao = deo;
+        }
+
+        @Override
+        protected Void doInBackground(Void...v) {
+            mAsyncTaskDao.deleteAll();
+            return null;
+        }
+    }
 }

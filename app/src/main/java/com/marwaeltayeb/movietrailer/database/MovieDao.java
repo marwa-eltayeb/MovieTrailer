@@ -22,4 +22,7 @@ public interface MovieDao {
     @Query("SELECT * from movie_table")
     LiveData<List<Movie>> getAllMovies();
 
+    @Query("DELETE FROM movie_table")
+    void deleteAll();
+
 }

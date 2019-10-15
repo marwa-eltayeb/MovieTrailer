@@ -31,4 +31,8 @@ public class MovieRoomViewModel extends AndroidViewModel {
     public void delete(Movie movie) {
         mRepository.delete(movie);
     }
+
+    public void deleteAll() {
+        mRepository.deleteAll();
+    }
 }

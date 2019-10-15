@@ -87,8 +87,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_all) {
-            // Display the SettingsActivity
-            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
+            mMovieRoomViewModel.deleteAll();
             return true;
         }
         return super.onOptionsItemSelected(item);
