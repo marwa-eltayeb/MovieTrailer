@@ -78,11 +78,12 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
             // Load the Movie poster into ImageView
             /*
             Glide.with(mContext)
-                    .load(IMAGE_URL + favoriteMovie.getMoviePoster())
+                    .load(IMAGE_URL + movie.getMoviePoster())
                     //.apply(options)
                     .into(holder.moviePoster);
-            */
+                    */
 
+            holder.moviePoster.setImageResource(R.drawable.no_preview);
         }
     }
 
