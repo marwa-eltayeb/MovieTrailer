@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
@@ -72,6 +74,24 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
         // Pass an object of movie class
         intent.putExtra(MOVIE, (movie));
         startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorite, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.delete_all) {
+            // Display the SettingsActivity
+            Toast.makeText(this, "Yes", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
