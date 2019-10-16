@@ -52,4 +52,7 @@
     <string name="my_favorites">My Favorites</string>
     <string name="no_bookmarks">No bookmarks</string>
     <string name="delete_all_favorites">Delete All Favorites</string>
+
+    <string name="border">|</string>
+    <string name="blank">%d</string>
 </resources>

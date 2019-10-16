@@ -40,7 +40,6 @@ public class Movie implements Serializable {
 
     public Movie(boolean isFavorite, String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage) {
         this.isFavorite = isFavorite;
-        this.databaseId = databaseId;
         this.movieId =movieId;
         this.movieTitle = movieTitle;
         this.movieVote = movieVote;
@@ -97,6 +96,7 @@ public class Movie implements Serializable {
         return genreIds;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return this.movieTitle;
@@ -142,6 +142,7 @@ public class Movie implements Serializable {
         this.movieLanguage = movieLanguage;
     }
 
+    @Ignore
     public void setGenreIds(ArrayList<Integer> genreIds) {
         this.genreIds = genreIds;
     }

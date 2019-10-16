@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.FavoriteAdapter;
@@ -23,11 +22,11 @@ import java.util.List;
 
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 
-public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapter.FavoriteAdapterOnClickHandler{
+public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapter.FavoriteAdapterOnClickHandler {
 
     private RecyclerView recyclerView;
     private FavoriteAdapter favoriteAdapter;
-    private MovieRoomViewModel mMovieRoomViewModel;
+    private MovieRoomViewModel movieRoomViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +38,10 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
         recyclerView.setHasFixedSize(true);
 
-        favoriteAdapter = new FavoriteAdapter(this,this);
-        mMovieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+        favoriteAdapter = new FavoriteAdapter(this, this);
+        movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
 
         loadMoviesFromDatabase();
-
     }
 
     /**
@@ -51,15 +49,13 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
      */
     private void loadMoviesFromDatabase() {
         // Observe the movieList from ViewModel
-        mMovieRoomViewModel.getAllFavoriteMovies().observe(this, new Observer<List<Movie>>() {
+        movieRoomViewModel.getAllFavoriteMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable final List<Movie> favoriteMovies) {
                 // Update the cached copy of the movies in the adapter.
                 favoriteAdapter.submitList(favoriteMovies);
-                //if(movieAdapter.getCurrentList() != null) {
-                    Log.v("favoriteList", favoriteMovies.size() + "");
-                    Toast.makeText(FavoriteActivity.this, favoriteMovies.size() + "", Toast.LENGTH_SHORT).show();
-                //}
+                Log.v("favoriteList", favoriteMovies.size() + "");
+                //Toast.makeText(FavoriteActivity.this, favoriteMovies.size() + "", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -87,7 +83,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_all) {
-            mMovieRoomViewModel.deleteAll();
+            movieRoomViewModel.deleteAll();
             return true;
         }
         return super.onOptionsItemSelected(item);

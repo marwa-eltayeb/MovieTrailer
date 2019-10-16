@@ -61,6 +61,25 @@ public class MovieRepository {
         }
     }
 
+    public void deleteById(int movieId) {
+        new DeleteByIdAsyncTask(mMovieDao).execute(movieId);
+    }
+
+    private static class DeleteByIdAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        private MovieDao mAsyncTaskDao;
+
+        DeleteByIdAsyncTask(MovieDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            mAsyncTaskDao.deleteById(params[0]);
+            return null;
+        }
+    }
+
     public void deleteAll(){
         new DeleteAllAsyncTask(mMovieDao).execute();
     }

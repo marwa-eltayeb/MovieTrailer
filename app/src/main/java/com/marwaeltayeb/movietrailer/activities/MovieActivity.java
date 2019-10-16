@@ -36,15 +36,22 @@ public class MovieActivity extends AppCompatActivity {
 
     private ActivityMovieBinding binding;
 
-    ReviewAdapter reviewAdapter;
-    TrailerAdapter trailerAdapter;
-    RecyclerView reviewsRecyclerView, trailersRecyclerView;
+    private ReviewAdapter reviewAdapter;
+    private TrailerAdapter trailerAdapter;
+    private RecyclerView reviewsRecyclerView, trailersRecyclerView;
 
     private ReviewViewModel reviewViewModel;
     private TrailerViewModel trailerViewModel;
-    private MovieRoomViewModel mMovieRoomViewModel;
+    private MovieRoomViewModel movieRoomViewModel;
 
     public static String idOfMovie;
+    private String title;
+    private String formattedDate;
+    private String vote;
+    private String description;
+    private String language;
+    private String backDrop;
+
     private Movie movie;
 
     private boolean isFavorite = false;
@@ -54,30 +61,14 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
 
+        setupRecyclerViews();
+
         reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
-        mMovieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+        movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
 
+        receiveMovieDetails();
 
-        // Receive the movie object
-        Intent intent = getIntent();
-        movie = (Movie) intent.getSerializableExtra(MOVIE);
-
-        idOfMovie = movie.getMovieId();
-        binding.titleOfMovie.setText(movie.getMovieTitle());
-        binding.ratingOfMovie.setText(movie.getMovieVote());
-        binding.descriptionOfMovie.setText(movie.getMovieDescription());
-        String formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
-        binding.releaseDateOfMovie.setText(formattedDate + " " + "|");
-        binding.languageOfMovie.setText(movie.getMovieLanguage());
-
-        Glide.with(this)
-                .load(IMAGE_URL + movie.getMovieBackdrop())
-                .into(binding.backdropImage);
-
-        getGenres();
-
-        setupRecyclerViews();
         getReviews();
         getTrailers();
 
@@ -87,7 +78,6 @@ public class MovieActivity extends AppCompatActivity {
                 toggleFavourite();
             }
         });
-
     }
 
     private void setupRecyclerViews() {
@@ -102,6 +92,32 @@ public class MovieActivity extends AppCompatActivity {
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
+    private void receiveMovieDetails(){
+        // Receive the movie object
+        Intent intent = getIntent();
+        movie = (Movie) intent.getSerializableExtra(MOVIE);
+
+        idOfMovie = movie.getMovieId();
+        title = movie.getMovieTitle();
+        vote = movie.getMovieVote();
+        description = movie.getMovieDescription();
+        formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
+        language = movie.getMovieLanguage();
+        backDrop = movie.getMovieBackdrop();
+
+        binding.titleOfMovie.setText(title);
+        binding.ratingOfMovie.setText(vote);
+        binding.descriptionOfMovie.setText(description);
+        binding.releaseDateOfMovie.setText(formattedDate + " " + "|");
+        binding.languageOfMovie.setText(language);
+
+        Glide.with(this)
+                .load(IMAGE_URL + backDrop)
+                .into(binding.backdropImage);
+
+        getGenres();
+    }
+
     public void getTrailers() {
         trailerViewModel.getAllTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
@@ -112,6 +128,7 @@ public class MovieActivity extends AppCompatActivity {
                     trailersRecyclerView.setVisibility(View.GONE);
                     binding.noTrailers.setVisibility(View.VISIBLE);
                 }
+
                 trailersRecyclerView.setAdapter(trailerAdapter);
             }
         });
@@ -127,6 +144,7 @@ public class MovieActivity extends AppCompatActivity {
                     reviewsRecyclerView.setVisibility(View.GONE);
                     binding.noReviews.setVisibility(View.VISIBLE);
                 }
+
                 reviewsRecyclerView.setAdapter(reviewAdapter);
             }
         });
@@ -143,6 +161,8 @@ public class MovieActivity extends AppCompatActivity {
             genre_three = movie.getGenreIds().get(2);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
+        } catch (NullPointerException e){
+            e.printStackTrace();
         }
 
         binding.genreOne.setText(Genres.getGenres().get(genre_one));
@@ -157,24 +177,23 @@ public class MovieActivity extends AppCompatActivity {
             binding.fab.setImageResource(R.drawable.favorite_red);
             isFavorite = true;
             Toast.makeText(this, "Bookmark Added", Toast.LENGTH_SHORT).show();
-            movie = new Movie(isFavorite,idOfMovie ,movie.getMovieTitle(), movie.getMovieVote(), movie.getMovieDescription(), movie.getMovieReleaseDate(),movie.getMovieLanguage());
-            mMovieRoomViewModel.insert(movie);
+            insertFavoriteMovie();
         } else {
             // If movie is in my Favorites
             binding.fab.setImageResource(R.drawable.favorite_border_red);
             isFavorite = false;
             Toast.makeText(this, "Bookmark Removed", Toast.LENGTH_SHORT).show();
-            movie = new Movie(isFavorite,idOfMovie ,movie.getMovieTitle(), movie.getMovieVote(), movie.getMovieDescription(), movie.getMovieReleaseDate(),movie.getMovieLanguage());
-            mMovieRoomViewModel.delete(movie);
+            deleteFavoriteMovieById();
         }
-        Toast.makeText(this, isFavorite + "", Toast.LENGTH_SHORT).show();
 
     }
 
+    private void insertFavoriteMovie(){
+        movie = new Movie(isFavorite,idOfMovie ,title, vote, description, formattedDate ,language);
+        movieRoomViewModel.insert(movie);
+    }
 
-
-
-
-
-
+    private void deleteFavoriteMovieById(){
+        movieRoomViewModel.deleteById(Integer.parseInt(idOfMovie));
+    }
 }
