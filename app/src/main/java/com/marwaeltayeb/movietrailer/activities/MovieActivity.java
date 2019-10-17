@@ -2,8 +2,11 @@ package com.marwaeltayeb.movietrailer.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -78,6 +81,7 @@ public class MovieActivity extends AppCompatActivity {
                 toggleFavourite();
             }
         });
+
     }
 
     private void setupRecyclerViews() {
@@ -116,6 +120,14 @@ public class MovieActivity extends AppCompatActivity {
                 .into(binding.backdropImage);
 
         getGenres();
+
+        if(!isNetworkConnected()){
+            trailersRecyclerView.setVisibility(View.GONE);
+            binding.noTrailers.setVisibility(View.VISIBLE);
+
+            reviewsRecyclerView.setVisibility(View.GONE);
+            binding.noReviews.setVisibility(View.VISIBLE);
+        }
     }
 
     public void getTrailers() {
@@ -195,5 +207,14 @@ public class MovieActivity extends AppCompatActivity {
 
     private void deleteFavoriteMovieById(){
         movieRoomViewModel.deleteById(Integer.parseInt(idOfMovie));
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connMgr != null) {
+            networkInfo = connMgr.getActiveNetworkInfo();
+        }
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }
