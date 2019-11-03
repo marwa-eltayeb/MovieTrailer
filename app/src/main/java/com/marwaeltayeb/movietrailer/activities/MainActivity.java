@@ -75,17 +75,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         progressDialog = createProgressDialog(MainActivity.this);
 
-        snack = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
-
-        // Set up recyclerView
-        recyclerView = findViewById(R.id.movie_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
-        recyclerView.setHasFixedSize(true);
-
-        movieAdapter = new MovieAdapter(this, this);
+        snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
         // Get movieViewModel
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+
+        setUpRecyclerView();
 
         loadMovies();
 
@@ -98,17 +94,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
+    private void setUpRecyclerView() {
+        recyclerView = findViewById(R.id.movie_list);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
+        recyclerView.setHasFixedSize(true);
 
-    /**
-     * Get Context.
-     */
+        movieAdapter = new MovieAdapter(this, this);
+    }
+
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
-
-    /**
-     * Initialize the contents of the Activity's options menu.
-     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -215,13 +211,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }, 2000);
     }
 
-    /**
-     * Check if there is a network.
-     */
+
     private boolean isNetworkConnected() {
-        // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Get details on the currently active default database network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
@@ -243,9 +235,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         snack.show();
     }
 
-    /**
-     * Click on the movie for details.
-     */
     @Override
     public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
@@ -254,9 +243,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-    /**
-     * Create Progress Dialog.
-     */
     public static Dialog createProgressDialog(Context context) {
         Dialog progressDialog = new Dialog(context);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -267,10 +253,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return progressDialog;
     }
 
-
-    /**
-     * Listen to any changes
-     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
@@ -281,14 +263,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks.
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    /**
-     * Load movies
-     */
     private void loadMovies() {
         if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
@@ -305,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             });
         }
 
-        // Set the adapter
         recyclerView.setAdapter(movieAdapter);
         movieAdapter.notifyDataSetChanged();
     }
@@ -328,13 +304,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onStop() {
         super.onStop();
-        // unregister broadcast receiver
         unregisterReceiver(mNetworkReceiver);
     }
 
     @Override
     public void onNetworkConnected() {
         snack.dismiss();
+        progressDialog.show();
         loadMovies();
     }
 
@@ -342,6 +318,5 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onNetworkDisconnected() {
         showSnackBar();
     }
-
 
 }
