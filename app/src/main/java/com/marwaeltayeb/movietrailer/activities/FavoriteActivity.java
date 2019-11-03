@@ -17,6 +17,7 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.FavoriteAdapter;
 import com.marwaeltayeb.movietrailer.database.MovieRoomViewModel;
 import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
@@ -84,6 +85,8 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
         int id = item.getItemId();
         if (id == R.id.delete_all) {
             movieRoomViewModel.deleteAll();
+            // Store that all movies are deleted
+            SharedPreferencesUtils.setInsertState(this, false);
             return true;
         }
         return super.onOptionsItemSelected(item);
