@@ -96,7 +96,7 @@ public class MovieActivity extends AppCompatActivity {
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void receiveMovieDetails(){
+    private void receiveMovieDetails() {
         // Receive the movie object
         Intent intent = getIntent();
         movie = (Movie) intent.getSerializableExtra(MOVIE);
@@ -121,12 +121,18 @@ public class MovieActivity extends AppCompatActivity {
 
         getGenres();
 
-        if(!isNetworkConnected()){
+        if (!isNetworkConnected()) {
             trailersRecyclerView.setVisibility(View.GONE);
             binding.noTrailers.setVisibility(View.VISIBLE);
 
             reviewsRecyclerView.setVisibility(View.GONE);
             binding.noReviews.setVisibility(View.VISIBLE);
+        }
+
+        if (backDrop == null) {
+            Glide.with(this)
+                    .load(R.drawable.no_preview)
+                    .into(binding.backdropImage);
         }
     }
 
@@ -173,8 +179,14 @@ public class MovieActivity extends AppCompatActivity {
             genre_three = movie.getGenreIds().get(2);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
+        }
+
+        if(movie.getGenreIds()== null){
+            binding.genreOne.setVisibility(View.GONE);
+            binding.genreTwo.setVisibility(View.GONE);
+            binding.genreThree.setVisibility(View.GONE);
         }
 
         binding.genreOne.setText(Genres.getGenres().get(genre_one));
@@ -200,12 +212,12 @@ public class MovieActivity extends AppCompatActivity {
 
     }
 
-    private void insertFavoriteMovie(){
-        movie = new Movie(isFavorite,idOfMovie ,title, vote, description, formattedDate ,language);
+    private void insertFavoriteMovie() {
+        movie = new Movie(isFavorite, idOfMovie, title, vote, description, formattedDate, language);
         movieRoomViewModel.insert(movie);
     }
 
-    private void deleteFavoriteMovieById(){
+    private void deleteFavoriteMovieById() {
         movieRoomViewModel.deleteById(Integer.parseInt(idOfMovie));
     }
 
