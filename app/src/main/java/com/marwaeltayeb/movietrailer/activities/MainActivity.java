@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -39,6 +38,7 @@ import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.network.MovieViewModel;
 import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
+import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
 import java.util.List;
 import java.util.Timer;
@@ -48,11 +48,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
+import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener, OnNetworkListener {
 
     public static Dialog progressDialog;
     public static Context contextOfApplication;
@@ -63,9 +63,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     List<Movie> movieList;
     MovieViewModel movieViewModel;
 
-    private BroadcastReceiver mNetworkReceiver;
-
-    public static Snackbar snack;
+    private NetworkChangeReceiver mNetworkReceiver;
+    private Snackbar snack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 .registerOnSharedPreferenceChangeListener(this);
 
         mNetworkReceiver = new NetworkChangeReceiver();
-        registerNetworkBroadcastForNougat();
+        mNetworkReceiver.setOnNetworkListener(this);
 
     }
 
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    public static void showSnackBar() {
+    public void showSnackBar() {
         snack.setAction("CLOSE", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,8 +284,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Unregister MainActivity as an OnPreferenceChangedListener to avoid any memory leaks.
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
-        // unregister broadcast receiver
-        unregisterReceiver(mNetworkReceiver);
     }
 
     /**
@@ -320,6 +317,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerNetworkBroadcastForNougat();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // unregister broadcast receiver
+        unregisterReceiver(mNetworkReceiver);
+    }
+
+    @Override
+    public void onNetworkConnected() {
+        snack.dismiss();
+        loadMovies();
+    }
+
+    @Override
+    public void onNetworkDisconnected() {
+        showSnackBar();
     }
 
 

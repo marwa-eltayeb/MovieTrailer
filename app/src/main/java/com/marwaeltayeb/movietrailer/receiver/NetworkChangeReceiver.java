@@ -6,35 +6,32 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import static com.marwaeltayeb.movietrailer.activities.MainActivity.showSnackBar;
-import static com.marwaeltayeb.movietrailer.activities.MainActivity.snack;
-
+import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-            if (!isOnline(context)) {
-                snack.show();
-            }else {
-                snack.dismiss();
-            }
+    OnNetworkListener onNetworkListener;
+
+    public void setOnNetworkListener(OnNetworkListener onNetworkListener) {
+        this.onNetworkListener = onNetworkListener;
     }
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (!isOnline(context)) {
+            onNetworkListener.onNetworkDisconnected();
+        } else {
+            onNetworkListener.onNetworkConnected();
+        }
+    }
 
     private boolean isOnline(Context context) {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default database network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            showSnackBar();
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
-
 
 
 }

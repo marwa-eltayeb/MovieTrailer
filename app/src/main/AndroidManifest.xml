@@ -51,12 +51,7 @@
                 android:value=".activities.MovieActivity" />
         </activity>
 
-        <receiver android:name=".receiver.NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".receiver.NetworkChangeReceiver"/>
 
         <activity
             android:name=".activities.FavoriteActivity"
