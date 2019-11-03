@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
 
-    public static void setInsertState(Context context, boolean isReminderRunning){
+    public static void setInsertState(Context context, boolean isMovieInserted){
         SharedPreferences sharedpreferences = context.getSharedPreferences("insert_data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putBoolean("isMovieInserted", isReminderRunning);
+        editor.putBoolean("isMovieInserted", isMovieInserted);
         editor.apply();
     }
 
