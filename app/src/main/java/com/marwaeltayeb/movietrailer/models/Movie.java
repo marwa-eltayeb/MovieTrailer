@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 @Entity(tableName = "movie_table")
 public class Movie implements Serializable {
-    private boolean isFavorite;
 
     @PrimaryKey(autoGenerate = true)
     private int databaseId;
@@ -38,8 +37,7 @@ public class Movie implements Serializable {
     @SerializedName("genre_ids")
     private ArrayList<Integer> genreIds;
 
-    public Movie(boolean isFavorite, String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage) {
-        this.isFavorite = isFavorite;
+    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage) {
         this.movieId =movieId;
         this.movieTitle = movieTitle;
         this.movieVote = movieVote;
@@ -50,10 +48,6 @@ public class Movie implements Serializable {
 
     @Ignore
     public Movie(){}
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
 
     public int getDatabaseId() {
         return databaseId;
@@ -100,10 +94,6 @@ public class Movie implements Serializable {
     @Override
     public String toString() {
         return this.movieTitle;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
     }
 
     public void setDatabaseId(int databaseId) {

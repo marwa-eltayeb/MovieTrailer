@@ -27,6 +27,7 @@ import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.network.ReviewViewModel;
 import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
 import com.marwaeltayeb.movietrailer.utils.Genres;
+import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 import com.marwaeltayeb.movietrailer.utils.Utility;
 
 import java.util.List;
@@ -57,18 +58,16 @@ public class MovieActivity extends AppCompatActivity {
 
     private Movie movie;
 
-    private boolean isFavorite = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
 
-        setupRecyclerViews();
-
         reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
         movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+
+        setupRecyclerViews();
 
         receiveMovieDetails();
 
@@ -134,6 +133,11 @@ public class MovieActivity extends AppCompatActivity {
                     .load(R.drawable.no_preview)
                     .into(binding.backdropImage);
         }
+
+        // If movie is inserted
+        if(SharedPreferencesUtils.getInsertState(this)){
+            binding.fab.setImageResource(R.drawable.favorite_red);
+        }
     }
 
     public void getTrailers() {
@@ -197,23 +201,21 @@ public class MovieActivity extends AppCompatActivity {
 
     private void toggleFavourite() {
         // If movie is not bookmarked
-        if (!isFavorite) {
+        if(!SharedPreferencesUtils.getInsertState(this)){
             binding.fab.setImageResource(R.drawable.favorite_red);
-            isFavorite = true;
             Toast.makeText(this, "Bookmark Added", Toast.LENGTH_SHORT).show();
             insertFavoriteMovie();
-        } else {
-            // If movie is in my Favorites
+            SharedPreferencesUtils.setInsertState(this, true);
+        }else {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
-            isFavorite = false;
             Toast.makeText(this, "Bookmark Removed", Toast.LENGTH_SHORT).show();
             deleteFavoriteMovieById();
+            SharedPreferencesUtils.setInsertState(this, false);
         }
-
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(isFavorite, idOfMovie, title, vote, description, formattedDate, language);
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language);
         movieRoomViewModel.insert(movie);
     }
 
