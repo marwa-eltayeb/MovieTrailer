@@ -9,5 +9,7 @@
         android:key="@string/sort_key"
         android:summary="@string/popular_label"
         app:iconSpaceReserved="false"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
         android:title="@string/sort_label" />
 </PreferenceScreen>
