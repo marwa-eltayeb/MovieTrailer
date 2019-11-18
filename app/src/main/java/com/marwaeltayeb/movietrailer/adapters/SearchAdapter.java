@@ -67,6 +67,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         return movieList.size();
     }
 
+    public void clear() {
+        int size = movieList.size();
+        movieList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     class SearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         // Create view instances
