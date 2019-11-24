@@ -15,7 +15,7 @@ import retrofit2.Response;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
-    
+
     private static final int FIRST_PAGE = 1;
 
     static final int PAGE_SIZE = 20;

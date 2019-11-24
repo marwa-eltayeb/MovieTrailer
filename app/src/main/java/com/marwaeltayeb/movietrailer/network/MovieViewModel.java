@@ -8,6 +8,8 @@ import android.arch.paging.PagedList;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
 
+import static com.marwaeltayeb.movietrailer.network.MovieDataSourceFactory.movieDataSource;
+
 /**
  * Created by Marwa on 7/10/2019.
  */
@@ -35,5 +37,9 @@ public class MovieViewModel extends ViewModel {
 
         // Build the paged list
         moviePagedList = (new LivePagedListBuilder(movieDataSourceFactory, pagedListConfig)).build();
+    }
+
+    public void clear(){
+        movieDataSource.invalidate();
     }
 }

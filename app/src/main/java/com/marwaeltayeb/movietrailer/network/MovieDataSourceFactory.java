@@ -11,10 +11,12 @@ public class MovieDataSourceFactory extends DataSource.Factory {
     // Creating the mutable live database
     private MutableLiveData<PageKeyedDataSource<Integer, Movie>> movieLiveDataSource = new MutableLiveData<>();
 
+    static MovieDataSource movieDataSource;
+
     @Override
     public DataSource<Integer, Movie> create() {
         // Getting our Data source object
-        MovieDataSource movieDataSource = new MovieDataSource();
+        movieDataSource = new MovieDataSource();
 
         // Posting the Data source to get the values
         movieLiveDataSource.postValue(movieDataSource);

@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (key.equals(getString(R.string.sort_key))) {
             sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
             Toast.makeText(this, sort + "", Toast.LENGTH_SHORT).show();
+            movieViewModel.clear();
             loadMovies();
         }
     }
