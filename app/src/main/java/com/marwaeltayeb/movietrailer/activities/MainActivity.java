@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
@@ -60,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     RecyclerView recyclerView;
     MovieAdapter movieAdapter;
     SearchAdapter searchAdapter;
-    List<Movie> movieList;
+    List<Movie> searchedMovieList;
     MovieViewModel movieViewModel;
 
     private NetworkChangeReceiver mNetworkReceiver;
     private Snackbar snack;
+
+    public static String sort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Get movieViewModel
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
 
         setUpRecyclerView();
 
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mNetworkReceiver = new NetworkChangeReceiver();
         mNetworkReceiver.setOnNetworkListener(this);
+
 
     }
 
@@ -133,6 +139,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return false;
             }
         });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Toast.makeText(MainActivity.this, "Closed", Toast.LENGTH_SHORT).show();
+                if (searchedMovieList != null) {
+                    searchAdapter.clear();
+                    loadMovies();
+                }
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -165,12 +183,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
                         if (response.body() != null) {
-                            movieList = response.body().getMovies();
-                            if (movieList.isEmpty()) {
+                            searchedMovieList = response.body().getMovies();
+                            if (searchedMovieList.isEmpty()) {
                                 getNoResult();
                             }
-                            Log.v("onResponse", movieList.size() + " Movies");
-                            searchAdapter = new SearchAdapter(getApplicationContext(), movieList, new SearchAdapter.SearchAdapterOnClickHandler() {
+                            Log.v("onResponse", searchedMovieList.size() + " Movies");
+                            searchAdapter = new SearchAdapter(getApplicationContext(), searchedMovieList, new SearchAdapter.SearchAdapterOnClickHandler() {
                                 @Override
                                 public void onClick(Movie movie) {
                                     Intent intent = new Intent(MainActivity.this, MovieActivity.class);
@@ -253,9 +271,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return progressDialog;
     }
 
+    public static String getSort() {
+        return sort;
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
+            sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
+            Toast.makeText(this, sort + "", Toast.LENGTH_SHORT).show();
             loadMovies();
         }
     }
@@ -275,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
                     if (movies != null && !movies.isEmpty()) {
-                        //Toast.makeText(getApplicationContext(), movies.get(0) + "", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
@@ -320,3 +343,4 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
 }
+
