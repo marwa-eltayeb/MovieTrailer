@@ -1,13 +1,9 @@
 package com.marwaeltayeb.movietrailer.network;
 
 import android.arch.paging.PageKeyedDataSource;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
-import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.activities.MainActivity;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
@@ -19,20 +15,15 @@ import retrofit2.Response;
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
-
-
+    
     private static final int FIRST_PAGE = 1;
 
     static final int PAGE_SIZE = 20;
 
-    private Context applicationContext = MainActivity.getContextOfApplication();
-    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-    private String sort = sharedPreferences.getString(applicationContext.getString(R.string.sort_key), applicationContext.getString(R.string.popular_value));
-
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(sort,FIRST_PAGE, API_KEY)
+                .getMovieService().getMovies(MainActivity.getSort(), FIRST_PAGE, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -50,12 +41,14 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                         MainActivity.progressDialog.dismiss();
                     }
                 });
+
+
     }
 
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(sort,params.key, API_KEY)
+                .getMovieService().getMovies(MainActivity.getSort(), params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -82,7 +75,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
         RetrofitClient.getInstance()
-                .getMovieService().getMovies(sort,params.key, API_KEY)
+                .getMovieService().getMovies(MainActivity.getSort(), params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
