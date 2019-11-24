@@ -29,6 +29,10 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
                         MainActivity.progressDialog.dismiss();
                         Log.v("onResponse", "Succeeded movies");
+                        if (response.body().getMovies() == null) {
+                            return;
+                        }
+
                         if (response.body() != null) {
                             // Fetch database and pass the result null for the previous page
                             callback.onResult(response.body().getMovies(), null, FIRST_PAGE + 1);
