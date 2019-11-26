@@ -279,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
             sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
-            //Toast.makeText(this, sort + "", Toast.LENGTH_SHORT).show();
             movieViewModel.clear();
             loadMovies();
         }
@@ -297,10 +296,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
                 @Override
                 public void onChanged(@Nullable PagedList<Movie> movies) {
-                    if (movies.isEmpty()) {
-                        //Toast.makeText(MainActivity.this, "No Available Movies", Toast.LENGTH_SHORT).show();
-                    }
-
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
                     if (movies != null && !movies.isEmpty()) {
@@ -347,5 +342,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         showSnackBar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
 

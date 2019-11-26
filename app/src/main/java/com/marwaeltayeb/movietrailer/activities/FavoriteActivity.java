@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.FavoriteAdapter;
@@ -29,6 +31,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     private RecyclerView recyclerView;
     private FavoriteAdapter favoriteAdapter;
     private MovieRoomViewModel movieRoomViewModel;
+    private TextView noBookmarks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
         recyclerView = findViewById(R.id.favorite_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
         recyclerView.setHasFixedSize(true);
+        noBookmarks = findViewById(R.id.noBookmarks);
 
         favoriteAdapter = new FavoriteAdapter(this, this);
         movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
@@ -57,7 +61,11 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
                 // Update the cached copy of the movies in the adapter.
                 favoriteAdapter.submitList(favoriteMovies);
                 Log.v("favoriteList", favoriteMovies.size() + "");
-                //Toast.makeText(FavoriteActivity.this, favoriteMovies.size() + "", Toast.LENGTH_SHORT).show();
+                if(favoriteMovies.isEmpty()){
+                    noBookmarks.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    noBookmarks.setText(getString(R.string.no_bookmarks));
+                }
             }
         });
 
