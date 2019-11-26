@@ -65,7 +65,7 @@ public class MovieActivity extends AppCompatActivity {
         reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
         movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
-        
+
         setupRecyclerViews();
 
         receiveMovieDetails();
