@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
@@ -66,7 +65,7 @@ public class MovieActivity extends AppCompatActivity {
         reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
         movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
-
+        
         setupRecyclerViews();
 
         receiveMovieDetails();
@@ -137,7 +136,6 @@ public class MovieActivity extends AppCompatActivity {
 
         // If movie is inserted
         if(SharedPreferencesUtils.getInsertState(this,idOfMovie)){
-            Toast.makeText(this, SharedPreferencesUtils.getInsertState(this,idOfMovie) + "", Toast.LENGTH_SHORT).show();
             binding.fab.setImageResource(R.drawable.favorite_red);
         }
 
