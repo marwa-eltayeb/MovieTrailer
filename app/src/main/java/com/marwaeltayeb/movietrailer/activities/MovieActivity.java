@@ -134,10 +134,14 @@ public class MovieActivity extends AppCompatActivity {
                     .into(binding.backdropImage);
         }
 
+
         // If movie is inserted
-        if(SharedPreferencesUtils.getInsertState(this)){
+        if(SharedPreferencesUtils.getInsertState(this,idOfMovie)){
+            Toast.makeText(this, SharedPreferencesUtils.getInsertState(this,idOfMovie) + "", Toast.LENGTH_SHORT).show();
             binding.fab.setImageResource(R.drawable.favorite_red);
         }
+
+
     }
 
     public void getTrailers() {
@@ -201,16 +205,14 @@ public class MovieActivity extends AppCompatActivity {
 
     private void toggleFavourite() {
         // If movie is not bookmarked
-        if(!SharedPreferencesUtils.getInsertState(this)){
+        if(!SharedPreferencesUtils.getInsertState(this, idOfMovie)){
             binding.fab.setImageResource(R.drawable.favorite_red);
-            Toast.makeText(this, "Bookmark Added", Toast.LENGTH_SHORT).show();
             insertFavoriteMovie();
-            SharedPreferencesUtils.setInsertState(this, true);
+            SharedPreferencesUtils.setInsertState(this, idOfMovie,true);
         }else {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
-            Toast.makeText(this, "Bookmark Removed", Toast.LENGTH_SHORT).show();
             deleteFavoriteMovieById();
-            SharedPreferencesUtils.setInsertState(this, false);
+            SharedPreferencesUtils.setInsertState(this, idOfMovie,false);
         }
     }
 

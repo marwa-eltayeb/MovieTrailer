@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
             sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
-            Toast.makeText(this, sort + "", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, sort + "", Toast.LENGTH_SHORT).show();
             movieViewModel.clear();
             loadMovies();
         }
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 @Override
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     if (movies.isEmpty()) {
-                        Toast.makeText(MainActivity.this, "No Available Movies", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "No Available Movies", Toast.LENGTH_SHORT).show();
                     }
 
                     // In case of any changes, submitting the movies to adapter
