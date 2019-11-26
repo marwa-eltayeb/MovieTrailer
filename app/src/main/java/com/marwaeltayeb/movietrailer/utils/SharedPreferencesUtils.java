@@ -17,4 +17,7 @@ public class SharedPreferencesUtils {
         return sharedpreferences.getBoolean(movieId, false);
     }
 
+    public static void clearSharedPreferences(Context context){
+        context.getSharedPreferences("insert_data", Context.MODE_PRIVATE).edit().clear().apply();
+    }
 }
