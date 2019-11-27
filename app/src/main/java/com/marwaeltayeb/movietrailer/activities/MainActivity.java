@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     SearchAdapter searchAdapter;
     List<Movie> searchedMovieList;
     MovieViewModel movieViewModel;
+    TextView no_movies_found;
 
     private NetworkChangeReceiver mNetworkReceiver;
     private Snackbar snack;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
 
-        setUpRecyclerView();
+        setViews();
 
         loadMovies();
 
@@ -100,10 +102,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-    private void setUpRecyclerView() {
+    private void setViews() {
         recyclerView = findViewById(R.id.movie_list);
         recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
         recyclerView.setHasFixedSize(true);
+        no_movies_found = findViewById(R.id.no_movies_found);
 
         movieAdapter = new MovieAdapter(this, this);
     }
@@ -298,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 public void onChanged(@Nullable PagedList<Movie> movies) {
                     // In case of any changes, submitting the movies to adapter
                     movieAdapter.submitList(movies);
+                    // when screen is rotated
                     if (movies != null && !movies.isEmpty()) {
                         progressDialog.dismiss();
                     }
@@ -340,11 +344,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onNetworkDisconnected() {
         showSnackBar();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 }
 
