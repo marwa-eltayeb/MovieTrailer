@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/no_available_movies"
+        android:text="@string/no_movies_found"
         android:textColor="@color/bookmarkColor"
         android:layout_margin="10dp"
         android:textSize="18sp"
