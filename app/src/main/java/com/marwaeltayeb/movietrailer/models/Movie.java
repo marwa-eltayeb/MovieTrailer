@@ -37,7 +37,7 @@ public class Movie implements Serializable {
     @SerializedName("genre_ids")
     private ArrayList<Integer> genreIds;
 
-    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster) {
+    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster,String movieBackdrop) {
         this.movieId =movieId;
         this.movieTitle = movieTitle;
         this.movieVote = movieVote;
@@ -45,6 +45,7 @@ public class Movie implements Serializable {
         this.movieReleaseDate = movieReleaseDate;
         this.movieLanguage = movieLanguage;
         this.moviePoster = moviePoster;
+        this.movieBackdrop =movieBackdrop;
     }
 
     @Ignore

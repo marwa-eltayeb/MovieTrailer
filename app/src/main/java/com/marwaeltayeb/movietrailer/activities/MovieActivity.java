@@ -129,19 +129,10 @@ public class MovieActivity extends AppCompatActivity {
             binding.noReviews.setVisibility(View.VISIBLE);
         }
 
-        if (backDrop == null) {
-            Glide.with(this)
-                    .load(R.drawable.no_preview)
-                    .into(binding.backdropImage);
-        }
-
-
         // If movie is inserted
         if(SharedPreferencesUtils.getInsertState(this,idOfMovie)){
             binding.fab.setImageResource(R.drawable.favorite_red);
         }
-
-
     }
 
     public void getTrailers() {
@@ -217,7 +208,7 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language,poster);
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language,poster,backDrop);
         movieRoomViewModel.insert(movie);
     }
 
