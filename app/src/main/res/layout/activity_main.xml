@@ -19,12 +19,11 @@
         android:layout_margin="10dp"
         android:textSize="18sp"
         android:textStyle="italic"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movie_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
 
