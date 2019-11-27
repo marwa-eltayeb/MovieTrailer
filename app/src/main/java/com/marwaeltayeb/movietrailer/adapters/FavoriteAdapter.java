@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
+
+import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 
 public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.FavoriteHolder> {
 
@@ -76,12 +79,10 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
                     .dontTransform();
 
             // Load the Movie poster into ImageView
-            /*
             Glide.with(mContext)
                     .load(IMAGE_URL + movie.getMoviePoster())
                     //.apply(options)
                     .into(holder.moviePoster);
-                    */
 
             holder.moviePoster.setImageResource(R.drawable.no_preview);
         }

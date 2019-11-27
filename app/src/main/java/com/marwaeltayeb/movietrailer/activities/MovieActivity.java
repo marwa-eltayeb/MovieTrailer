@@ -53,6 +53,7 @@ public class MovieActivity extends AppCompatActivity {
     private String vote;
     private String description;
     private String language;
+    private String poster;
     private String backDrop;
 
     private Movie movie;
@@ -106,6 +107,7 @@ public class MovieActivity extends AppCompatActivity {
         formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
         language = movie.getMovieLanguage();
         backDrop = movie.getMovieBackdrop();
+        poster = movie.getMoviePoster();
 
         binding.titleOfMovie.setText(title);
         binding.ratingOfMovie.setText(vote);
@@ -215,7 +217,7 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language);
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language,poster);
         movieRoomViewModel.insert(movie);
     }
 
