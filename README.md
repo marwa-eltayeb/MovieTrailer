@@ -7,10 +7,12 @@
 
 ## Libraries Used:
 
+- Paging
 - Glide
 - Retrofit
-- Room
+- Room (Android Architectural Components)
 - Data Binding (Android Architectural Components)
 - Live Data (Android Architectural Components)
+- ViewModel (Android Architectural Components)
    
 
