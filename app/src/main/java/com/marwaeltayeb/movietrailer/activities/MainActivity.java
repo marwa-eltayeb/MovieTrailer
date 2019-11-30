@@ -42,6 +42,8 @@ import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -245,6 +247,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress address = InetAddress.getByName("google.com");
+            return !address.equals("");
+        } catch (UnknownHostException e) {
+            return false;
+        }
+    }
+
     public void showSnackBar() {
         snack.setAction("CLOSE", new View.OnClickListener() {
             @Override
@@ -252,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 snack.dismiss();
             }
         });
-        snack.setActionTextColor(contextOfApplication.getResources().getColor(R.color.colorAccent));
+        snack.setActionTextColor(getResources().getColor(R.color.colorAccent));
         snack.show();
     }
 
@@ -294,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void loadMovies() {
-        if (isNetworkConnected()) {
+        if (isNetworkConnected() || isInternetAvailable()) {
             // Observe the moviePagedList from ViewModel
             movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
                 @Override
