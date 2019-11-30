@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -130,7 +131,7 @@ public class MovieActivity extends AppCompatActivity {
         }
 
         // If movie is inserted
-        if(SharedPreferencesUtils.getInsertState(this,idOfMovie)){
+        if (SharedPreferencesUtils.getInsertState(this, idOfMovie)) {
             binding.fab.setImageResource(R.drawable.favorite_red);
         }
     }
@@ -182,7 +183,7 @@ public class MovieActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(movie.getGenreIds()== null){
+        if (movie.getGenreIds() == null) {
             binding.genreOne.setVisibility(View.GONE);
             binding.genreTwo.setVisibility(View.GONE);
             binding.genreThree.setVisibility(View.GONE);
@@ -196,19 +197,21 @@ public class MovieActivity extends AppCompatActivity {
 
     private void toggleFavourite() {
         // If movie is not bookmarked
-        if(!SharedPreferencesUtils.getInsertState(this, idOfMovie)){
+        if (!SharedPreferencesUtils.getInsertState(this, idOfMovie)) {
             binding.fab.setImageResource(R.drawable.favorite_red);
             insertFavoriteMovie();
-            SharedPreferencesUtils.setInsertState(this, idOfMovie,true);
-        }else {
+            SharedPreferencesUtils.setInsertState(this, idOfMovie, true);
+            showSnackBar("Bookmark Added");
+        } else {
             binding.fab.setImageResource(R.drawable.favorite_border_red);
             deleteFavoriteMovieById();
-            SharedPreferencesUtils.setInsertState(this, idOfMovie,false);
+            SharedPreferencesUtils.setInsertState(this, idOfMovie, false);
+            showSnackBar("Bookmark Removed");
         }
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language,poster,backDrop);
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop);
         movieRoomViewModel.insert(movie);
     }
 
@@ -223,5 +226,9 @@ public class MovieActivity extends AppCompatActivity {
             networkInfo = connMgr.getActiveNetworkInfo();
         }
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    private void showSnackBar(String text) {
+        Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_SHORT).show();
     }
 }
