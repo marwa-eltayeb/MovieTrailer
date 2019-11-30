@@ -6,14 +6,13 @@
 - Mark a movie as favourite & save it for future preferences.
 
 ## Libraries included in this project:
-
 - Paging
 - Glide
 - Retrofit
-- Room (Android Architectural Components)
-- Data Binding (Android Architectural Components)
-- Live Data (Android Architectural Components)
-- ViewModel (Android Architectural Components)
+- Room (Android Architecture Components)
+- Data Binding (Android Architecture Components)
+- Live Data (Android Architecture Components)
+- ViewModel (Android Architecture Components)
 - RecyclerView
 - CardView
 
