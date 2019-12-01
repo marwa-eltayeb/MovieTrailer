@@ -3,7 +3,7 @@
 - Get a list of popular movies of the current time.
 - Get a list of top-rated movies.
 - Search any movie & get its information: Title, Rating, Release Date, Language, Genres, Synopsis.
-- Mark a movie as favourite & save it for future preferences.
+- Mark a movie as favourite & save it for future preferences implemented musing MVVM Architecture.
 
 ## Libraries included in this project:
 - Paging
