@@ -22,5 +22,5 @@
 | <img src="https://i.imgur.com/zsb0IpC.jpg" width="250">  | <img src="https://i.imgur.com/UGqTASh.jpg" width="250"> | <img src="https://i.imgur.com/4pe1MSj.jpg" width="250"> 
 | <img src="https://i.imgur.com/olEQaEl.jpg" width="250">  | <img src="https://i.imgur.com/iLdWpae.jpg" width="250"> | <img src="https://i.imgur.com/qNiQlBD.jpg" width="250"> 
  
-Project Preview: [Youtube]().
+Project Preview: [Youtube](https://youtu.be/jhYmx7ytBs0).
 
