@@ -2,7 +2,7 @@
 - Display all upcoming movies trailers. 
 - Get a list of popular movies of the current time.
 - Get a list of top-rated movies.
-- Search any movie & get its information: Title, Rating, Release Date, Language, Genres, Synposis.
+- Search any movie & get its information: Title, Rating, Release Date, Language, Genres, Synopsis.
 - Mark a movie as favourite & save it for future preferences.
 
 ## Libraries included in this project:
