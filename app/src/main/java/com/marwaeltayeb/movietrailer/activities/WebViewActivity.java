@@ -7,7 +7,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 
@@ -29,7 +28,6 @@ public class WebViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         url = intent.getStringExtra(URL_OF_REVIEW);
-        Toast.makeText(this, url + "", Toast.LENGTH_SHORT).show();
         web.setWebViewClient(new WebViewClient());
         web.loadUrl(url);
 

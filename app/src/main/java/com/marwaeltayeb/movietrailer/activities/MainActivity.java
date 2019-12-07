@@ -30,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
@@ -42,8 +41,6 @@ import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -148,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                Toast.makeText(MainActivity.this, "Closed", Toast.LENGTH_SHORT).show();
                 if (searchedMovieList != null) {
                     searchAdapter.clear();
                     loadMovies();
@@ -247,15 +243,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress address = InetAddress.getByName("google.com");
-            return !address.equals("");
-        } catch (UnknownHostException e) {
-            return false;
-        }
-    }
-
     public void showSnackBar() {
         snack.setAction("CLOSE", new View.OnClickListener() {
             @Override
@@ -305,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void loadMovies() {
-        if (isNetworkConnected() || isInternetAvailable()) {
+        if (isNetworkConnected()) {
             // Observe the moviePagedList from ViewModel
             movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
                 @Override
