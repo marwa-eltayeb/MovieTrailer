@@ -30,12 +30,12 @@
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="14dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginTop="200dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginRight="16dp"
                     android:src="@drawable/favorite_border_red"
                     app:backgroundTint="@color/colorAccent"
                     app:fabSize="mini" />
@@ -126,9 +126,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="#1d1d1d"
+                android:padding="5dp"
                 android:textColor="#fff"
                 android:textSize="17sp"
-                android:padding="5dp"
                 tools:text="@string/description" />
 
             <LinearLayout
@@ -138,35 +138,58 @@
                 android:layout_marginRight="5dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/videos"
-                    android:textColor="#fff"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="@string/videos"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSeaAll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="@string/see_all"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic" />
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/listOfTrailers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
+                    android:layout_margin="5dp"
+                    tools:listitem="@layout/trailer_item" />
 
                 <TextView
                     android:id="@+id/noTrailers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:padding="10dp"
                     android:layout_margin="5dp"
-                    android:text="@string/no_available_trailers"
-                    android:textSize="20sp"
-                    android:textColor="#fff"
                     android:background="#1d1d1d"
-                    android:visibility="gone"/>
+                    android:padding="10dp"
+                    android:text="@string/no_available_trailers"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -189,20 +212,21 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/listOfReviews"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/review_item" />
 
                 <TextView
                     android:id="@+id/noReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:padding="10dp"
                     android:layout_margin="5dp"
-                    android:text="@string/no_available_reviews"
-                    android:textSize="20sp"
-                    android:textColor="#fff"
                     android:background="#1d1d1d"
-                    android:visibility="gone"/>
+                    android:padding="10dp"
+                    android:text="@string/no_available_reviews"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>

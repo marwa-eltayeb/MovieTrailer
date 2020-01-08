@@ -56,4 +56,6 @@
     <string name="border">|</string>
     <string name="blank">%d</string>
     <string name="no_movies_found">No Movies found. Kindly visit again to fetch them.</string>
+    <string name="see_all">See All</string>
+    <string name="see_all_trailers">See All Trailers</string>
 </resources>

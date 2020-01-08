@@ -81,7 +81,12 @@ public class MovieActivity extends AppCompatActivity {
                 toggleFavourite();
             }
         });
-
+        binding.txtSeaAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSeeAllActivity();
+            }
+        });
     }
 
     private void setupRecyclerViews() {
@@ -230,5 +235,10 @@ public class MovieActivity extends AppCompatActivity {
 
     private void showSnackBar(String text) {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void goToSeeAllActivity(){
+        Intent intent = new Intent(this,SeeAllActivity.class);
+        startActivity(intent);
     }
 }

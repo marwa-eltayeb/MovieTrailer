@@ -12,6 +12,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.SeeAllActivity"
+                  android:label="@string/see_all_trailers"
+                  android:parentActivityName=".activities.MovieActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MovieActivity" />
+        </activity>
+
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleTop" />
@@ -51,7 +60,7 @@
                 android:value=".activities.MovieActivity" />
         </activity>
 
-        <receiver android:name=".receiver.NetworkChangeReceiver"/>
+        <receiver android:name=".receiver.NetworkChangeReceiver" />
 
         <activity
             android:name=".activities.FavoriteActivity"
