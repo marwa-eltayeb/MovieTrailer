@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.marwaeltayeb.movietrailer.R;
@@ -20,9 +19,8 @@ import java.util.List;
 
 public class SeeAllActivity extends AppCompatActivity {
 
-    ActivitySeeAllBinding binding;
+    private ActivitySeeAllBinding binding;
     private TrailerAdapter trailerAdapter;
-    private RecyclerView trailersRecyclerView;
     private TrailerViewModel trailerViewModel;
 
     @Override
@@ -39,9 +37,8 @@ public class SeeAllActivity extends AppCompatActivity {
 
     private void setupRecyclerViews() {
         // Trailers
-        trailersRecyclerView = findViewById(R.id.listOfTrailers);
-        trailersRecyclerView.setHasFixedSize(true);
-        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        binding.listOfTrailers.setHasFixedSize(true);
+        binding.listOfTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     public void getTrailers() {
@@ -51,11 +48,11 @@ public class SeeAllActivity extends AppCompatActivity {
                 trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
 
                 if (trailers != null && trailers.isEmpty()) {
-                    trailersRecyclerView.setVisibility(View.GONE);
+                    binding.listOfTrailers.setVisibility(View.GONE);
                     binding.noTrailers.setVisibility(View.VISIBLE);
                 }
 
-                trailersRecyclerView.setAdapter(trailerAdapter);
+                binding.listOfTrailers.setAdapter(trailerAdapter);
             }
         });
     }
