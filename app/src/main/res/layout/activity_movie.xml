@@ -24,7 +24,7 @@
                     android:layout_height="220dp"
                     android:contentDescription="@string/backdrop_picture"
                     android:scaleType="fitXY"
-                    android:src="@drawable/backdrop" />
+                    android:src="@color/gary" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab"

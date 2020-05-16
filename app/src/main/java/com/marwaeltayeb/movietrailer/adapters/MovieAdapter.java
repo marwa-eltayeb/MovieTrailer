@@ -61,8 +61,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
-                    .placeholder(R.drawable.maze_ruuner)
-                    .error(R.drawable.dots)
+                    .placeholder(R.color.gary)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH)
                     .dontAnimate()

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Movie Trailer</string>
     <string name="movie_poster">Movie Poster</string>
-    <string name="the_maze_runner">The Maze Runner</string>
+    <string name="movie_name">movie name</string>
     <string name="_8_4">8.4</string>
     <string name="settings">Settings</string>
     <string name="dots">dots</string>
@@ -21,14 +21,13 @@
     <string name="top_rated_label">Top Rated</string>
     <string name="now_playing_label">Now Playing</string>
     <string name="upcoming_label">Upcoming</string>
-    <string name="latest_label">Latest</string>
 
     <!--Sort Values-->
     <string name="popular_value">popular</string>
     <string name="top_rated_value">top_rated</string>
     <string name="now_playing_value">now_playing</string>
     <string name="upcoming_value">upcoming</string>
-    <string name="latest_value">latest</string>
+
     <string name="backdrop_picture">Backdrop Picture</string>
 
     <string name="description">Thomas wakes up in an ascending elevator. With him are supply containers marked WCKD. When the elevator reaches the top, a door above him opens and he\'s surrounded by a Lord of the Flies type gaggle of young men/boys. Thomas takes off running, but stops when he realizes he\'s in a small glade surrounded by huge walls.</string>

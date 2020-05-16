@@ -5,7 +5,6 @@
         <item>@string/top_rated_label</item>
         <item>@string/now_playing_label</item>
         <item>@string/upcoming_label</item>
-        <item>@string/latest_label</item>
     </string-array>
 
     <string-array name="settings_sort_values">
@@ -13,6 +12,5 @@
         <item>@string/top_rated_value</item>
         <item>@string/now_playing_value</item>
         <item>@string/upcoming_value</item>
-        <item>@string/latest_value</item>
     </string-array>
 </resources>

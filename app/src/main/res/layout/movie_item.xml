@@ -23,7 +23,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/movie_poster"
             android:scaleType="fitXY"
-            tools:src="@drawable/maze_ruuner" />
+            tools:src="@color/gary" />
 
         <TextView
             android:id="@+id/movie_title"
@@ -35,7 +35,7 @@
             android:padding="3dp"
             android:textColor="#fff"
             android:textSize="14sp"
-            tools:text="@string/the_maze_runner" />
+            tools:text="@string/movie_name" />
 
         <TextView
             android:id="@+id/movie_rating"

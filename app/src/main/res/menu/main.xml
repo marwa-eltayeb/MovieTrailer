@@ -3,23 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/dots"
-        android:icon="@drawable/dots"
-        android:orderInCategory="11111"
-        android:title="@string/dots"
-        app:showAsAction="always">
+        android:id="@+id/setting"
+        android:title="@string/settings"
+        app:showAsAction="never" />
 
-        <menu>
-            <item
-                android:id="@+id/setting"
-                android:title="@string/settings"
-                app:showAsAction="ifRoom" />
-
-            <item
-                android:id="@+id/favorites"
-                android:title="@string/favorites"
-                app:showAsAction="never" />
-        </menu>
-    </item>
-
+    <item
+        android:id="@+id/favorites"
+        android:title="@string/favorites"
+        app:showAsAction="never" />
 </menu>
+
