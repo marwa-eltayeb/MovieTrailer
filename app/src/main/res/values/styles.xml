@@ -11,7 +11,7 @@
         <item name="preferenceTheme">@style/CustomPreferencesTheme</item>
     </style>
 
-    <style name="CustomPreferencesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="CustomPreferencesTheme" parent="PreferenceThemeOverlay.v14.Material">
         <item name="android:background">@color/black</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorSecondary">@color/pressColor</item>

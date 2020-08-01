@@ -1,9 +1,6 @@
 package com.marwaeltayeb.movietrailer.activities;
 
 import android.app.Dialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,14 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +20,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.adapters.SearchAdapter;
@@ -55,6 +56,8 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
         SharedPreferences.OnSharedPreferenceChangeListener, OnNetworkListener {
 
+
+    private static final String TAG = "MainActivity";
     public static Dialog progressDialog;
     public static Context contextOfApplication;
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
         // Get movieViewModel
-        movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
@@ -169,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.favorites:
                 Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favoriteIntent);
+                return true;
+
+            case R.id.about:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -312,9 +320,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
@@ -323,13 +328,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onStart() {
         super.onStart();
-        registerNetworkBroadcastForNougat();
+        try {
+            registerNetworkBroadcastForNougat();
+        }catch (Exception e){
+            Log.d(TAG, "onStart: " + "already registered");
+        }
     }
 
     @Override
     protected void onStop() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        }catch (Exception e){
+            Log.d(TAG, "onStop: " + "already unregistered");
+        }
         super.onStop();
-        unregisterReceiver(mNetworkReceiver);
     }
 
     @Override

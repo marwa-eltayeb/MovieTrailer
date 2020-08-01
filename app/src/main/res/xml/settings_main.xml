@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
+    <androidx.preference.ListPreference
         android:defaultValue="@string/sort_default"
         android:entries="@array/settings_sort_labels"
         android:entryValues="@array/settings_sort_values"
@@ -12,4 +12,4 @@
         app:allowDividerAbove="true"
         app:allowDividerBelow="true"
         android:title="@string/sort_label" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

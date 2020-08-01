@@ -57,4 +57,7 @@
     <string name="no_movies_found">No Movies found. Kindly visit again to fetch them.</string>
     <string name="see_all">See All</string>
     <string name="see_all_trailers">See All Trailers</string>
+    <string name="about">About</string>
+    <string name="attribution">The Movie Database (TMDb) is a community built movie and TV database. Every piece of data has been added by our amazing community dating back to 2008.</string>
+    <string name="credit">Movie Trailer App uses the TMDb API but it is not endorsed or certified by TMDb.</string>
 </resources>

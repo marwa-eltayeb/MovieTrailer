@@ -1,8 +1,8 @@
 package com.marwaeltayeb.movietrailer.database;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
 

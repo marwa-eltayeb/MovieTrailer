@@ -1,7 +1,7 @@
 package com.marwaeltayeb.movietrailer.network;
 
 import android.app.Application;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.marwaeltayeb.movietrailer.models.Trailer;
