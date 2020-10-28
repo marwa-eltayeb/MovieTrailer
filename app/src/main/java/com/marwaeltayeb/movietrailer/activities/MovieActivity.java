@@ -29,13 +29,14 @@ import com.marwaeltayeb.movietrailer.network.ReviewViewModel;
 import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
 import com.marwaeltayeb.movietrailer.utils.Genres;
 import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
-import com.marwaeltayeb.movietrailer.utils.Utility;
 
 import java.util.List;
 
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
+import static com.marwaeltayeb.movietrailer.activities.FavoriteActivity.isFavoriteActivityRunning;
 import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
+import static com.marwaeltayeb.movietrailer.utils.Utility.formatDate;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -111,7 +112,6 @@ public class MovieActivity extends AppCompatActivity {
         title = movie.getMovieTitle();
         vote = movie.getMovieVote();
         description = movie.getMovieDescription();
-        formattedDate = Utility.formatDate(movie.getMovieReleaseDate());
         language = movie.getMovieLanguage();
         backDrop = movie.getMovieBackdrop();
         poster = movie.getMoviePoster();
@@ -119,7 +119,14 @@ public class MovieActivity extends AppCompatActivity {
         binding.titleOfMovie.setText(title);
         binding.ratingOfMovie.setText(vote);
         binding.descriptionOfMovie.setText(description);
-        binding.releaseDateOfMovie.setText(formattedDate + " " + "|");
+
+        if (isFavoriteActivityRunning) {
+            binding.releaseDateOfMovie.setText(movie.getMovieReleaseDate());
+        } else {
+            formattedDate = getString(R.string.date, formatDate(movie.getMovieReleaseDate()));
+            binding.releaseDateOfMovie.setText(formattedDate);
+        }
+
         binding.languageOfMovie.setText(language);
 
         Glide.with(this)
@@ -238,8 +245,8 @@ public class MovieActivity extends AppCompatActivity {
         Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_SHORT).show();
     }
 
-    private void goToSeeAllActivity(){
-        Intent intent = new Intent(this,SeeAllActivity.class);
+    private void goToSeeAllActivity() {
+        Intent intent = new Intent(this, SeeAllActivity.class);
         startActivity(intent);
     }
 }

@@ -32,6 +32,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     private FavoriteAdapter favoriteAdapter;
     private MovieRoomViewModel movieRoomViewModel;
     private TextView noBookmarks;
+    static boolean isFavoriteActivityRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,18 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        isFavoriteActivityRunning = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isFavoriteActivityRunning = false;
     }
 }
 

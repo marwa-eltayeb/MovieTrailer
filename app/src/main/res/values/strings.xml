@@ -10,6 +10,7 @@
     <string name="no_match">"No Match. Please try again"</string>
     <string name="movie_details">Movie Details</string>
     <string name="logo">Logo</string>
+    <string name="date">%1$s |</string>
 
     <!--Settings For RateBy Preference-->
     <string name="sort_default">popular</string>
