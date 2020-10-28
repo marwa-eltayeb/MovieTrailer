@@ -24,3 +24,4 @@
  
 Project Preview: [Youtube](https://youtu.be/jhYmx7ytBs0).
 
+<a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="380" height="80"></a>
