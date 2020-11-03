@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#000"
+    android:background="@color/backgroundColor"
     tools:context="com.marwaeltayeb.movietrailer.activities.FavoriteActivity">
 
     <TextView

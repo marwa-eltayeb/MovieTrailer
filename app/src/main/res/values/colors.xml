@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#282828</color>
+    <color name="colorPrimary">#9E0000</color>
     <color name="colorPrimaryDark">#1d1d1d</color>
     <color name="colorAccent">#d90000</color>
     <color name="darkGray">#282828</color>
     <color name="pressColor">#606060</color>
     <color name="bookmarkColor">#B3B3B3</color>
-    <color name="white">#fff</color>
-    <color name="black">#000</color>
+    <color name="white">#000</color>
+    <color name="black">#fff</color>
     <color name="gary">#ccc</color>
+    <color name="backgroundColor">#fff</color>
+    <color name="actionMenuTextColor">#000000</color>
+    <color name="itemBackground">#ffffff</color>
+    <color name="movieNameTextColor">#000</color>
+    <color name="movieDetailsTextColor">#7C7C7C</color>
 </resources>

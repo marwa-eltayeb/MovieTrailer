@@ -19,10 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,6 +54,9 @@ import retrofit2.Response;
 
 import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
+import static com.marwaeltayeb.movietrailer.utils.ModeStorage.getMode;
+import static com.marwaeltayeb.movietrailer.utils.ModeStorage.isLightModeOn;
+import static com.marwaeltayeb.movietrailer.utils.ModeStorage.setLightMode;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
         SharedPreferences.OnSharedPreferenceChangeListener, OnNetworkListener {
@@ -59,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private static final String TAG = "MainActivity";
     public static Dialog progressDialog;
-    public static Context contextOfApplication;
 
     RecyclerView recyclerView;
     MovieAdapter movieAdapter;
@@ -75,10 +79,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getMode(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        contextOfApplication = getApplicationContext();
 
         progressDialog = createProgressDialog(MainActivity.this);
 
@@ -100,8 +103,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mNetworkReceiver = new NetworkChangeReceiver();
         mNetworkReceiver.setOnNetworkListener(this);
-
-
     }
 
     private void setViews() {
@@ -113,14 +114,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this, this);
     }
 
-    public static Context getContextOfApplication() {
-        return contextOfApplication;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search, menu);
+
+        if (isLightModeOn(this)) {
+            MenuItem dayModeItem = menu.findItem(R.id.lightMode);
+            dayModeItem.setTitle(R.string.night_mode);
+        }
 
         MenuItem searchViewItem = menu.findItem(R.id.search);
 
@@ -172,6 +174,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.favorites:
                 Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favoriteIntent);
+                return true;
+
+            case R.id.lightMode:
+
+                String menuTitle = item.getTitle().toString();
+
+                if (menuTitle.equals(getString(R.string.light_mode))) {
+                    item.setTitle(getString(R.string.night_mode));
+
+                    Toast.makeText(this, "Switch to Day mode", Toast.LENGTH_SHORT).show();
+
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+                    setLightMode(this, true);
+                }else {
+                    item.setTitle(getString(R.string.light_mode));
+
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                    Toast.makeText(this, "Switch to Night mode", Toast.LENGTH_SHORT).show();
+
+                    setLightMode(this, false);
+                }
                 return true;
 
             case R.id.about:

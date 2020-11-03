@@ -6,7 +6,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000"
+        android:background="@color/backgroundColor"
         tools:context="com.marwaeltayeb.movietrailer.activities.MovieActivity">
 
         <LinearLayout
@@ -48,7 +48,7 @@
                 android:layout_margin="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="#fff"
+                android:textColor="@color/movieNameTextColor"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
                 tools:text="@string/movie_name" />
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:textColor="#aeaeae"
+                    android:textColor="@color/movieDetailsTextColor"
                     android:textSize="16sp"
                     tools:text="Drama" />
 
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:textColor="#aeaeae"
+                    android:textColor="@color/movieDetailsTextColor"
                     android:textSize="16sp"
                     tools:text="Horror" />
 
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:textColor="#aeaeae"
+                    android:textColor="@color/movieDetailsTextColor"
                     android:textSize="16sp"
                     tools:text="Comedy" />
             </LinearLayout>
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:textColor="#aeaeae"
+                    android:textColor="@color/movieDetailsTextColor"
                     android:textSize="18sp"
                     tools:text="2016-08-03" />
 
@@ -106,7 +106,7 @@
                     android:id="@+id/languageOfMovie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#aeaeae"
+                    android:textColor="@color/movieDetailsTextColor"
                     android:textSize="18sp"
                     tools:text="@string/en" />
             </LinearLayout>
@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_star_yellow"
-                android:textColor="#aeaeae"
+                android:textColor="@color/movieDetailsTextColor"
                 android:textSize="18sp"
                 tools:text="@string/_8_4" />
 
