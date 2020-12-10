@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,9 +67,9 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
 
-        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);
-        trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
-        movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+        reviewViewModel = new ViewModelProvider(this).get(ReviewViewModel.class);
+        trailerViewModel = new ViewModelProvider(this).get(TrailerViewModel.class);
+        movieRoomViewModel = new ViewModelProvider(this).get(MovieRoomViewModel.class);
 
         setupRecyclerViews();
 

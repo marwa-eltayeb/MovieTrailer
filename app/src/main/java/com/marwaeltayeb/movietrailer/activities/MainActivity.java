@@ -165,45 +165,45 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.setting:
-                Intent settingsIntent = new Intent(this, SettingActivity.class);
-                startActivity(settingsIntent);
-                return true;
+        int id = item.getItemId();
+        if (id == R.id.setting) {
+            Intent settingsIntent = new Intent(this, SettingActivity.class);
+            startActivity(settingsIntent);
+            return true;
 
-            case R.id.favorites:
-                Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
-                startActivity(favoriteIntent);
-                return true;
+        } else if (id == R.id.favorites) {
+            Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+            startActivity(favoriteIntent);
+            return true;
 
-            case R.id.lightMode:
+        } else if (id == R.id.lightMode) {
+            String menuTitle = item.getTitle().toString();
 
-                String menuTitle = item.getTitle().toString();
+            if (menuTitle.equals(getString(R.string.light_mode))) {
+                item.setTitle(getString(R.string.night_mode));
 
-                if (menuTitle.equals(getString(R.string.light_mode))) {
-                    item.setTitle(getString(R.string.night_mode));
+                Toast.makeText(this, "Switch to Day mode", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(this, "Switch to Day mode", Toast.LENGTH_SHORT).show();
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                setLightMode(this, true);
+            }else {
+                item.setTitle(getString(R.string.light_mode));
 
-                    setLightMode(this, true);
-                }else {
-                    item.setTitle(getString(R.string.light_mode));
+                getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                Toast.makeText(this, "Switch to Night mode", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(this, "Switch to Night mode", Toast.LENGTH_SHORT).show();
+                setLightMode(this, false);
+            }
+            return true;
 
-                    setLightMode(this, false);
-                }
-                return true;
-
-            case R.id.about:
-                Intent aboutIntent = new Intent(this, AboutActivity.class);
-                startActivity(aboutIntent);
-                return true;
+        }else if(id == R.id.about){
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
