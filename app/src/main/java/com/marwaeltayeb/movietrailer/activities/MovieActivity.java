@@ -188,25 +188,20 @@ public class MovieActivity extends AppCompatActivity {
         int genre_three = 0;
 
         try {
-            genre_one = movie.getGenreIds().get(0);
-            genre_two = movie.getGenreIds().get(1);
-            genre_three = movie.getGenreIds().get(2);
+            // get keys
+            genre_one = Integer.parseInt(String.valueOf(movie.getGenreIds().get(0)));
+            genre_two = Integer.parseInt(String.valueOf(movie.getGenreIds().get(1)));
+            genre_three = Integer.parseInt(String.valueOf(movie.getGenreIds().get(2)));
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
-        if (movie.getGenreIds() == null) {
-            binding.genreOne.setVisibility(View.GONE);
-            binding.genreTwo.setVisibility(View.GONE);
-            binding.genreThree.setVisibility(View.GONE);
-        }
-
-        binding.genreOne.setText(Genres.getGenres().get(genre_one));
-        binding.genreTwo.setText(Genres.getGenres().get(genre_two));
-        binding.genreThree.setText(Genres.getGenres().get(genre_three));
-
+        // get values
+        binding.genreOne.setText(Genres.getRealGenres().get(genre_one));
+        binding.genreTwo.setText(Genres.getRealGenres().get(genre_two));
+        binding.genreThree.setText(Genres.getRealGenres().get(genre_three));
     }
 
     private void toggleFavourite() {
@@ -225,7 +220,7 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop);
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop, movie.getGenreIds());
         movieRoomViewModel.insert(movie);
     }
 

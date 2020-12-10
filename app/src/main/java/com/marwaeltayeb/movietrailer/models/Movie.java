@@ -1,10 +1,10 @@
 package com.marwaeltayeb.movietrailer.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -33,23 +33,24 @@ public class Movie implements Serializable {
     @SerializedName("original_language")
     private String movieLanguage;
     @ColumnInfo(name = "genres")
-    @Ignore
     @SerializedName("genre_ids")
     private ArrayList<Integer> genreIds;
 
-    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster,String movieBackdrop) {
-        this.movieId =movieId;
+    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster, String movieBackdrop, ArrayList<Integer> genreIds) {
+        this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieVote = movieVote;
         this.movieDescription = movieDescription;
         this.movieReleaseDate = movieReleaseDate;
         this.movieLanguage = movieLanguage;
         this.moviePoster = moviePoster;
-        this.movieBackdrop =movieBackdrop;
+        this.movieBackdrop = movieBackdrop;
+        this.genreIds = genreIds;
     }
 
     @Ignore
-    public Movie(){}
+    public Movie() {
+    }
 
     public int getDatabaseId() {
         return databaseId;
@@ -87,7 +88,6 @@ public class Movie implements Serializable {
         return movieLanguage;
     }
 
-    @Ignore
     public ArrayList<Integer> getGenreIds() {
         return genreIds;
     }
@@ -134,9 +134,8 @@ public class Movie implements Serializable {
         this.movieLanguage = movieLanguage;
     }
 
-    @Ignore
     public void setGenreIds(ArrayList<Integer> genreIds) {
         this.genreIds = genreIds;
     }
-
 }
+

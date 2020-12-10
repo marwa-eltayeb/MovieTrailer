@@ -1,0 +1,168 @@
+Index: app/src/main/java/com/marwaeltayeb/movietrailer/activities/MovieActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.marwaeltayeb.movietrailer.activities;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.net.ConnectivityManager;\r\nimport android.net.NetworkInfo;\r\nimport android.os.Bundle;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\n\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.databinding.DataBindingUtil;\r\nimport androidx.lifecycle.Observer;\r\nimport androidx.lifecycle.ViewModelProviders;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.google.android.material.snackbar.Snackbar;\r\nimport com.marwaeltayeb.movietrailer.R;\r\nimport com.marwaeltayeb.movietrailer.adapters.ReviewAdapter;\r\nimport com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;\r\nimport com.marwaeltayeb.movietrailer.database.MovieRoomViewModel;\r\nimport com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;\r\nimport com.marwaeltayeb.movietrailer.models.Movie;\r\nimport com.marwaeltayeb.movietrailer.models.Review;\r\nimport com.marwaeltayeb.movietrailer.models.Trailer;\r\nimport com.marwaeltayeb.movietrailer.network.ReviewViewModel;\r\nimport com.marwaeltayeb.movietrailer.network.TrailerViewModel;\r\nimport com.marwaeltayeb.movietrailer.utils.Genres;\r\nimport com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;\r\n\r\nimport java.util.List;\r\n\r\nimport static com.marwaeltayeb.movietrailer.R.id.listOfReviews;\r\nimport static com.marwaeltayeb.movietrailer.activities.FavoriteActivity.isFavoriteActivityRunning;\r\nimport static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;\r\nimport static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;\r\nimport static com.marwaeltayeb.movietrailer.utils.Utility.formatDate;\r\n\r\npublic class MovieActivity extends AppCompatActivity {\r\n\r\n    private ActivityMovieBinding binding;\r\n\r\n    private ReviewAdapter reviewAdapter;\r\n    private TrailerAdapter trailerAdapter;\r\n    private RecyclerView reviewsRecyclerView, trailersRecyclerView;\r\n\r\n    private ReviewViewModel reviewViewModel;\r\n    private TrailerViewModel trailerViewModel;\r\n    private MovieRoomViewModel movieRoomViewModel;\r\n\r\n    public static String idOfMovie;\r\n    private String title;\r\n    private String formattedDate;\r\n    private String vote;\r\n    private String description;\r\n    private String language;\r\n    private String poster;\r\n    private String backDrop;\r\n\r\n    private Movie movie;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie);\r\n\r\n        reviewViewModel = ViewModelProviders.of(this).get(ReviewViewModel.class);\r\n        trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);\r\n        movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);\r\n\r\n        setupRecyclerViews();\r\n\r\n        receiveMovieDetails();\r\n\r\n        getReviews();\r\n        getTrailers();\r\n\r\n        binding.fab.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                toggleFavourite();\r\n            }\r\n        });\r\n        binding.txtSeaAll.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                goToSeeAllActivity();\r\n            }\r\n        });\r\n    }\r\n\r\n    private void setupRecyclerViews() {\r\n        // Trailers\r\n        trailersRecyclerView = findViewById(R.id.listOfTrailers);\r\n        trailersRecyclerView.setHasFixedSize(true);\r\n        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));\r\n\r\n        // Reviews\r\n        reviewsRecyclerView = findViewById(listOfReviews);\r\n        reviewsRecyclerView.setHasFixedSize(true);\r\n        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));\r\n    }\r\n\r\n    private void receiveMovieDetails() {\r\n        // Receive the movie object\r\n        Intent intent = getIntent();\r\n        movie = (Movie) intent.getSerializableExtra(MOVIE);\r\n\r\n        idOfMovie = movie.getMovieId();\r\n        title = movie.getMovieTitle();\r\n        vote = movie.getMovieVote();\r\n        description = movie.getMovieDescription();\r\n        language = movie.getMovieLanguage();\r\n        backDrop = movie.getMovieBackdrop();\r\n        poster = movie.getMoviePoster();\r\n\r\n        binding.titleOfMovie.setText(title);\r\n        binding.ratingOfMovie.setText(vote);\r\n        binding.descriptionOfMovie.setText(description);\r\n\r\n        if (isFavoriteActivityRunning) {\r\n            binding.releaseDateOfMovie.setText(movie.getMovieReleaseDate());\r\n        } else {\r\n            formattedDate = getString(R.string.date, formatDate(movie.getMovieReleaseDate()));\r\n            binding.releaseDateOfMovie.setText(formattedDate);\r\n        }\r\n\r\n        binding.languageOfMovie.setText(language);\r\n\r\n        Glide.with(this)\r\n                .load(IMAGE_URL + backDrop)\r\n                .into(binding.backdropImage);\r\n\r\n        getGenres();\r\n\r\n        if (!isNetworkConnected()) {\r\n            trailersRecyclerView.setVisibility(View.GONE);\r\n            binding.noTrailers.setVisibility(View.VISIBLE);\r\n\r\n            reviewsRecyclerView.setVisibility(View.GONE);\r\n            binding.noReviews.setVisibility(View.VISIBLE);\r\n        }\r\n\r\n        // If movie is inserted\r\n        if (SharedPreferencesUtils.getInsertState(this, idOfMovie)) {\r\n            binding.fab.setImageResource(R.drawable.favorite_red);\r\n        }\r\n    }\r\n\r\n    public void getTrailers() {\r\n        trailerViewModel.getAllTrailers().observe(this, new Observer<List<Trailer>>() {\r\n            @Override\r\n            public void onChanged(@Nullable List<Trailer> trailers) {\r\n                trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);\r\n\r\n                if (trailers != null && trailers.isEmpty()) {\r\n                    trailersRecyclerView.setVisibility(View.GONE);\r\n                    binding.noTrailers.setVisibility(View.VISIBLE);\r\n                }\r\n\r\n                trailersRecyclerView.setAdapter(trailerAdapter);\r\n            }\r\n        });\r\n    }\r\n\r\n    public void getReviews() {\r\n        reviewViewModel.getAllReviews().observe(this, new Observer<List<Review>>() {\r\n            @Override\r\n            public void onChanged(@Nullable List<Review> reviews) {\r\n                reviewAdapter = new ReviewAdapter(getApplicationContext(), reviews);\r\n\r\n                if (reviews != null && reviews.isEmpty()) {\r\n                    reviewsRecyclerView.setVisibility(View.GONE);\r\n                    binding.noReviews.setVisibility(View.VISIBLE);\r\n                }\r\n\r\n                reviewsRecyclerView.setAdapter(reviewAdapter);\r\n            }\r\n        });\r\n    }\r\n\r\n    private void getGenres() {\r\n        int genre_one = 0;\r\n        int genre_two = 0;\r\n        int genre_three = 0;\r\n\r\n        try {\r\n            genre_one = movie.getGenreIds().get(0);\r\n            genre_two = movie.getGenreIds().get(1);\r\n            genre_three = movie.getGenreIds().get(2);\r\n        } catch (IndexOutOfBoundsException e) {\r\n            e.printStackTrace();\r\n        } catch (NullPointerException e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        if (movie.getGenreIds() == null) {\r\n            binding.genreOne.setVisibility(View.GONE);\r\n            binding.genreTwo.setVisibility(View.GONE);\r\n            binding.genreThree.setVisibility(View.GONE);\r\n        }\r\n\r\n        binding.genreOne.setText(Genres.getGenres().get(genre_one));\r\n        binding.genreTwo.setText(Genres.getGenres().get(genre_two));\r\n        binding.genreThree.setText(Genres.getGenres().get(genre_three));\r\n\r\n    }\r\n\r\n    private void toggleFavourite() {\r\n        // If movie is not bookmarked\r\n        if (!SharedPreferencesUtils.getInsertState(this, idOfMovie)) {\r\n            binding.fab.setImageResource(R.drawable.favorite_red);\r\n            insertFavoriteMovie();\r\n            SharedPreferencesUtils.setInsertState(this, idOfMovie, true);\r\n            showSnackBar(\"Bookmark Added\");\r\n        } else {\r\n            binding.fab.setImageResource(R.drawable.favorite_border_red);\r\n            deleteFavoriteMovieById();\r\n            SharedPreferencesUtils.setInsertState(this, idOfMovie, false);\r\n            showSnackBar(\"Bookmark Removed\");\r\n        }\r\n    }\r\n\r\n    private void insertFavoriteMovie() {\r\n        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop);\r\n        movieRoomViewModel.insert(movie);\r\n    }\r\n\r\n    private void deleteFavoriteMovieById() {\r\n        movieRoomViewModel.deleteById(Integer.parseInt(idOfMovie));\r\n    }\r\n\r\n    private boolean isNetworkConnected() {\r\n        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);\r\n        NetworkInfo networkInfo = null;\r\n        if (connMgr != null) {\r\n            networkInfo = connMgr.getActiveNetworkInfo();\r\n        }\r\n        return (networkInfo != null && networkInfo.isConnected());\r\n    }\r\n\r\n    private void showSnackBar(String text) {\r\n        Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_SHORT).show();\r\n    }\r\n\r\n    private void goToSeeAllActivity() {\r\n        Intent intent = new Intent(this, SeeAllActivity.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item) {\r\n        if (item.getItemId() == android.R.id.home) {\r\n            onBackPressed();\r\n            return true;\r\n        }\r\n        return(super.onOptionsItemSelected(item));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/marwaeltayeb/movietrailer/activities/MovieActivity.java	(revision 0534de7ba46450054719a990b23c0f0035a72e29)
++++ app/src/main/java/com/marwaeltayeb/movietrailer/activities/MovieActivity.java	(date 1607635442280)
+@@ -188,25 +188,20 @@
+         int genre_three = 0;
+ 
+         try {
+-            genre_one = movie.getGenreIds().get(0);
+-            genre_two = movie.getGenreIds().get(1);
+-            genre_three = movie.getGenreIds().get(2);
++            // get keys
++            genre_one = Integer.parseInt(String.valueOf(movie.getGenreIds().get(0)));
++            genre_two = Integer.parseInt(String.valueOf(movie.getGenreIds().get(1)));
++            genre_three = Integer.parseInt(String.valueOf(movie.getGenreIds().get(2)));
+         } catch (IndexOutOfBoundsException e) {
+             e.printStackTrace();
+         } catch (NullPointerException e) {
+             e.printStackTrace();
+         }
+ 
+-        if (movie.getGenreIds() == null) {
+-            binding.genreOne.setVisibility(View.GONE);
+-            binding.genreTwo.setVisibility(View.GONE);
+-            binding.genreThree.setVisibility(View.GONE);
+-        }
+-
+-        binding.genreOne.setText(Genres.getGenres().get(genre_one));
+-        binding.genreTwo.setText(Genres.getGenres().get(genre_two));
+-        binding.genreThree.setText(Genres.getGenres().get(genre_three));
+-
++        // get values
++        binding.genreOne.setText(Genres.getRealGenres().get(genre_one));
++        binding.genreTwo.setText(Genres.getRealGenres().get(genre_two));
++        binding.genreThree.setText(Genres.getRealGenres().get(genre_three));
+     }
+ 
+     private void toggleFavourite() {
+@@ -225,7 +220,7 @@
+     }
+ 
+     private void insertFavoriteMovie() {
+-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop);
++        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop, movie.getGenreIds());
+         movieRoomViewModel.insert(movie);
+     }
+ 
+Index: app/src/main/java/com/marwaeltayeb/movietrailer/utils/Genres.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.marwaeltayeb.movietrailer.utils;\r\n\r\nimport java.util.HashMap;\r\n\r\npublic class Genres {\r\n\r\n    private static final HashMap<Integer, String> genres = new HashMap<Integer, String>() {{\r\n        put(28, \"Action\");\r\n        put(12, \"Adventure\");\r\n        put(16, \"Animation\");\r\n        put(35, \"Comedy\");\r\n        put(80, \"Crime\");\r\n        put(99, \"Documentary\");\r\n        put(18, \"Drama\");\r\n        put(10751, \"Family\");\r\n        put(14, \"Fantasy\");\r\n        put(36, \"History\");\r\n        put(27, \"Horror\");\r\n        put(10402, \"Music\");\r\n        put(9648, \"Mystery\");\r\n        put(10749, \"Romance\");\r\n        put(878, \"Science Fiction\");\r\n        put(10770, \"TV Movie\");\r\n        put(53, \"Thriller\");\r\n        put(10752, \"War\");\r\n        put(37, \"Western\");\r\n    }};\r\n\r\n    public static HashMap<Integer, String> getGenres() {\r\n        return genres;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/marwaeltayeb/movietrailer/utils/Genres.java	(revision 0534de7ba46450054719a990b23c0f0035a72e29)
++++ app/src/main/java/com/marwaeltayeb/movietrailer/utils/Genres.java	(date 1607635377993)
+@@ -26,7 +26,7 @@
+         put(37, "Western");
+     }};
+ 
+-    public static HashMap<Integer, String> getGenres() {
++    public static HashMap<Integer, String> getRealGenres() {
+         return genres;
+     }
+ }
+Index: app/src/main/java/com/marwaeltayeb/movietrailer/database/MovieRoomDatabase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.marwaeltayeb.movietrailer.database;\r\n\r\nimport androidx.room.Database;\r\nimport androidx.room.Room;\r\nimport androidx.room.RoomDatabase;\r\nimport android.content.Context;\r\n\r\nimport com.marwaeltayeb.movietrailer.models.Movie;\r\n\r\n@Database(entities = {Movie.class}, version = 1, exportSchema = false)\r\npublic abstract class MovieRoomDatabase extends RoomDatabase {\r\n\r\n    private static final String DATABASE_NAME = \"movie_database\";\r\n\r\n    private static MovieRoomDatabase sInstance;\r\n\r\n    static MovieRoomDatabase getDatabase(final Context context) {\r\n        if (sInstance == null) {\r\n            synchronized (MovieRoomDatabase.class) {\r\n                if (sInstance == null) {\r\n                    sInstance = Room.databaseBuilder(context.getApplicationContext(),\r\n                            MovieRoomDatabase.class, DATABASE_NAME)\r\n                            .fallbackToDestructiveMigration()\r\n                            .build();\r\n                }\r\n            }\r\n        }\r\n        return sInstance;\r\n    }\r\n\r\n    public abstract MovieDao movieDao();\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/marwaeltayeb/movietrailer/database/MovieRoomDatabase.java	(revision 0534de7ba46450054719a990b23c0f0035a72e29)
++++ app/src/main/java/com/marwaeltayeb/movietrailer/database/MovieRoomDatabase.java	(date 1607635581205)
+@@ -1,13 +1,17 @@
+ package com.marwaeltayeb.movietrailer.database;
+ 
++import android.content.Context;
++
+ import androidx.room.Database;
+ import androidx.room.Room;
+ import androidx.room.RoomDatabase;
+-import android.content.Context;
++import androidx.room.TypeConverters;
+ 
++import com.marwaeltayeb.movietrailer.models.GenresTypeConverter;
+ import com.marwaeltayeb.movietrailer.models.Movie;
+ 
+ @Database(entities = {Movie.class}, version = 1, exportSchema = false)
++@TypeConverters({GenresTypeConverter.class})
+ public abstract class MovieRoomDatabase extends RoomDatabase {
+ 
+     private static final String DATABASE_NAME = "movie_database";
+Index: app/src/main/java/com/marwaeltayeb/movietrailer/models/Movie.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.marwaeltayeb.movietrailer.models;\r\n\r\nimport androidx.room.ColumnInfo;\r\nimport androidx.room.Entity;\r\nimport androidx.room.Ignore;\r\nimport androidx.room.PrimaryKey;\r\nimport androidx.annotation.NonNull;\r\n\r\nimport com.google.gson.annotations.SerializedName;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.ArrayList;\r\n\r\n@Entity(tableName = \"movie_table\")\r\npublic class Movie implements Serializable {\r\n\r\n    @PrimaryKey(autoGenerate = true)\r\n    private int databaseId;\r\n    @SerializedName(\"id\")\r\n    public String movieId;\r\n    @SerializedName(\"vote_average\")\r\n    private String movieVote;\r\n    @SerializedName(\"title\")\r\n    private String movieTitle;\r\n    @SerializedName(\"poster_path\")\r\n    private String moviePoster;\r\n    @SerializedName(\"backdrop_path\")\r\n    private String movieBackdrop;\r\n    @SerializedName(\"overview\")\r\n    private String movieDescription;\r\n    @SerializedName(\"release_date\")\r\n    private String movieReleaseDate;\r\n    @SerializedName(\"original_language\")\r\n    private String movieLanguage;\r\n    @ColumnInfo(name = \"genres\")\r\n    @Ignore\r\n    @SerializedName(\"genre_ids\")\r\n    private ArrayList<Integer> genreIds;\r\n\r\n    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster,String movieBackdrop) {\r\n        this.movieId =movieId;\r\n        this.movieTitle = movieTitle;\r\n        this.movieVote = movieVote;\r\n        this.movieDescription = movieDescription;\r\n        this.movieReleaseDate = movieReleaseDate;\r\n        this.movieLanguage = movieLanguage;\r\n        this.moviePoster = moviePoster;\r\n        this.movieBackdrop =movieBackdrop;\r\n    }\r\n\r\n    @Ignore\r\n    public Movie(){}\r\n\r\n    public int getDatabaseId() {\r\n        return databaseId;\r\n    }\r\n\r\n    public String getMovieId() {\r\n        return movieId;\r\n    }\r\n\r\n    public String getMovieVote() {\r\n        return movieVote;\r\n    }\r\n\r\n    public String getMovieTitle() {\r\n        return movieTitle;\r\n    }\r\n\r\n    public String getMoviePoster() {\r\n        return moviePoster;\r\n    }\r\n\r\n    public String getMovieBackdrop() {\r\n        return movieBackdrop;\r\n    }\r\n\r\n    public String getMovieDescription() {\r\n        return movieDescription;\r\n    }\r\n\r\n    public String getMovieReleaseDate() {\r\n        return movieReleaseDate;\r\n    }\r\n\r\n    public String getMovieLanguage() {\r\n        return movieLanguage;\r\n    }\r\n\r\n    @Ignore\r\n    public ArrayList<Integer> getGenreIds() {\r\n        return genreIds;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public String toString() {\r\n        return this.movieTitle;\r\n    }\r\n\r\n    public void setDatabaseId(int databaseId) {\r\n        this.databaseId = databaseId;\r\n    }\r\n\r\n    public void setMovieId(String movieId) {\r\n        this.movieId = movieId;\r\n    }\r\n\r\n    public void setMovieVote(String movieVote) {\r\n        this.movieVote = movieVote;\r\n    }\r\n\r\n    public void setMovieTitle(String movieTitle) {\r\n        this.movieTitle = movieTitle;\r\n    }\r\n\r\n    public void setMoviePoster(String moviePoster) {\r\n        this.moviePoster = moviePoster;\r\n    }\r\n\r\n    public void setMovieBackdrop(String movieBackdrop) {\r\n        this.movieBackdrop = movieBackdrop;\r\n    }\r\n\r\n    public void setMovieDescription(String movieDescription) {\r\n        this.movieDescription = movieDescription;\r\n    }\r\n\r\n    public void setMovieReleaseDate(String movieReleaseDate) {\r\n        this.movieReleaseDate = movieReleaseDate;\r\n    }\r\n\r\n    public void setMovieLanguage(String movieLanguage) {\r\n        this.movieLanguage = movieLanguage;\r\n    }\r\n\r\n    @Ignore\r\n    public void setGenreIds(ArrayList<Integer> genreIds) {\r\n        this.genreIds = genreIds;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/marwaeltayeb/movietrailer/models/Movie.java	(revision 0534de7ba46450054719a990b23c0f0035a72e29)
++++ app/src/main/java/com/marwaeltayeb/movietrailer/models/Movie.java	(date 1607635774799)
+@@ -1,10 +1,10 @@
+ package com.marwaeltayeb.movietrailer.models;
+ 
++import androidx.annotation.NonNull;
+ import androidx.room.ColumnInfo;
+ import androidx.room.Entity;
+ import androidx.room.Ignore;
+ import androidx.room.PrimaryKey;
+-import androidx.annotation.NonNull;
+ 
+ import com.google.gson.annotations.SerializedName;
+ 
+@@ -33,23 +33,24 @@
+     @SerializedName("original_language")
+     private String movieLanguage;
+     @ColumnInfo(name = "genres")
+-    @Ignore
+     @SerializedName("genre_ids")
+     private ArrayList<Integer> genreIds;
+ 
+-    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster,String movieBackdrop) {
+-        this.movieId =movieId;
++    public Movie(String movieId, @NonNull String movieTitle, String movieVote, String movieDescription, String movieReleaseDate, String movieLanguage, String moviePoster, String movieBackdrop, ArrayList<Integer> genreIds) {
++        this.movieId = movieId;
+         this.movieTitle = movieTitle;
+         this.movieVote = movieVote;
+         this.movieDescription = movieDescription;
+         this.movieReleaseDate = movieReleaseDate;
+         this.movieLanguage = movieLanguage;
+         this.moviePoster = moviePoster;
+-        this.movieBackdrop =movieBackdrop;
++        this.movieBackdrop = movieBackdrop;
++        this.genreIds = genreIds;
+     }
+ 
+     @Ignore
+-    public Movie(){}
++    public Movie() {
++    }
+ 
+     public int getDatabaseId() {
+         return databaseId;
+@@ -87,7 +88,6 @@
+         return movieLanguage;
+     }
+ 
+-    @Ignore
+     public ArrayList<Integer> getGenreIds() {
+         return genreIds;
+     }
+@@ -134,9 +134,8 @@
+         this.movieLanguage = movieLanguage;
+     }
+ 
+-    @Ignore
+     public void setGenreIds(ArrayList<Integer> genreIds) {
+         this.genreIds = genreIds;
+     }
+-
+ }
++

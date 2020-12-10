@@ -26,7 +26,7 @@ public class Genres {
         put(37, "Western");
     }};
 
-    public static HashMap<Integer, String> getGenres() {
+    public static HashMap<Integer, String> getRealGenres() {
         return genres;
     }
 }
