@@ -39,7 +39,7 @@ public class MovieViewModel extends ViewModel {
         moviePagedList = (new LivePagedListBuilder(movieDataSourceFactory, pagedListConfig)).build();
     }
 
-    public void clear(){
+    public void invalidateDataSource(){
         movieDataSource.invalidate();
     }
 }

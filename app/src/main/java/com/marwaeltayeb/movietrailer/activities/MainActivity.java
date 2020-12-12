@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private NetworkChangeReceiver mNetworkReceiver;
     private Snackbar snack;
 
+    SharedPreferences sharedPreferences;
     public static String sort;
 
     @Override
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         // Get movieViewModel
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
 
         setViews();
@@ -312,9 +313,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
-            sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
-            movieViewModel.clear();
-            loadMovies();
+            if (isNetworkConnected()) {
+                sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
+                movieViewModel.invalidateDataSource();
+            }
         }
     }
 
@@ -374,7 +376,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onNetworkConnected() {
         snack.dismiss();
         progressDialog.show();
-        loadMovies();
+        sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
+        movieViewModel.invalidateDataSource();
     }
 
     @Override
