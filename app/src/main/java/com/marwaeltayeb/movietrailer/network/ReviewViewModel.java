@@ -1,21 +1,21 @@
 package com.marwaeltayeb.movietrailer.network;
 
 import android.app.Application;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.marwaeltayeb.movietrailer.models.Review;
 
 import java.util.List;
 
-public class ReviewViewModel extends AndroidViewModel {
+public class ReviewViewModel extends ViewModel {
 
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
-    public ReviewViewModel(@NonNull Application application) {
-        super(application);
-        reviewRepository = new ReviewRepository(application);
+    public ReviewViewModel() {
+        reviewRepository = new ReviewRepository();
     }
 
     public LiveData<List<Review>> getAllReviews() {

@@ -1,8 +1,8 @@
 package com.marwaeltayeb.movietrailer.network;
 
-import android.app.Application;
-import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
@@ -20,12 +20,7 @@ import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 public class TrailerRepository {
 
     private List<Trailer> trailerList = new ArrayList<>();
-    private MutableLiveData<List<Trailer>> mutableLiveData = new MutableLiveData<>();
-    private Application application;
-
-    public TrailerRepository(Application application) {
-        this.application = application;
-    }
+    private final MutableLiveData<List<Trailer>> mutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<List<Trailer>> getMutableLiveData() {
         RetrofitClient.getInstance()

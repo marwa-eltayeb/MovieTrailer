@@ -1,21 +1,18 @@
 package com.marwaeltayeb.movietrailer.network;
 
-import android.app.Application;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 
 import com.marwaeltayeb.movietrailer.models.Trailer;
 
 import java.util.List;
 
-public class TrailerViewModel extends AndroidViewModel {
+public class TrailerViewModel extends ViewModel {
 
-    private TrailerRepository trailerRepository;
+    private final TrailerRepository trailerRepository;
 
-    public TrailerViewModel(@NonNull Application application) {
-        super(application);
-        trailerRepository = new TrailerRepository(application);
+    public TrailerViewModel() {
+        trailerRepository = new TrailerRepository();
     }
 
     public LiveData<List<Trailer>> getAllTrailers() {
