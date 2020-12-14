@@ -40,6 +40,6 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void invalidateDataSource(){
-        movieDataSource.invalidate();
+        if(movieDataSource != null) movieDataSource.invalidate();
     }
 }

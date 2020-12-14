@@ -10,6 +10,12 @@ import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
+    /** The absence of a connection type. */
+    private static final int NO_CONNECTION_TYPE = -1;
+
+    /** The last processed network type. */
+    private static int sLastType = NO_CONNECTION_TYPE;
+
     OnNetworkListener onNetworkListener;
 
     public void setOnNetworkListener(OnNetworkListener onNetworkListener) {
@@ -18,20 +24,30 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!isOnline(context)) {
-            onNetworkListener.onNetworkDisconnected();
-        } else {
-            onNetworkListener.onNetworkConnected();
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        final int currentType = activeNetworkInfo != null ? activeNetworkInfo.getType() : NO_CONNECTION_TYPE;
+
+        // Avoid handling multiple broadcasts for the same connection type
+        if (sLastType != currentType) {
+            if (activeNetworkInfo != null) {
+                boolean isConnectedOrConnecting = activeNetworkInfo.isConnectedOrConnecting();
+                boolean isWiFi = ConnectivityManager.TYPE_WIFI == currentType;
+                boolean isMobile = ConnectivityManager.TYPE_MOBILE == currentType;
+
+                // Connected
+                if(isConnectedOrConnecting && isWiFi || isConnectedOrConnecting && isMobile){
+                    onNetworkListener.onNetworkConnected();
+                }
+            } else {
+                // Disconnected
+                onNetworkListener.onNetworkDisconnected();
+            }
+
+            sLastType = currentType;
         }
     }
-
-    private boolean isOnline(Context context) {
-        // Get a reference to the ConnectivityManager to check state of network connectivity
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Get details on the currently active default database network
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
-
 }

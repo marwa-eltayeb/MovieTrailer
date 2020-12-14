@@ -8,9 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
 
-        <!-- Prevent screen from Blinking -->
-        <item name="android:windowIsTranslucent">true</item>
-
         <item name="preferenceTheme">@style/CustomPreferencesTheme</item>
     </style>
 

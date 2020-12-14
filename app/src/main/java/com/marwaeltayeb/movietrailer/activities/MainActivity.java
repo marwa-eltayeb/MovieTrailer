@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private void setViews() {
         recyclerView = findViewById(R.id.movie_list);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 4));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ? 3 : 5));
         recyclerView.setHasFixedSize(true);
         no_movies_found = findViewById(R.id.no_movies_found);
 
@@ -183,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (menuTitle.equals(getString(R.string.light_mode))) {
                 item.setTitle(getString(R.string.night_mode));
 
-                Toast.makeText(this, "Switch to Day mode", Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Switch to Day mode");
 
                 getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                 getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-                Toast.makeText(this, "Switch to Night mode", Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "Switch to Night mode");
 
                 setLightMode(this, false);
             }
@@ -378,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         progressDialog.show();
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         movieViewModel.invalidateDataSource();
+        loadMovies();
     }
 
     @Override
