@@ -1,15 +1,16 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -71,7 +72,7 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
-                    .placeholder(R.color.gary)
+                    .placeholder(R.drawable.no_preview)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .priority(Priority.HIGH)
                     .dontAnimate()
@@ -80,10 +81,8 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
             // Load the Movie poster into ImageView
             Glide.with(mContext)
                     .load(IMAGE_URL + movie.getMoviePoster())
-                    //.apply(options)
+                    .apply(options)
                     .into(holder.moviePoster);
-
-            holder.moviePoster.setImageResource(R.drawable.no_preview);
         }
     }
 
