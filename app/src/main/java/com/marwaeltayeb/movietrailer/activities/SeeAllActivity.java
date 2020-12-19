@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.marwaeltayeb.movietrailer.R;
@@ -29,7 +29,7 @@ public class SeeAllActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_see_all);
 
-        trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
+        trailerViewModel = new ViewModelProvider(this).get(TrailerViewModel.class);
 
         setupRecyclerViews();
 

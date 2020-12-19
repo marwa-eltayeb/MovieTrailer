@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +46,7 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
         noBookmarks = findViewById(R.id.noBookmarks);
 
         favoriteAdapter = new FavoriteAdapter(this, this);
-        movieRoomViewModel = ViewModelProviders.of(this).get(MovieRoomViewModel.class);
+        movieRoomViewModel = new ViewModelProvider(this).get(MovieRoomViewModel.class);
 
         loadMoviesFromDatabase();
     }
