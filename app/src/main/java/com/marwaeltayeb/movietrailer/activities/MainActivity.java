@@ -37,9 +37,8 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.adapters.SearchAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
-import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.network.MovieViewModel;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
+import com.marwaeltayeb.movietrailer.network.SearchViewModel;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
@@ -47,11 +46,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.getMode;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.isLightModeOn;
@@ -69,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     SearchAdapter searchAdapter;
     List<Movie> searchedMovieList;
     MovieViewModel movieViewModel;
+    SearchViewModel searchViewModel;
     TextView no_movies_found;
 
     private NetworkChangeReceiver mNetworkReceiver;
@@ -87,8 +82,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
-        // Get movieViewModel
+        // Get ViewModels
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
@@ -210,37 +207,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * Search for movies.
      */
-    private String Search(String query) {
-        RetrofitClient.getInstance()
-                .getMovieService().searchForMovies(query, API_KEY)
-                .enqueue(new Callback<MovieApiResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
-                        if (response.body() != null) {
-                            searchedMovieList = response.body().getMovies();
-                            if (searchedMovieList.isEmpty()) {
-                                getNoResult();
-                            }
-                            Log.v("onResponse", searchedMovieList.size() + " Movies");
-                            searchAdapter = new SearchAdapter(getApplicationContext(), searchedMovieList, new SearchAdapter.SearchAdapterOnClickHandler() {
-                                @Override
-                                public void onClick(Movie movie) {
-                                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-                                    // Pass an object of movie class
-                                    intent.putExtra(MOVIE, (movie));
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                        recyclerView.setAdapter(searchAdapter);
-                    }
+    private void Search(String query) {
+        searchViewModel.getSearchedMovies(query).observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
 
-                    @Override
-                    public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                        Log.v("onFailure", " Failed to get movies");
-                    }
-                });
-        return query;
+                if (!movies.isEmpty()) {
+                    searchedMovieList = movies;
+
+                    searchAdapter = new SearchAdapter(getApplicationContext(), searchedMovieList, new SearchAdapter.SearchAdapterOnClickHandler() {
+                        @Override
+                        public void onClick(Movie movie) {
+                            Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                            // Pass an object of movie class
+                            intent.putExtra(MOVIE, (movie));
+                            startActivity(intent);
+                        }
+                    });
+
+                    recyclerView.setAdapter(searchAdapter);
+                }else {
+                    getNoResult();
+                }
+            }
+        });
     }
 
     /**
