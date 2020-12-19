@@ -31,6 +31,7 @@ import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
 import com.marwaeltayeb.movietrailer.utils.Genres;
 import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
@@ -59,6 +60,7 @@ public class MovieActivity extends AppCompatActivity {
     private String language;
     private String poster;
     private String backDrop;
+    private ArrayList<Integer> genres;
 
     private Movie movie;
 
@@ -116,6 +118,7 @@ public class MovieActivity extends AppCompatActivity {
         language = movie.getMovieLanguage();
         backDrop = movie.getMovieBackdrop();
         poster = movie.getMoviePoster();
+        genres = movie.getGenreIds();
 
         binding.titleOfMovie.setText(title);
         binding.ratingOfMovie.setText(vote);
@@ -220,7 +223,7 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void insertFavoriteMovie() {
-        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop, movie.getGenreIds());
+        movie = new Movie(idOfMovie, title, vote, description, formattedDate, language, poster, backDrop, genres);
         movieRoomViewModel.insert(movie);
     }
 
