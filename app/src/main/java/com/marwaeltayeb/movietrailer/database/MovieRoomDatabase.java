@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.marwaeltayeb.movietrailer.models.GenresTypeConverter;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
-@Database(entities = {Movie.class}, version = 2, exportSchema = false)
+@Database(entities = {Movie.class}, version = 2)
 @TypeConverters({GenresTypeConverter.class})
 public abstract class MovieRoomDatabase extends RoomDatabase {
 
@@ -20,7 +20,7 @@ public abstract class MovieRoomDatabase extends RoomDatabase {
 
     private static MovieRoomDatabase sInstance;
 
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+    public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE movie_table "
