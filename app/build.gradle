@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
     compileSdkVersion 29
@@ -16,6 +18,8 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        buildConfigField "String", "API_KEY", localProperties['apiKey']
     }
 
     buildTypes {

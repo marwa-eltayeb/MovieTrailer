@@ -1,5 +1,6 @@
 package com.marwaeltayeb.movietrailer.network;
 
+import com.marwaeltayeb.movietrailer.BuildConfig;
 import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
 import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
@@ -15,7 +16,7 @@ import retrofit2.http.Query;
 
 public interface MovieService {
 
-    String API_KEY = "19cc511b297f733789a2a3bf0bc6a3b3";
+    String API_KEY = BuildConfig.API_KEY;
 
     @GET("movie/{sort}")
     Call<MovieApiResponse> getMovies(@Path("sort") String sortBy,@Query("page") int page,@Query("api_key") String apiKey);
