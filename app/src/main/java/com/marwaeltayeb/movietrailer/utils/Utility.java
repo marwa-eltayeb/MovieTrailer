@@ -25,8 +25,9 @@ public class Utility {
                 currentDate = format.format(newDate);
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e){
+                e.printStackTrace();
             }
-
         }catch (ParseException e) {
             Log.e(TAG, "Problem with parsing the date format");
         }
