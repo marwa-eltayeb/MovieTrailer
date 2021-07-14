@@ -92,50 +92,23 @@ public class Movie implements Serializable {
         return genreIds;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return this.movieTitle;
-    }
-
     public void setDatabaseId(int databaseId) {
         this.databaseId = databaseId;
     }
 
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Movie)) return false;
+        Movie movie = (Movie) o;
+        return getMovieId().equals(movie.getMovieId()) &&
+                getMovieVote().equals(movie.getMovieVote()) &&
+                getMovieTitle().equals(movie.getMovieTitle()) &&
+                getMovieDescription().equals(movie.getMovieDescription()) &&
+                getMovieReleaseDate().equals(movie.getMovieReleaseDate()) &&
+                getMovieLanguage().equals(movie.getMovieLanguage());
     }
 
-    public void setMovieVote(String movieVote) {
-        this.movieVote = movieVote;
-    }
 
-    public void setMovieTitle(String movieTitle) {
-        this.movieTitle = movieTitle;
-    }
-
-    public void setMoviePoster(String moviePoster) {
-        this.moviePoster = moviePoster;
-    }
-
-    public void setMovieBackdrop(String movieBackdrop) {
-        this.movieBackdrop = movieBackdrop;
-    }
-
-    public void setMovieDescription(String movieDescription) {
-        this.movieDescription = movieDescription;
-    }
-
-    public void setMovieReleaseDate(String movieReleaseDate) {
-        this.movieReleaseDate = movieReleaseDate;
-    }
-
-    public void setMovieLanguage(String movieLanguage) {
-        this.movieLanguage = movieLanguage;
-    }
-
-    public void setGenreIds(ArrayList<Integer> genreIds) {
-        this.genreIds = genreIds;
-    }
 }
 
