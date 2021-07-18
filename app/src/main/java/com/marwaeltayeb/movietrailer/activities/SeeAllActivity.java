@@ -14,7 +14,7 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.databinding.ActivitySeeAllBinding;
 import com.marwaeltayeb.movietrailer.models.Trailer;
-import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 
 import java.util.List;
 

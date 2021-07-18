@@ -11,7 +11,7 @@ public class MovieDataSourceFactory extends DataSource.Factory {
     // Creating the mutable live database
     private MutableLiveData<PageKeyedDataSource<Integer, Movie>> movieLiveDataSource = new MutableLiveData<>();
 
-    static MovieDataSource movieDataSource;
+    public static MovieDataSource movieDataSource;
 
     @Override
     public DataSource<Integer, Movie> create() {

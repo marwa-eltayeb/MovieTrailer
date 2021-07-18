@@ -1,4 +1,4 @@
-package com.marwaeltayeb.movietrailer.network;
+package com.marwaeltayeb.movietrailer.repositories;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
+import com.marwaeltayeb.movietrailer.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;

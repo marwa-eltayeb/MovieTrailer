@@ -1,8 +1,9 @@
 package com.marwaeltayeb.movietrailer.network;
 
-import androidx.paging.PageKeyedDataSource;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.paging.PageKeyedDataSource;
 
 import com.marwaeltayeb.movietrailer.activities.MainActivity;
 import com.marwaeltayeb.movietrailer.models.Movie;
@@ -18,7 +19,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE = 1;
 
-    static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 20;
 
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {

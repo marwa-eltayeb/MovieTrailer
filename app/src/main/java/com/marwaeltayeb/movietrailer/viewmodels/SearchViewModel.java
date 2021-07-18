@@ -1,9 +1,10 @@
-package com.marwaeltayeb.movietrailer.network;
+package com.marwaeltayeb.movietrailer.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.repositories.SearchRepository;
 
 import java.util.List;
 

@@ -37,8 +37,8 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.adapters.SearchAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
-import com.marwaeltayeb.movietrailer.network.MovieViewModel;
-import com.marwaeltayeb.movietrailer.network.SearchViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.MovieViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.SearchViewModel;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 

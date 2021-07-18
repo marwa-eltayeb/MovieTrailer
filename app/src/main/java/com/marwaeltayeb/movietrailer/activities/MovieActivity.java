@@ -26,8 +26,8 @@ import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.Trailer;
-import com.marwaeltayeb.movietrailer.network.ReviewViewModel;
-import com.marwaeltayeb.movietrailer.network.TrailerViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.ReviewViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 import com.marwaeltayeb.movietrailer.utils.Genres;
 import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 

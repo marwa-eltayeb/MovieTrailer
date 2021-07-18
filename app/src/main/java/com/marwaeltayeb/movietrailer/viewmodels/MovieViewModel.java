@@ -1,4 +1,4 @@
-package com.marwaeltayeb.movietrailer.network;
+package com.marwaeltayeb.movietrailer.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,6 +7,8 @@ import androidx.paging.PageKeyedDataSource;
 import androidx.paging.PagedList;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.network.MovieDataSource;
+import com.marwaeltayeb.movietrailer.network.MovieDataSourceFactory;
 
 import static com.marwaeltayeb.movietrailer.network.MovieDataSourceFactory.movieDataSource;
 
