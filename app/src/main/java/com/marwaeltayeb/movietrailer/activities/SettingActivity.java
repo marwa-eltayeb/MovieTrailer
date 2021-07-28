@@ -11,7 +11,9 @@ import androidx.preference.PreferenceManager;
 
 import com.marwaeltayeb.movietrailer.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class SettingActivity extends AppCompatActivity {
 
     @Override

@@ -9,13 +9,18 @@ import androidx.paging.PagedList;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.network.MovieDataSource;
 import com.marwaeltayeb.movietrailer.network.MovieDataSourceFactory;
+import com.marwaeltayeb.movietrailer.network.MovieService;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 import static com.marwaeltayeb.movietrailer.network.MovieDataSourceFactory.movieDataSource;
 
 /**
  * Created by Marwa on 7/10/2019.
  */
-
+@HiltViewModel
 public class MovieViewModel extends ViewModel {
 
     // Create liveData for PagedList and PagedKeyedDataSource
@@ -23,10 +28,11 @@ public class MovieViewModel extends ViewModel {
     private LiveData<PageKeyedDataSource<Integer, Movie>> liveDataSource;
 
     // Constructor
-    public MovieViewModel() {
+    @Inject
+    public MovieViewModel(MovieService movieService) {
 
         // Get our database source factory
-        MovieDataSourceFactory movieDataSourceFactory = new MovieDataSourceFactory();
+        MovieDataSourceFactory movieDataSourceFactory = new MovieDataSourceFactory(movieService);
 
         // Get the live database source from database source factory
         liveDataSource = movieDataSourceFactory.getMovieLiveDataSource();

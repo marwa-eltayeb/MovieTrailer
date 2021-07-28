@@ -26,13 +26,15 @@ import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.Trailer;
-import com.marwaeltayeb.movietrailer.viewmodels.ReviewViewModel;
-import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 import com.marwaeltayeb.movietrailer.utils.Genres;
 import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
+import com.marwaeltayeb.movietrailer.viewmodels.ReviewViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
 import static com.marwaeltayeb.movietrailer.activities.FavoriteActivity.isFavoriteActivityRunning;
@@ -40,6 +42,7 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.utils.Utility.formatDate;
 
+@AndroidEntryPoint
 public class MovieActivity extends AppCompatActivity {
 
     private ActivityMovieBinding binding;

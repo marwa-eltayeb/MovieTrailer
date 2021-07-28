@@ -1,8 +1,8 @@
 package com.marwaeltayeb.movietrailer.database;
 
-import android.app.Application;
-import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
+
+import androidx.lifecycle.LiveData;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
 
@@ -10,12 +10,11 @@ import java.util.List;
 
 public class MovieRepository {
 
-    private MovieDao mMovieDao;
-    private LiveData<List<Movie>> mAllMovies;
+    private final MovieDao mMovieDao;
+    private final LiveData<List<Movie>> mAllMovies;
 
-    MovieRepository(Application application) {
-        MovieRoomDatabase db = MovieRoomDatabase.getDatabase(application);
-        mMovieDao = db.movieDao();
+    public MovieRepository(MovieDao mMovieDao) {
+        this.mMovieDao = mMovieDao;
         mAllMovies = mMovieDao.getAllMovies();
     }
 
@@ -38,25 +37,6 @@ public class MovieRepository {
         @Override
         protected Void doInBackground(final Movie... params) {
             mAsyncTaskDao.insert(params[0]);
-            return null;
-        }
-    }
-
-    public void delete(Movie movie) {
-        new DeleteAsyncTask(mMovieDao).execute(movie);
-    }
-
-    private static class DeleteAsyncTask extends AsyncTask<Movie, Void, Void> {
-
-        private MovieDao mAsyncTaskDao;
-
-        DeleteAsyncTask(MovieDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Movie... params) {
-            mAsyncTaskDao.delete(params[0]);
             return null;
         }
     }

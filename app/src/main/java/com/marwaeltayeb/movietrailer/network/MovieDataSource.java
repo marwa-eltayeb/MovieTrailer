@@ -21,10 +21,15 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     public static final int PAGE_SIZE = 20;
 
+    private final MovieService movieService;
+
+    public MovieDataSource(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {
-        RetrofitClient.getInstance()
-                .getMovieService().getMovies(MainActivity.getSort(), FIRST_PAGE, API_KEY)
+        movieService.getMovies(MainActivity.getSort(), FIRST_PAGE, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -52,8 +57,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
-        RetrofitClient.getInstance()
-                .getMovieService().getMovies(MainActivity.getSort(), params.key, API_KEY)
+        movieService.getMovies(MainActivity.getSort(), params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {
@@ -79,8 +83,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
-        RetrofitClient.getInstance()
-                .getMovieService().getMovies(MainActivity.getSort(), params.key, API_KEY)
+        movieService.getMovies(MainActivity.getSort(), params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {

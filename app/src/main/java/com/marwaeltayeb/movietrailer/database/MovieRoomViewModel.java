@@ -1,6 +1,7 @@
 package com.marwaeltayeb.movietrailer.database;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -8,16 +9,22 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class MovieRoomViewModel extends AndroidViewModel {
     
-    private MovieRepository mRepository;
+    private final MovieRepository movieRepository;
 
-    private LiveData<List<Movie>> mAllMovies;
+    private final LiveData<List<Movie>> mAllMovies;
 
-    public MovieRoomViewModel(Application application) {
+    @Inject
+    public MovieRoomViewModel(Application application, MovieRepository movieRepository) {
         super(application);
-        mRepository = new MovieRepository(application);
-        mAllMovies = mRepository.getAllMovies();
+        this.movieRepository = movieRepository;
+        mAllMovies = movieRepository.getAllMovies();
     }
 
     public LiveData<List<Movie>> getAllFavoriteMovies() {
@@ -25,18 +32,14 @@ public class MovieRoomViewModel extends AndroidViewModel {
     }
 
     public void insert(Movie movie) {
-        mRepository.insert(movie);
-    }
-
-    public void delete(Movie movie) {
-        mRepository.delete(movie);
+        movieRepository.insert(movie);
     }
 
     public void deleteById(int movieId) {
-        mRepository.deleteById(movieId);
+        movieRepository.deleteById(movieId);
     }
 
     public void deleteAll() {
-        mRepository.deleteAll();
+        movieRepository.deleteAll();
     }
 }

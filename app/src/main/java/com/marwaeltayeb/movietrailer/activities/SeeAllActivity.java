@@ -18,6 +18,9 @@ import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SeeAllActivity extends AppCompatActivity {
 
     private ActivitySeeAllBinding binding;

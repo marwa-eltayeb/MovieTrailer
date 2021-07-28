@@ -1,9 +1,6 @@
 package com.marwaeltayeb.movietrailer.database;
 
-import android.content.Context;
-
 import androidx.room.Database;
-import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
@@ -16,10 +13,6 @@ import com.marwaeltayeb.movietrailer.models.Movie;
 @TypeConverters({GenresTypeConverter.class})
 public abstract class MovieRoomDatabase extends RoomDatabase {
 
-    private static final String DATABASE_NAME = "movie_database";
-
-    private static MovieRoomDatabase sInstance;
-
     public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
@@ -28,22 +21,6 @@ public abstract class MovieRoomDatabase extends RoomDatabase {
         }
     };
 
-
-    static MovieRoomDatabase getDatabase(final Context context) {
-        if (sInstance == null) {
-            synchronized (MovieRoomDatabase.class) {
-                if (sInstance == null) {
-                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                            MovieRoomDatabase.class, DATABASE_NAME)
-                            .addMigrations(MIGRATION_1_2)
-                            .build();
-                }
-            }
-        }
-        return sInstance;
-    }
-
     public abstract MovieDao movieDao();
-
 }
 

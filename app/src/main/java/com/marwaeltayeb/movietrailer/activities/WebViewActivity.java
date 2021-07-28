@@ -11,9 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.marwaeltayeb.movietrailer.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.marwaeltayeb.movietrailer.R.id.webView;
 import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 
+@AndroidEntryPoint
 public class WebViewActivity extends AppCompatActivity {
 
     String url;

@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.models.TrailerApiResponse;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
+import com.marwaeltayeb.movietrailer.network.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +25,15 @@ public class TrailerRepository {
     private List<Trailer> trailerList = new ArrayList<>();
     private final MutableLiveData<List<Trailer>> mutableLiveData = new MutableLiveData<>();
 
+    private MovieService movieService;
+
+    @Inject
+    public TrailerRepository(MovieService movieService){
+        this.movieService = movieService;
+    }
+
     public MutableLiveData<List<Trailer>> getMutableLiveData() {
-        RetrofitClient.getInstance()
-                .getMovieService().getTrailers((idOfMovie), API_KEY)
+        movieService.getTrailers((idOfMovie), API_KEY)
                 .enqueue(new Callback<TrailerApiResponse>() {
                     @Override
                     public void onResponse(Call<TrailerApiResponse> call, Response<TrailerApiResponse> response) {

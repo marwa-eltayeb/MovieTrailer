@@ -37,20 +37,23 @@ import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.MovieAdapter;
 import com.marwaeltayeb.movietrailer.adapters.SearchAdapter;
 import com.marwaeltayeb.movietrailer.models.Movie;
-import com.marwaeltayeb.movietrailer.viewmodels.MovieViewModel;
-import com.marwaeltayeb.movietrailer.viewmodels.SearchViewModel;
 import com.marwaeltayeb.movietrailer.receiver.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
+import com.marwaeltayeb.movietrailer.viewmodels.MovieViewModel;
+import com.marwaeltayeb.movietrailer.viewmodels.SearchViewModel;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.getMode;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.isLightModeOn;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.setLightMode;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
         SharedPreferences.OnSharedPreferenceChangeListener, OnNetworkListener {
 

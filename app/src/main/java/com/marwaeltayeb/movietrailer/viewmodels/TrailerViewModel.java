@@ -8,12 +8,18 @@ import com.marwaeltayeb.movietrailer.repositories.TrailerRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class TrailerViewModel extends ViewModel {
 
     private final TrailerRepository trailerRepository;
 
-    public TrailerViewModel() {
-        trailerRepository = new TrailerRepository();
+    @Inject
+    public TrailerViewModel(TrailerRepository trailerRepository) {
+        this.trailerRepository = trailerRepository;
     }
 
     public LiveData<List<Trailer>> getAllTrailers() {

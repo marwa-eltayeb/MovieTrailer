@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.marwaeltayeb.movietrailer.models.Review;
 import com.marwaeltayeb.movietrailer.models.ReviewApiResponse;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
+import com.marwaeltayeb.movietrailer.network.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +25,15 @@ public class ReviewRepository {
     private List<Review> reviewList = new ArrayList<>();
     private final MutableLiveData<List<Review>> mutableLiveData = new MutableLiveData<>();
 
+    private MovieService movieService;
+
+    @Inject
+    public ReviewRepository(MovieService movieService){
+        this.movieService = movieService;
+    }
+
     public MutableLiveData<List<Review>> getMutableLiveData() {
-        RetrofitClient.getInstance()
-                .getMovieService().getReviews((idOfMovie), API_KEY)
+       movieService.getReviews((idOfMovie), API_KEY)
                 .enqueue(new Callback<ReviewApiResponse>() {
                     @Override
                     public void onResponse(Call<ReviewApiResponse> call, Response<ReviewApiResponse> response) {

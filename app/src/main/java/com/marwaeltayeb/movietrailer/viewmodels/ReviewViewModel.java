@@ -8,12 +8,18 @@ import com.marwaeltayeb.movietrailer.repositories.ReviewRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class ReviewViewModel extends ViewModel {
 
     private final ReviewRepository reviewRepository;
 
-    public ReviewViewModel() {
-        reviewRepository = new ReviewRepository();
+    @Inject
+    public ReviewViewModel(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
     }
 
     public LiveData<List<Review>> getAllReviews() {

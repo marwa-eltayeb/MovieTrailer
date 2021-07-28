@@ -8,12 +8,18 @@ import com.marwaeltayeb.movietrailer.repositories.SearchRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class SearchViewModel extends ViewModel {
 
     private final SearchRepository searchRepository;
 
-    public SearchViewModel() {
-        searchRepository = new SearchRepository();
+    @Inject
+    public SearchViewModel(SearchRepository searchRepository) {
+        this.searchRepository = searchRepository;
     }
 
     public LiveData<List<Movie>> getSearchedMovies(String query) {

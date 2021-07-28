@@ -3,10 +3,14 @@ package com.marwaeltayeb.movietrailer.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.marwaeltayeb.movietrailer.R;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
 
     @Override

@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.marwaeltayeb.movietrailer.models.Movie;
 import com.marwaeltayeb.movietrailer.models.MovieApiResponse;
-import com.marwaeltayeb.movietrailer.network.RetrofitClient;
+import com.marwaeltayeb.movietrailer.network.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,10 +24,15 @@ public class SearchRepository {
     private List<Movie> searchedList = new ArrayList<>();
     private final MutableLiveData<List<Movie>> mutableLiveData = new MutableLiveData<>();
 
+    private MovieService movieService;
+
+    @Inject
+    public SearchRepository(MovieService movieService){
+        this.movieService = movieService;
+    }
 
     public MutableLiveData<List<Movie>> getMutableLiveData(String query) {
-        RetrofitClient.getInstance()
-                .getMovieService().searchForMovies(query, API_KEY)
+       movieService.searchForMovies(query, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(Call<MovieApiResponse> call, Response<MovieApiResponse> response) {

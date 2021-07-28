@@ -24,8 +24,11 @@ import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
 
+@AndroidEntryPoint
 public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapter.FavoriteAdapterOnClickHandler {
 
     private RecyclerView recyclerView;
