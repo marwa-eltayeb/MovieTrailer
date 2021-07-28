@@ -16,6 +16,7 @@
 - ViewModel (Android Architecture Components)
 - RecyclerView
 - CardView
+- DI with Hilt
 
 ## Screenshots
 | <img src="https://i.imgur.com/YAciZM8.jpg" width="250">  | <img src="https://i.imgur.com/iIhUugh.jpg" width="250"> | <img src="https://i.imgur.com/YfzcEnr.jpg" width="250">   
