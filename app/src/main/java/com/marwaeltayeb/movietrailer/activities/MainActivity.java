@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         no_movies_found = findViewById(R.id.no_movies_found);
 
         movieAdapter = new MovieAdapter(this, this);
+        recyclerView.setAdapter(searchAdapter);
     }
 
     @Override
@@ -227,8 +228,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                             startActivity(intent);
                         }
                     });
-
-                    recyclerView.setAdapter(searchAdapter);
                 }else {
                     getNoResult();
                 }

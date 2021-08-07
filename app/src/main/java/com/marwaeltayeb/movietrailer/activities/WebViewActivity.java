@@ -19,8 +19,6 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 @AndroidEntryPoint
 public class WebViewActivity extends AppCompatActivity {
 
-    String url;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,17 +29,14 @@ public class WebViewActivity extends AppCompatActivity {
         WebView web = findViewById(webView);
 
         Intent intent = getIntent();
-        url = intent.getStringExtra(URL_OF_REVIEW);
+        String url = intent.getStringExtra(URL_OF_REVIEW);
         web.setWebViewClient(new WebViewClient());
         web.loadUrl(url);
 
         web.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
-                // Hide Loading Indicator
                 loadingIndicator.setVisibility(View.GONE);
             }
         });
     }
-
-
 }

@@ -3,20 +3,15 @@ package com.marwaeltayeb.movietrailer.activities;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.databinding.ActivitySeeAllBinding;
-import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
-
-import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -34,30 +29,26 @@ public class SeeAllActivity extends AppCompatActivity {
 
         trailerViewModel = new ViewModelProvider(this).get(TrailerViewModel.class);
 
-        setupRecyclerViews();
+        setupViews();
 
         getTrailers();
     }
 
-    private void setupRecyclerViews() {
-        // Trailers
+    private void setupViews() {
         binding.listOfTrailers.setHasFixedSize(true);
         binding.listOfTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     public void getTrailers() {
-        trailerViewModel.getAllTrailers().observe(this, new Observer<List<Trailer>>() {
-            @Override
-            public void onChanged(@Nullable List<Trailer> trailers) {
-                trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
+        trailerViewModel.getAllTrailers().observe(this, trailers -> {
+            trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
 
-                if (trailers != null && trailers.isEmpty()) {
-                    binding.listOfTrailers.setVisibility(View.GONE);
-                    binding.noTrailers.setVisibility(View.VISIBLE);
-                }
-
-                binding.listOfTrailers.setAdapter(trailerAdapter);
+            if (trailers != null && trailers.isEmpty()) {
+                binding.listOfTrailers.setVisibility(View.GONE);
+                binding.noTrailers.setVisibility(View.VISIBLE);
             }
+
+            binding.listOfTrailers.setAdapter(trailerAdapter);
         });
     }
 

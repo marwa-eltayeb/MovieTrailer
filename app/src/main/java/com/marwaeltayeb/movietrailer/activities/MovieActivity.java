@@ -40,7 +40,7 @@ import static com.marwaeltayeb.movietrailer.R.id.listOfReviews;
 import static com.marwaeltayeb.movietrailer.activities.FavoriteActivity.isFavoriteActivityRunning;
 import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 import static com.marwaeltayeb.movietrailer.utils.Constant.MOVIE;
-import static com.marwaeltayeb.movietrailer.utils.Utility.formatDate;
+import static com.marwaeltayeb.movietrailer.utils.DateUtils.formatDate;
 
 @AndroidEntryPoint
 public class MovieActivity extends AppCompatActivity {

@@ -6,15 +6,10 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Marwa on 8/7/2019.
- */
+public class DateUtils {
 
-public class Utility {
+    private static final String TAG = "DateUtils";
 
-    public static final String TAG = "Utility";
-
-    // Format the date received from guardian JSON
     public static String formatDate(String currentDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
