@@ -23,15 +23,10 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 
 public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.FavoriteHolder> {
 
-    private Context mContext;
-    private Movie movie;
+    private final Context mContext;
 
-    // Create a final private FavoriteAdapterOnClickHandler called mClickHandler
-    private FavoriteAdapter.FavoriteAdapterOnClickHandler clickHandler;
+    private final FavoriteAdapter.FavoriteAdapterOnClickHandler clickHandler;
 
-    /**
-     * The interface that receives onClick messages.
-     */
     public interface FavoriteAdapterOnClickHandler {
         void onClick(Movie movie);
     }
@@ -64,34 +59,11 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteHolder holder, int position) {
-        movie = getItem(position);
-
-        if (movie != null) {
-            holder.movieTitle.setText(movie.getMovieTitle());
-            holder.movieRating.setText(movie.getMovieVote());
-
-            RequestOptions options = new RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.drawable.no_preview)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH)
-                    .dontAnimate()
-                    .dontTransform();
-
-            // Load the Movie poster into ImageView
-            Glide.with(mContext)
-                    .load(IMAGE_URL + movie.getMoviePoster())
-                    .apply(options)
-                    .into(holder.moviePoster);
-        }
-    }
-
-    public Movie getMovieAt(int position) {
-        return getItem(position);
+        Movie movie = getItem(position);
+        holder.bind(movie);
     }
 
     class FavoriteHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        // Create view instances
         TextView movieTitle;
         TextView movieRating;
         ImageView moviePoster;
@@ -108,13 +80,27 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            // Get position of the movie
-            movie = getItem(position);
-            // Send movie through click
-            clickHandler.onClick(movie);
+            clickHandler.onClick(getCurrentList().get(position));
+        }
+
+        public void bind(Movie movie) {
+            if (movie != null) {
+                movieTitle.setText(movie.getMovieTitle());
+                movieRating.setText(movie.getMovieVote());
+
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.no_preview)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .dontAnimate()
+                        .dontTransform();
+
+                Glide.with(mContext)
+                        .load(IMAGE_URL + movie.getMoviePoster())
+                        .apply(options)
+                        .into(moviePoster);
+            }
         }
     }
-
-
-
 }

@@ -22,4 +22,13 @@ public class Trailer {
     public String getKeyOfTrailer() {
         return keyOfTrailer;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trailer)) return false;
+        Trailer trailer = (Trailer) o;
+        return getKeyOfTrailer().equals(trailer.getKeyOfTrailer()) &&
+                getNameOfTrailer().equals(trailer.getNameOfTrailer());
+    }
 }

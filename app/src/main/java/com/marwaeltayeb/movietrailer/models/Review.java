@@ -35,4 +35,15 @@ public class Review {
     public String getUrl() {
         return url;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review)) return false;
+        Review review = (Review) o;
+        return getId().equals(review.getId()) &&
+                getAuthor().equals(review.getAuthor()) &&
+                getContent().equals(review.getContent()) &&
+                getUrl().equals(review.getUrl());
+    }
 }

@@ -37,19 +37,18 @@ public class SeeAllActivity extends AppCompatActivity {
     private void setupViews() {
         binding.listOfTrailers.setHasFixedSize(true);
         binding.listOfTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        trailerAdapter = new TrailerAdapter(this);
+        binding.listOfTrailers.setAdapter(trailerAdapter);
     }
 
     public void getTrailers() {
         trailerViewModel.getAllTrailers().observe(this, trailers -> {
-            trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
+            trailerAdapter.submitList(trailers);
 
             if (trailers != null && trailers.isEmpty()) {
                 binding.listOfTrailers.setVisibility(View.GONE);
                 binding.noTrailers.setVisibility(View.VISIBLE);
             }
-
-            binding.listOfTrailers.setAdapter(trailerAdapter);
         });
     }
-
 }

@@ -56,7 +56,6 @@ public class FavoriteActivity extends AppCompatActivity implements FavoriteAdapt
     }
 
     private void loadMoviesFromDatabase() {
-        // Observe the movieList from ViewModel
         movieRoomViewModel.getAllFavoriteMovies().observe(this, favoriteMovies -> {
             // Update the cached copy of the movies in the adapter.
             favoriteAdapter.submitList(favoriteMovies);

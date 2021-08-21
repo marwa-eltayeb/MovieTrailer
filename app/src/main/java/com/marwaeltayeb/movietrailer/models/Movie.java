@@ -108,7 +108,5 @@ public class Movie implements Serializable {
                 getMovieReleaseDate().equals(movie.getMovieReleaseDate()) &&
                 getMovieLanguage().equals(movie.getMovieLanguage());
     }
-
-
 }
 

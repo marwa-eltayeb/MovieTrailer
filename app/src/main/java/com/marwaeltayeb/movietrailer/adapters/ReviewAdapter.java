@@ -1,35 +1,39 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
-import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.activities.WebViewActivity;
 import com.marwaeltayeb.movietrailer.models.Review;
 
-import java.util.List;
-
 import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>{
+public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewHolder> {
 
-    private Context mContext;
-    // Declare an arrayList for trailers
-    private List<Review> reviewList;
-
-    private int mItemSelected= -1;
-
-
-    public ReviewAdapter(Context mContext, List<Review> reviewList) {
-        this.mContext = mContext;
-        this.reviewList = reviewList;
+    public ReviewAdapter() {
+        super(DIFF_CALLBACK);
     }
+
+    private static final DiffUtil.ItemCallback<Review> DIFF_CALLBACK = new DiffUtil.ItemCallback<Review>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
     @NonNull
     @Override
@@ -40,24 +44,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        Review currentReview = reviewList.get(position);
-        holder.reviewOfMovie.setText(currentReview.getContent());
-        holder.authorOfReview.setText("written by" + " " + currentReview.getAuthor());
+        Review currentReview = getItem(position);
+        holder.bind(currentReview);
     }
-
-
-
-    @Override
-    public int getItemCount() {
-        if (reviewList == null) {
-            return 0;
-        }
-        return reviewList.size();
-    }
-
 
     class ReviewViewHolder extends RecyclerView.ViewHolder{
-        // Create view instances
+
         TextView reviewOfMovie;
         TextView authorOfReview;
         TextView urlOfReview;
@@ -72,21 +64,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), WebViewActivity.class);
-                    // Get the position of the view in the adapter
-                    mItemSelected = getAdapterPosition();
-                    notifyDataSetChanged();
-                    // Get url of the review
-                    String url = reviewList.get(mItemSelected).getUrl();
-                    // Send the url with the intent
+                    String url = getCurrentList().get(getAdapterPosition()).getUrl();
                     intent.putExtra(URL_OF_REVIEW , url);
                     v.getContext().startActivity(intent);
-
-
                 }
             });
         }
 
-
+        public void bind(Review review){
+            reviewOfMovie.setText(review.getContent());
+            authorOfReview.setText("written by" + " " + review.getAuthor());
+        }
     }
-
 }

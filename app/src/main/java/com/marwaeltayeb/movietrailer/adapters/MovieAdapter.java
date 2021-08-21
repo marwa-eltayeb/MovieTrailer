@@ -1,12 +1,7 @@
 package com.marwaeltayeb.movietrailer.adapters;
 
 import android.annotation.SuppressLint;
-import androidx.paging.PagedList;
-import androidx.paging.PagedListAdapter;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.models.Movie;
 
@@ -25,15 +22,10 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.IMAGE_URL;
 
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     
-    private Context mContext;
-    private Movie movie;
+    private final Context mContext;
 
-    // Create a final private MovieAdapterOnClickHandler called mClickHandler
-    private MovieAdapterOnClickHandler clickHandler;
+    private final MovieAdapterOnClickHandler clickHandler;
 
-    /**
-     * The interface that receives onClick messages.
-     */
     public interface MovieAdapterOnClickHandler {
         void onClick(Movie movie);
     }
@@ -44,50 +36,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         this.clickHandler = clickHandler;
     }
 
-    @NonNull
-    @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new MovieViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        movie = getItem(position);
-
-        if (movie != null) {
-            holder.movieTitle.setText(movie.getMovieTitle());
-            holder.movieRating.setText(movie.getMovieVote());
-
-            RequestOptions options = new RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.color.gary)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .priority(Priority.HIGH)
-                    .dontAnimate()
-                    .dontTransform();
-
-            // Load the Movie poster into ImageView
-            Glide.with(mContext)
-                    .load(IMAGE_URL + movie.getMoviePoster())
-                    //.apply(options)
-                    .into(holder.moviePoster);
-        } else {
-            Toast.makeText(mContext, "Movie is null", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public Movie getMovieAt(int position) {
-        return getItem(position);
-    }
-
-    @Override
-    public PagedList<Movie> getCurrentList() {
-        return super.getCurrentList();
-    }
-
-    // It determine if two list objects are the same or not
-    private static DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
+    private static final DiffUtil.ItemCallback<Movie> DIFF_CALLBACK = new DiffUtil.ItemCallback<Movie>() {
         @Override
         public boolean areItemsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
             return oldMovie.movieId.equals(newMovie.movieId);
@@ -100,9 +49,21 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         }
     };
 
+    @NonNull
+    @Override
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
+        return new MovieViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+        Movie movie = getItem(position);
+        holder.bind(movie);
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        // Create view instances
         TextView movieTitle;
         TextView movieRating;
         ImageView moviePoster;
@@ -119,10 +80,20 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            // Get position of the movie
-            movie = getItem(position);
-            // Send movie through click
-            clickHandler.onClick(movie);
+            clickHandler.onClick(getCurrentList().get(position));
+        }
+
+        public void bind(Movie movie){
+            if (movie != null) {
+                movieTitle.setText(movie.getMovieTitle());
+                movieRating.setText(movie.getMovieVote());
+
+                Glide.with(mContext)
+                        .load(IMAGE_URL + movie.getMoviePoster())
+                        .into(moviePoster);
+            } else {
+                Toast.makeText(mContext, "Movie is null", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

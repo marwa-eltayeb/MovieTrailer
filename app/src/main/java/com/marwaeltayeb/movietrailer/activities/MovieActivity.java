@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,15 +22,12 @@ import com.marwaeltayeb.movietrailer.adapters.TrailerAdapter;
 import com.marwaeltayeb.movietrailer.database.MovieRoomViewModel;
 import com.marwaeltayeb.movietrailer.databinding.ActivityMovieBinding;
 import com.marwaeltayeb.movietrailer.models.Movie;
-import com.marwaeltayeb.movietrailer.models.Review;
-import com.marwaeltayeb.movietrailer.models.Trailer;
 import com.marwaeltayeb.movietrailer.utils.Genres;
 import com.marwaeltayeb.movietrailer.utils.SharedPreferencesUtils;
 import com.marwaeltayeb.movietrailer.viewmodels.ReviewViewModel;
 import com.marwaeltayeb.movietrailer.viewmodels.TrailerViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -83,18 +78,8 @@ public class MovieActivity extends AppCompatActivity {
         getReviews();
         getTrailers();
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFavourite();
-            }
-        });
-        binding.txtSeaAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSeeAllActivity();
-            }
-        });
+        binding.fab.setOnClickListener(view -> toggleFavourite());
+        binding.txtSeaAll.setOnClickListener(view -> goToSeeAllActivity());
     }
 
     private void setupRecyclerViews() {
@@ -102,15 +87,18 @@ public class MovieActivity extends AppCompatActivity {
         trailersRecyclerView = findViewById(R.id.listOfTrailers);
         trailersRecyclerView.setHasFixedSize(true);
         trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        trailerAdapter = new TrailerAdapter(this);
+        trailersRecyclerView.setAdapter(trailerAdapter);
 
         // Reviews
         reviewsRecyclerView = findViewById(listOfReviews);
         reviewsRecyclerView.setHasFixedSize(true);
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        reviewAdapter = new ReviewAdapter();
+        reviewsRecyclerView.setAdapter(reviewAdapter);
     }
 
     private void receiveMovieDetails() {
-        // Receive the movie object
         Intent intent = getIntent();
         movie = (Movie) intent.getSerializableExtra(MOVIE);
 
@@ -157,33 +145,23 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     public void getTrailers() {
-        trailerViewModel.getAllTrailers().observe(this, new Observer<List<Trailer>>() {
-            @Override
-            public void onChanged(@Nullable List<Trailer> trailers) {
-                trailerAdapter = new TrailerAdapter(getApplicationContext(), trailers);
+        trailerViewModel.getAllTrailers().observe(this, trailers -> {
+            trailerAdapter.submitList(trailers);
 
-                if (trailers != null && trailers.isEmpty()) {
-                    trailersRecyclerView.setVisibility(View.GONE);
-                    binding.noTrailers.setVisibility(View.VISIBLE);
-                }
-
-                trailersRecyclerView.setAdapter(trailerAdapter);
+            if (trailers != null && trailers.isEmpty()) {
+                trailersRecyclerView.setVisibility(View.GONE);
+                binding.noTrailers.setVisibility(View.VISIBLE);
             }
         });
     }
 
     public void getReviews() {
-        reviewViewModel.getAllReviews().observe(this, new Observer<List<Review>>() {
-            @Override
-            public void onChanged(@Nullable List<Review> reviews) {
-                reviewAdapter = new ReviewAdapter(getApplicationContext(), reviews);
+        reviewViewModel.getAllReviews().observe(this, reviews -> {
+            reviewAdapter.submitList(reviews);
 
-                if (reviews != null && reviews.isEmpty()) {
-                    reviewsRecyclerView.setVisibility(View.GONE);
-                    binding.noReviews.setVisibility(View.VISIBLE);
-                }
-
-                reviewsRecyclerView.setAdapter(reviewAdapter);
+            if (reviews != null && reviews.isEmpty()) {
+                reviewsRecyclerView.setVisibility(View.GONE);
+                binding.noReviews.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -36,6 +36,7 @@
                     android:layout_marginTop="200dp"
                     android:layout_marginEnd="14dp"
                     android:layout_marginRight="16dp"
+                    android:contentDescription="@string/add_movie"
                     android:src="@drawable/favorite_border_red"
                     app:backgroundTint="@color/colorAccent"
                     app:fabSize="mini" />

@@ -16,18 +16,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.PagedList;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,7 +53,6 @@ import static com.marwaeltayeb.movietrailer.utils.ModeStorage.setLightMode;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler,
         SharedPreferences.OnSharedPreferenceChangeListener, OnNetworkListener {
 
-
     private static final String TAG = "MainActivity";
     public static Dialog progressDialog;
 
@@ -85,10 +80,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
-        // Get ViewModels
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
@@ -97,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         loadMovies();
 
-        // Register the listener
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
         mNetworkReceiver = new NetworkChangeReceiver();
         mNetworkReceiver.setOnNetworkListener(this);
@@ -112,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         no_movies_found = findViewById(R.id.no_movies_found);
 
         movieAdapter = new MovieAdapter(this, this);
-        recyclerView.setAdapter(searchAdapter);
     }
 
     @Override
@@ -148,22 +138,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         });
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                if (searchedMovieList != null) {
-                    searchAdapter.clear();
-                    loadMovies();
-                }
-                return false;
+        searchView.setOnCloseListener(() -> {
+            if (searchedMovieList != null) {
+                searchAdapter.submitList(null);
+                loadMovies();
             }
+            return false;
         });
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Setup the specific action that occurs when any of the items in the Options Menu are selected.
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -212,27 +196,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      * Search for movies.
      */
     private void Search(String query) {
-        searchViewModel.getSearchedMovies(query).observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> movies) {
+        searchViewModel.getSearchedMovies(query).observe(this, movies -> {
 
-                if (!movies.isEmpty()) {
-                    searchedMovieList = movies;
+            if (!movies.isEmpty()) {
+                searchedMovieList = movies;
 
-                    searchAdapter = new SearchAdapter(getApplicationContext(), searchedMovieList, new SearchAdapter.SearchAdapterOnClickHandler() {
-                        @Override
-                        public void onClick(Movie movie) {
-                            Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-                            // Pass an object of movie class
-                            intent.putExtra(MOVIE, (movie));
-                            startActivity(intent);
-                        }
-                    });
-                }else {
-                    getNoResult();
-                }
+                searchAdapter = new SearchAdapter(getApplicationContext(), movie -> {
+                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                    intent.putExtra(MOVIE, (movie));
+                    startActivity(intent);
+                });
+
+                searchAdapter.submitList(searchedMovieList);
+                recyclerView.setAdapter(searchAdapter);
+            }else {
+                getNoResult();
             }
         });
+
     }
 
     /**
@@ -269,12 +250,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     public void showSnackBar() {
-        snack.setAction("CLOSE", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snack.dismiss();
-            }
-        });
+        snack.setAction("CLOSE", view -> snack.dismiss());
         snack.setActionTextColor(getResources().getColor(R.color.colorAccent));
         snack.show();
     }
@@ -282,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onClick(Movie movie) {
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-        // Pass an object of movie class
         intent.putExtra(MOVIE, (movie));
         startActivity(intent);
     }
@@ -319,22 +294,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private void loadMovies() {
         if (isNetworkConnected()) {
-            // Observe the moviePagedList from ViewModel
-            movieViewModel.moviePagedList.observe(this, new Observer<PagedList<Movie>>() {
-                @Override
-                public void onChanged(@Nullable PagedList<Movie> movies) {
-                    // In case of any changes, submitting the movies to adapter
-                    movieAdapter.submitList(movies);
-                    // when screen is rotated
-                    if (movies != null && !movies.isEmpty()) {
-                        progressDialog.dismiss();
-                    }
+            movieViewModel.moviePagedList.observe(this, movies -> {
+                movieAdapter.submitList(movies);
+                // When screen is rotated
+                if (movies != null && !movies.isEmpty()) {
+                    progressDialog.dismiss();
                 }
             });
         }
 
         recyclerView.setAdapter(movieAdapter);
-        movieAdapter.notifyDataSetChanged();
     }
 
     private void registerNetworkBroadcastForNougat() {
