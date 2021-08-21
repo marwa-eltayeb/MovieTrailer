@@ -18,6 +18,11 @@
 - CardView
 - DI with Hilt
 
+
+Note: Use your Api key as mine is hidden. After you get it, put it in local.properties file 
+
+`apiKey="XXXXXXXXXXXXXXXXXXXXXXXX"`
+
 ## Screenshots
 | <img src="https://i.imgur.com/YAciZM8.jpg" width="250">  | <img src="https://i.imgur.com/iIhUugh.jpg" width="250"> | <img src="https://i.imgur.com/YfzcEnr.jpg" width="250">   
 | ------------- | ------------- | ------------- |
@@ -27,4 +32,5 @@
  
 Project Preview: [Youtube](https://youtu.be/jhYmx7ytBs0).
 
-<a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="380" height="80"></a>
+<a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="20%" height="60"></a>
+
