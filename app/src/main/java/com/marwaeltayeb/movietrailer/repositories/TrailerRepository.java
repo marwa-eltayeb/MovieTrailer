@@ -17,15 +17,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.marwaeltayeb.movietrailer.utils.Constant.API_KEY;
 import static com.marwaeltayeb.movietrailer.activities.MovieActivity.idOfMovie;
-import static com.marwaeltayeb.movietrailer.network.MovieService.API_KEY;
 
 public class TrailerRepository {
 
     private List<Trailer> trailerList = new ArrayList<>();
     private final MutableLiveData<List<Trailer>> mutableLiveData = new MutableLiveData<>();
 
-    private MovieService movieService;
+    private final MovieService movieService;
 
     @Inject
     public TrailerRepository(MovieService movieService){

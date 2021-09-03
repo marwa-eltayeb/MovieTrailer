@@ -1,6 +1,10 @@
 package com.marwaeltayeb.movietrailer.utils;
 
+import com.marwaeltayeb.movietrailer.BuildConfig;
+
 public class Constant {
+
+    public static String API_KEY = BuildConfig.API_KEY;
 
     public static String IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
