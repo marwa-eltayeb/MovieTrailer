@@ -32,5 +32,9 @@ Note: Use your Api key as mine is hidden. After you get it, put it in local.prop
  
 Project Preview: [Youtube](https://youtu.be/jhYmx7ytBs0).
 
+## Download
+
 <a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="20%" height="60"></a>
+<a href="https://www.amazon.com/Marwa-Eltayeb-Movie-Trailer/dp/B088B6SJ5G"><img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" alt="Amazon App Store" width="20%" height="60"></a>
+<a href="https://appgallery.huawei.com/#/app/C103183085"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Huawei_AppGallery_white_badge_EN.png" alt="Huawei AppGallery" width="20%" height="60"></a>
 
