@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.marwaeltayeb.movietrailer.activities.MainActivity" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/no_movies_found"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
         android:gravity="center"
-        android:text="@string/no_movies_found"
-        android:textColor="@color/bookmarkColor"
-        android:layout_margin="10dp"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        tools:context="com.marwaeltayeb.movietrailer.ui.main.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movie_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/no_movies_found"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_movies_found"
+            android:textColor="@color/bookmarkColor"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>
 

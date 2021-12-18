@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/black"
-        tools:context=".activities.SeeAllActivity">
+        tools:context=".ui.seeall.SeeAllActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listOfTrailers"

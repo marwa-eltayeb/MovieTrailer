@@ -6,7 +6,7 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.marwaeltayeb.movietrailer.database.MovieRoomDatabase;
+import com.marwaeltayeb.movietrailer.data.local.MovieDatabase;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
-import static com.marwaeltayeb.movietrailer.database.MovieRoomDatabase.MIGRATION_1_2;
+import static com.marwaeltayeb.movietrailer.data.local.MovieDatabase.MIGRATION_1_2;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationTest {
@@ -26,7 +26,7 @@ public class MigrationTest {
 
     public MigrationTest() {
         helper = new MigrationTestHelper(InstrumentationRegistry.getInstrumentation(),
-                MovieRoomDatabase.class.getCanonicalName(),
+                MovieDatabase.class.getCanonicalName(),
                 new FrameworkSQLiteOpenHelperFactory());
     }
 

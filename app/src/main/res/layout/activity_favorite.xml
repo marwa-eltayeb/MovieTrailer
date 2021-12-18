@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/backgroundColor"
-    tools:context="com.marwaeltayeb.movietrailer.activities.FavoriteActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/noBookmarks"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/no_bookmarks"
-        android:textSize="30sp"
-        android:textStyle="italic"
-        android:textColor="@color/bookmarkColor"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:background="@color/backgroundColor"
+        tools:context="com.marwaeltayeb.movietrailer.ui.favorite.FavoriteActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorite_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/noBookmarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_bookmarks"
+            android:textSize="30sp"
+            android:textStyle="italic"
+            android:textColor="@color/bookmarkColor"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favorite_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

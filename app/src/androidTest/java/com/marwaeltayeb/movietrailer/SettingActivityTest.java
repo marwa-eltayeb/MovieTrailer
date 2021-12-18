@@ -9,7 +9,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
-import com.marwaeltayeb.movietrailer.activities.SettingActivity;
+import com.marwaeltayeb.movietrailer.ui.setting.SettingActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

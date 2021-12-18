@@ -7,7 +7,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
 
-import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.data.local.MovieDao;
+import com.marwaeltayeb.movietrailer.data.local.MovieDatabase;
+import com.marwaeltayeb.movietrailer.data.model.Movie;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,21 +32,21 @@ public class MovieDaoTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private MovieRoomDatabase movieRoomDatabase;
+    private MovieDatabase movieDatabase;
     private MovieDao movieDao;
 
     @Before
     public void setUp() {
-        movieRoomDatabase = Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(), MovieRoomDatabase.class)
+        movieDatabase = Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(), MovieDatabase.class)
                 .allowMainThreadQueries()
                 .build();
 
-        movieDao = movieRoomDatabase.movieDao();
+        movieDao = movieDatabase.movieDao();
     }
 
     @After
     public void tearDown() {
-        movieRoomDatabase.close();
+        movieDatabase.close();
     }
 
     @Test

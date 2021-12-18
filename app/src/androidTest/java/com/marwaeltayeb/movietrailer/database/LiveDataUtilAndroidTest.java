@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-import com.marwaeltayeb.movietrailer.models.Movie;
+import com.marwaeltayeb.movietrailer.data.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

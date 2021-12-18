@@ -14,7 +14,7 @@
     </queries>
 
     <application
-        android:name=".utils.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,31 +22,32 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:launchMode="singleTop" />
 
         <activity
-            android:name=".activities.MovieActivity"
+            android:name=".ui.movie.MovieActivity"
             android:label="@string/movie_details"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".ui.main.MainActivity" />
         </activity>
 
         <activity
-            android:name=".activities.SettingActivity"
+            android:name=".ui.setting.SettingActivity"
             android:label="@string/settings"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".ui.main.MainActivity" />
         </activity>
 
         <activity
-            android:name=".activities.SplashActivity"
-            android:theme="@style/ActivityTheme">
+            android:name=".ui.splash.SplashActivity"
+            android:theme="@style/ActivityTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -56,41 +57,41 @@
         </activity>
 
         <activity
-            android:name=".activities.WebViewActivity"
+            android:name=".ui.webview.WebViewActivity"
             android:label="@string/movie_review"
-            android:parentActivityName=".activities.MovieActivity">
+            android:parentActivityName=".ui.movie.MovieActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MovieActivity" />
+                android:value=".ui.movie.MovieActivity" />
         </activity>
 
-        <receiver android:name=".receiver.NetworkChangeReceiver" />
+        <receiver android:name=".utils.NetworkChangeReceiver" />
 
         <activity
-            android:name=".activities.FavoriteActivity"
+            android:name=".ui.favorite.FavoriteActivity"
             android:label="@string/my_favorites"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".ui.main.MainActivity" />
         </activity>
 
         <activity
-            android:name=".activities.SeeAllActivity"
+            android:name=".ui.seeall.SeeAllActivity"
             android:label="@string/see_all_trailers"
-            android:parentActivityName=".activities.MovieActivity">
+            android:parentActivityName=".ui.movie.MovieActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MovieActivity" />
+                android:value=".ui.movie.MovieActivity" />
         </activity>
 
         <activity
-            android:name=".activities.AboutActivity"
+            android:name=".ui.about.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".ui.main.MainActivity" />
         </activity>
     </application>
 </manifest>

@@ -2,8 +2,8 @@
 <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_setting"
-    android:name="com.marwaeltayeb.movietrailer.activities.SettingActivity$SettingFragment"
+    android:name="com.marwaeltayeb.movietrailer.ui.setting.SettingActivity$SettingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.marwaeltayeb.movietrailer.activities.SettingActivity" />
+    tools:context="com.marwaeltayeb.movietrailer.ui.setting.SettingActivity" />
 
