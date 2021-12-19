@@ -35,9 +35,9 @@ public class MovieRepository {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public LiveData<PagedList<Movie>> getRemoteMovies() {
+    public LiveData<PagedList<Movie>> getRemoteMovies(String sort) {
         // Build the paged list
-        return new LivePagedListBuilder<>(remoteDataSource.getRemoteMovies(), pagedListConfig).build();
+        return new LivePagedListBuilder<>(remoteDataSource.getRemoteMovies(sort), pagedListConfig).build();
     }
 
     public Call<MovieApiResponse> getSearchedList(String query) {

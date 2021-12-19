@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private Snackbar snack;
 
     SharedPreferences sharedPreferences;
-    public static String sort;
+    public String sort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +79,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
 
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.loadMovies(sort);
+
         setViews();
 
-        loadMovies();
+        getMovies();
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         searchView.setOnCloseListener(() -> {
             if (searchedMovieList != null) {
                 searchAdapter.submitList(null);
-                loadMovies();
+                getMovies();
             }
             return false;
         });
@@ -268,10 +270,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return progressDialog;
     }
 
-    public static String getSort() {
-        return sort;
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sort_key))) {
@@ -288,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    private void loadMovies() {
+    private void getMovies() {
         if (isNetworkConnected()) {
             mainViewModel.moviePagedList.observe(this, movies -> {
                 movieAdapter.submitList(movies);
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         progressDialog.show();
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         mainViewModel.invalidateDataSource();
-        loadMovies();
+        getMovies();
     }
 
     @Override

@@ -73,13 +73,13 @@ public class MovieActivity extends AppCompatActivity {
 
     private void setupRecyclerViews() {
         // Trailers
-        binding.listOfTrailers.setHasFixedSize(false);
+        binding.listOfTrailers.setHasFixedSize(true);
         binding.listOfTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         trailerAdapter = new TrailerAdapter(this);
         binding.listOfTrailers.setAdapter(trailerAdapter);
 
         // Reviews
-        binding.listOfReviews.setHasFixedSize(false);
+        binding.listOfReviews.setHasFixedSize(true);
         binding.listOfReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         reviewAdapter = new ReviewAdapter();
         binding.listOfReviews.setAdapter(reviewAdapter);

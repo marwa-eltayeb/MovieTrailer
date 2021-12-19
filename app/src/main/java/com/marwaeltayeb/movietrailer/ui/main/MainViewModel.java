@@ -36,7 +36,10 @@ public class MainViewModel extends ViewModel {
     @Inject
     public MainViewModel(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.moviePagedList = movieRepository.getRemoteMovies();
+    }
+
+    public void loadMovies(String sort){
+        this.moviePagedList = movieRepository.getRemoteMovies(sort);
     }
 
     public void invalidateDataSource(){

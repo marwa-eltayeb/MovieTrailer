@@ -23,14 +23,16 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     public static final int PAGE_SIZE = 20;
 
     private final MovieService movieService;
+    private final String sort;
 
-    public MovieDataSource(MovieService movieService) {
+    public MovieDataSource(MovieService movieService, String sort) {
         this.movieService = movieService;
+        this.sort = sort;
     }
 
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {
-        movieService.getMovies(MainActivity.getSort(), FIRST_PAGE, API_KEY)
+        movieService.getMovies(sort, FIRST_PAGE, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MovieApiResponse> call, @NonNull Response<MovieApiResponse> response) {
@@ -58,7 +60,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
-        movieService.getMovies(MainActivity.getSort(), params.key, API_KEY)
+        movieService.getMovies(sort, params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MovieApiResponse> call, @NonNull Response<MovieApiResponse> response) {
@@ -84,7 +86,7 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
-        movieService.getMovies(MainActivity.getSort(), params.key, API_KEY)
+        movieService.getMovies(sort, params.key, API_KEY)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MovieApiResponse> call, @NonNull Response<MovieApiResponse> response) {

@@ -20,9 +20,9 @@ public class RemoteDataSource {
         this.movieService = movieService;
     }
 
-    public MovieDataSourceFactory getRemoteMovies() {
+    public MovieDataSourceFactory getRemoteMovies(String sort) {
         // Get our database source factory
-        return new MovieDataSourceFactory(movieService);
+        return new MovieDataSourceFactory(movieService, sort);
     }
 
     public Call<MovieApiResponse> getSearchedList(String query) {
