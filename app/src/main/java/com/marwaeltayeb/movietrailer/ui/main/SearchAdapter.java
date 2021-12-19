@@ -6,10 +6,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
+import com.marwaeltayeb.movietrailer.databinding.MovieItemBinding;
 
 public class SearchAdapter extends ListAdapter<Movie, SearchAdapter.SearchViewHolder>{
 
@@ -45,8 +45,8 @@ public class SearchAdapter extends ListAdapter<Movie, SearchAdapter.SearchViewHo
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new SearchViewHolder(view);
+        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.movie_item, parent, false);
+        return new SearchViewHolder(movieItemBinding);
     }
 
     @Override
@@ -57,15 +57,11 @@ public class SearchAdapter extends ListAdapter<Movie, SearchAdapter.SearchViewHo
 
     class SearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView movieTitle;
-        TextView movieRating;
-        ImageView moviePoster;
+        private final MovieItemBinding binding;
 
-        private SearchViewHolder(View itemView) {
-            super(itemView);
-            movieTitle = itemView.findViewById(R.id.movie_title);
-            movieRating = itemView.findViewById(R.id.movie_rating);
-            moviePoster = itemView.findViewById(R.id.movie_poster);
+        private SearchViewHolder(MovieItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
             // Register a callback to be invoked when this view is clicked.
             itemView.setOnClickListener(this);
         }
@@ -76,12 +72,12 @@ public class SearchAdapter extends ListAdapter<Movie, SearchAdapter.SearchViewHo
         }
 
         public void bind(Movie movie){
-            movieTitle.setText(movie.getMovieTitle());
-            movieRating.setText(movie.getMovieVote());
+            binding.movieTitle.setText(movie.getMovieTitle());
+            binding.movieRating.setText(movie.getMovieVote());
 
             Glide.with(mContext)
                     .load(IMAGE_URL + movie.getMoviePoster())
-                    .into(moviePoster);
+                    .into(binding.moviePoster);
         }
     }
 

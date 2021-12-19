@@ -4,18 +4,18 @@ import static com.marwaeltayeb.movietrailer.utils.Constant.URL_OF_REVIEW;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marwaeltayeb.movietrailer.R;
-import com.marwaeltayeb.movietrailer.ui.webview.WebViewActivity;
 import com.marwaeltayeb.movietrailer.data.model.Review;
+import com.marwaeltayeb.movietrailer.databinding.ReviewItemBinding;
+import com.marwaeltayeb.movietrailer.ui.webview.WebViewActivity;
 
 public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewHolder> {
 
@@ -38,8 +38,8 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item, parent, false);
-        return new ReviewViewHolder(view);
+        ReviewItemBinding reviewItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.review_item, parent, false);
+        return new ReviewViewHolder(reviewItemBinding);
     }
 
     @Override
@@ -50,30 +50,23 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
 
     class ReviewViewHolder extends RecyclerView.ViewHolder{
 
-        TextView reviewOfMovie;
-        TextView authorOfReview;
-        TextView urlOfReview;
+        private final ReviewItemBinding binding;
 
-        private ReviewViewHolder(View itemView) {
-            super(itemView);
-            reviewOfMovie = itemView.findViewById(R.id.reviewOfMovie);
-            authorOfReview = itemView.findViewById(R.id.authorOfReview);
-            urlOfReview = itemView.findViewById(R.id.urlOfReview);
+        private ReviewViewHolder(ReviewItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-            urlOfReview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), WebViewActivity.class);
-                    String url = getCurrentList().get(getAdapterPosition()).getUrl();
-                    intent.putExtra(URL_OF_REVIEW , url);
-                    v.getContext().startActivity(intent);
-                }
+            binding.urlOfReview.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), WebViewActivity.class);
+                String url = getCurrentList().get(getAdapterPosition()).getUrl();
+                intent.putExtra(URL_OF_REVIEW , url);
+                v.getContext().startActivity(intent);
             });
         }
 
         public void bind(Review review){
-            reviewOfMovie.setText(review.getContent());
-            authorOfReview.setText("written by" + " " + review.getAuthor());
+            binding.reviewOfMovie.setText(review.getContent());
+            binding.authorOfReview.setText("written by" + " " + review.getAuthor());
         }
     }
 }

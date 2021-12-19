@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#1d1d1d"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginBottom="10dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/reviewOfMovie"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:padding="10dp"
-        android:text="@string/reviewDescription"
-        android:textColor="#fff"
-        android:maxLines="7"
-        android:ellipsize="end"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/authorOfReview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/mohamedelsharkawy"
-        android:textColor="#bebebe"
-        android:textSize="18sp" />
+        android:background="#1d1d1d"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/urlOfReview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/read_more"
-        android:textColor="#d90000"
-        android:textStyle="italic"
-        android:textSize="18sp" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/reviewOfMovie"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="10dp"
+            android:text="@string/reviewDescription"
+            android:textColor="#fff"
+            android:maxLines="7"
+            android:ellipsize="end"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/authorOfReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/mohamedelsharkawy"
+            android:textColor="#bebebe"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/urlOfReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/read_more"
+            android:textColor="#d90000"
+            android:textStyle="italic"
+            android:textSize="18sp" />
+    </LinearLayout>
+</layout>

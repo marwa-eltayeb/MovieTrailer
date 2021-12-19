@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="280dp"
-    android:layout_margin="5dp"
-    android:background="#1d1d1d"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/trailerOfMovie"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/trailer_of_the_movie"
-            android:scaleType="centerCrop"
-            android:src="@color/gary" />
-
-        <ImageView
-            android:id="@+id/play_icon"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/play_circle_outline_white_24dp"
-            android:contentDescription="@string/play_icon" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/nameOfTrailer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/toy_story_4_official_teaser_trailer"
-        android:textColor="#fff"
-        android:textSize="14sp" />
-</LinearLayout>
+        android:layout_height="280dp"
+        android:layout_margin="5dp"
+        android:background="#1d1d1d"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/trailerOfMovie"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/trailer_of_the_movie"
+                android:scaleType="centerCrop"
+                android:src="@color/gary" />
+
+            <ImageView
+                android:id="@+id/play_icon"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/play_circle_outline_white_24dp"
+                android:contentDescription="@string/play_icon" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/nameOfTrailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/toy_story_4_official_teaser_trailer"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+    </LinearLayout>
+</layout>

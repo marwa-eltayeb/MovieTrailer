@@ -7,11 +7,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
+import com.marwaeltayeb.movietrailer.databinding.MovieItemBinding;
 
 public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieViewHolder> {
     
@@ -52,8 +52,8 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new MovieViewHolder(view);
+        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.movie_item, parent, false);
+        return new MovieViewHolder(movieItemBinding);
     }
 
     @Override
@@ -64,15 +64,11 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView movieTitle;
-        TextView movieRating;
-        ImageView moviePoster;
+        private final MovieItemBinding binding;
 
-        private MovieViewHolder(View itemView) {
-            super(itemView);
-            movieTitle = itemView.findViewById(R.id.movie_title);
-            movieRating = itemView.findViewById(R.id.movie_rating);
-            moviePoster = itemView.findViewById(R.id.movie_poster);
+        private MovieViewHolder(MovieItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
             // Register a callback to be invoked when this view is clicked.
             itemView.setOnClickListener(this);
         }
@@ -85,12 +81,12 @@ public class MovieAdapter extends PagedListAdapter<Movie, MovieAdapter.MovieView
 
         public void bind(Movie movie){
             if (movie != null) {
-                movieTitle.setText(movie.getMovieTitle());
-                movieRating.setText(movie.getMovieVote());
+                binding.movieTitle.setText(movie.getMovieTitle());
+                binding.movieRating.setText(movie.getMovieVote());
 
                 Glide.with(mContext)
                         .load(IMAGE_URL + movie.getMoviePoster())
-                        .into(moviePoster);
+                        .into(binding.moviePoster);
             } else {
                 Toast.makeText(mContext, "Movie is null", Toast.LENGTH_LONG).show();
             }

@@ -6,10 +6,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.marwaeltayeb.movietrailer.R;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
+import com.marwaeltayeb.movietrailer.databinding.MovieItemBinding;
 
 public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.FavoriteHolder> {
 
@@ -53,8 +53,8 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
     @NonNull
     @Override
     public FavoriteHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new FavoriteHolder(view);
+        MovieItemBinding movieItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.movie_item, parent, false);
+        return new FavoriteHolder(movieItemBinding);
     }
 
     @Override
@@ -64,15 +64,12 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
     }
 
     class FavoriteHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView movieTitle;
-        TextView movieRating;
-        ImageView moviePoster;
 
-        public FavoriteHolder(View itemView) {
-            super(itemView);
-            movieTitle = itemView.findViewById(R.id.movie_title);
-            movieRating = itemView.findViewById(R.id.movie_rating);
-            moviePoster = itemView.findViewById(R.id.movie_poster);
+        private final MovieItemBinding binding;
+
+        public FavoriteHolder(MovieItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
             // Register a callback to be invoked when this view is clicked.
             itemView.setOnClickListener(this);
         }
@@ -85,8 +82,8 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
 
         public void bind(Movie movie) {
             if (movie != null) {
-                movieTitle.setText(movie.getMovieTitle());
-                movieRating.setText(movie.getMovieVote());
+                binding.movieTitle.setText(movie.getMovieTitle());
+                binding.movieRating.setText(movie.getMovieVote());
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
@@ -99,7 +96,7 @@ public class FavoriteAdapter extends ListAdapter<Movie, FavoriteAdapter.Favorite
                 Glide.with(mContext)
                         .load(IMAGE_URL + movie.getMoviePoster())
                         .apply(options)
-                        .into(moviePoster);
+                        .into(binding.moviePoster);
             }
         }
     }
