@@ -153,7 +153,7 @@
                         android:layout_weight="1"
                         android:gravity="start"
                         android:text="@string/videos"
-                        android:textColor="#fff"
+                        android:textColor="@color/categoryColor"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -206,7 +206,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/reviews"
-                    android:textColor="#fff"
+                    android:textColor="@color/categoryColor"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 

@@ -14,4 +14,5 @@
     <color name="itemBackground">#ffffff</color>
     <color name="movieNameTextColor">#000</color>
     <color name="movieDetailsTextColor">#7C7C7C</color>
+    <color name="categoryColor">#000</color>
 </resources>
