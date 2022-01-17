@@ -1,5 +1,6 @@
 package com.marwaeltayeb.movietrailer.data.remote;
 
+import com.marwaeltayeb.movietrailer.data.model.CastApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.ReviewApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.TrailerApiResponse;
@@ -23,4 +24,6 @@ public interface MovieService {
     @GET("movie/{movieId}/reviews")
     Call<ReviewApiResponse> getReviews(@Path("movieId") String movieId , @Query("api_key") String apiKey);
 
+    @GET("movie/{movieId}/credits")
+    Call<CastApiResponse> getCast(@Path("movieId") String movieId , @Query("api_key") String apiKey);
 }

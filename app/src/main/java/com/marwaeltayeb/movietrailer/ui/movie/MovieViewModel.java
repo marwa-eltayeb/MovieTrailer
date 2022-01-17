@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.marwaeltayeb.movietrailer.data.MovieRepository;
+import com.marwaeltayeb.movietrailer.data.model.Cast;
+import com.marwaeltayeb.movietrailer.data.model.CastApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
 import com.marwaeltayeb.movietrailer.data.model.Review;
 import com.marwaeltayeb.movietrailer.data.model.ReviewApiResponse;
@@ -32,6 +34,7 @@ public class MovieViewModel extends ViewModel {
 
     private final MutableLiveData<List<Trailer>> mutableTrailerList = new MutableLiveData<>();
     private final MutableLiveData<List<Review>> mutableReviewList = new MutableLiveData<>();
+    private final MutableLiveData<List<Cast>> mutableCastList = new MutableLiveData<>();
 
     private final MovieRepository movieRepository;
 
@@ -74,7 +77,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public LiveData<List<Review>> getAllReviews() {
-         movieRepository.getReviewList()
+        movieRepository.getReviewList()
                 .enqueue(new Callback<ReviewApiResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<ReviewApiResponse> call, @NonNull Response<ReviewApiResponse> response) {
@@ -93,4 +96,25 @@ public class MovieViewModel extends ViewModel {
 
         return mutableReviewList;
     }
+
+    public LiveData<List<Cast>> getAllCast() {
+        movieRepository.getCastList().enqueue(new Callback<CastApiResponse>() {
+            @Override
+            public void onResponse(Call<CastApiResponse> call, Response<CastApiResponse> response) {
+                Log.d(TAG, "Succeeded cast");
+                if (response.body() != null) {
+                    List<Cast> castList = response.body().getCast();
+                    mutableCastList.setValue(castList);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CastApiResponse> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+            }
+        });
+
+        return mutableCastList;
+    }
 }
+

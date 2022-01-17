@@ -38,6 +38,7 @@ public class MovieActivity extends AppCompatActivity {
 
     private ReviewAdapter reviewAdapter;
     private TrailerAdapter trailerAdapter;
+    private CastAdapter castAdapter;
 
     private MovieViewModel movieViewModel;
 
@@ -66,6 +67,7 @@ public class MovieActivity extends AppCompatActivity {
 
         getReviews();
         getTrailers();
+        getCast();
 
         binding.fab.setOnClickListener(view -> toggleFavourite());
         binding.txtSeaAll.setOnClickListener(view -> goToSeeAllActivity());
@@ -73,16 +75,22 @@ public class MovieActivity extends AppCompatActivity {
 
     private void setupRecyclerViews() {
         // Trailers
-        binding.listOfTrailers.setHasFixedSize(true);
+        binding.listOfTrailers.setHasFixedSize(false);
         binding.listOfTrailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         trailerAdapter = new TrailerAdapter(this);
         binding.listOfTrailers.setAdapter(trailerAdapter);
 
         // Reviews
-        binding.listOfReviews.setHasFixedSize(true);
+        binding.listOfReviews.setHasFixedSize(false);
         binding.listOfReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         reviewAdapter = new ReviewAdapter();
         binding.listOfReviews.setAdapter(reviewAdapter);
+
+        // Cast
+        binding.listOfCast.setHasFixedSize(false);
+        binding.listOfCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        castAdapter = new CastAdapter(this);
+        binding.listOfCast.setAdapter(castAdapter);
     }
 
     private void receiveMovieDetails() {
@@ -149,6 +157,17 @@ public class MovieActivity extends AppCompatActivity {
             if (reviews != null && reviews.isEmpty()) {
                 binding.listOfReviews.setVisibility(View.GONE);
                 binding.noReviews.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void getCast() {
+        movieViewModel.getAllCast().observe(this, cast -> {
+            castAdapter.submitList(cast);
+
+            if (cast != null && cast.isEmpty()) {
+                binding.listOfCast.setVisibility(View.GONE);
+                binding.noCast.setVisibility(View.VISIBLE);
             }
         });
     }

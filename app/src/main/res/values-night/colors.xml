@@ -14,4 +14,5 @@
     <color name="itemBackground">#404040</color>
     <color name="movieNameTextColor">#fff</color>
     <color name="movieDetailsTextColor">#aeaeae</color>
+    <color name="categoryColor">#fff</color>
 </resources>

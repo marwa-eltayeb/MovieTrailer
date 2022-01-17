@@ -65,4 +65,7 @@
     <string name="night_mode">Night Mode</string>
     <string name="light_mode">Light Mode</string>
     <string name="add_movie">add movie</string>
+    <string name="actor_profile">Actor Profile</string>
+    <string name="no_available_cast">No Available Cast</string>
+    <string name="cast">Cast</string>
 </resources>

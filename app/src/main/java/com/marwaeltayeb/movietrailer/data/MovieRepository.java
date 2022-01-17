@@ -5,6 +5,7 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.marwaeltayeb.movietrailer.data.local.LocalDataSource;
+import com.marwaeltayeb.movietrailer.data.model.CastApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
 import com.marwaeltayeb.movietrailer.data.model.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.ReviewApiResponse;
@@ -50,6 +51,10 @@ public class MovieRepository {
 
     public Call<ReviewApiResponse> getReviewList() {
         return remoteDataSource.getReviewList();
+    }
+
+    public Call<CastApiResponse> getCastList() {
+        return remoteDataSource.getCastList();
     }
 
     public LiveData<List<Movie>> getAllMovies() {

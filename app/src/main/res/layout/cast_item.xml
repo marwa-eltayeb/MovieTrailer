@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="1dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:elevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkGray"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/actorProfile"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/actor_profile"
+                android:scaleType="fitXY"
+                tools:src="@color/gary" />
+
+            <TextView
+                android:id="@+id/actorName"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="3dp"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                tools:text="Edward Norton" />
+
+            <TextView
+                android:id="@+id/actorCharacter"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="3dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                tools:text="The Narrator" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

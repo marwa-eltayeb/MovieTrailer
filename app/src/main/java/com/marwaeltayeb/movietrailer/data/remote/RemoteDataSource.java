@@ -3,6 +3,7 @@ package com.marwaeltayeb.movietrailer.data.remote;
 import static com.marwaeltayeb.movietrailer.ui.movie.MovieActivity.idOfMovie;
 import static com.marwaeltayeb.movietrailer.utils.Constant.API_KEY;
 
+import com.marwaeltayeb.movietrailer.data.model.CastApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.MovieApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.ReviewApiResponse;
 import com.marwaeltayeb.movietrailer.data.model.TrailerApiResponse;
@@ -35,5 +36,9 @@ public class RemoteDataSource {
 
     public Call<ReviewApiResponse> getReviewList() {
         return movieService.getReviews((idOfMovie), API_KEY);
+    }
+
+    public Call<CastApiResponse> getCastList() {
+        return movieService.getCast((idOfMovie), API_KEY);
     }
 }

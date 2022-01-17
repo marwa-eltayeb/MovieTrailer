@@ -177,7 +177,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    tools:listitem="@layout/trailer_item" />
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/trailer_item"
+                    tools:orientation="horizontal" />
 
                 <TextView
                     android:id="@+id/noTrailers"
@@ -214,7 +216,9 @@
                     android:id="@+id/listOfReviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/review_item" />
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/review_item"
+                    tools:orientation="horizontal" />
 
                 <TextView
                     android:id="@+id/noReviews"
@@ -230,6 +234,48 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/cast"
+                    android:textColor="@color/categoryColor"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listOfCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/cast_item"
+                    tools:orientation="horizontal" />
+
+                <TextView
+                    android:id="@+id/noCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="5dp"
+                    android:background="#1d1d1d"
+                    android:padding="10dp"
+                    android:text="@string/no_available_cast"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </layout>
