@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundColor"
@@ -14,19 +14,26 @@
             android:id="@+id/no_movies_found"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
             android:text="@string/no_movies_found"
             android:textColor="@color/bookmarkColor"
-            android:layout_margin="10dp"
             android:textSize="18sp"
             android:textStyle="italic"
-            android:visibility="gone" />
+            android:visibility="invisible" />
+
+        <ProgressBar
+            android:id="@+id/loadingIndicator"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movie_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
 

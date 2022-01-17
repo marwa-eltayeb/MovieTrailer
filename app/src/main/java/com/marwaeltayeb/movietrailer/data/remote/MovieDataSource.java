@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
 
-import com.marwaeltayeb.movietrailer.ui.main.MainActivity;
 import com.marwaeltayeb.movietrailer.data.model.Movie;
 import com.marwaeltayeb.movietrailer.data.model.MovieApiResponse;
 
@@ -36,7 +35,6 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MovieApiResponse> call, @NonNull Response<MovieApiResponse> response) {
-                        MainActivity.progressDialog.dismiss();
                         Log.d(TAG , "Succeeded movies");
                         if (response.body().getMovies() == null) {
                             return;
@@ -51,7 +49,6 @@ public class MovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                     @Override
                     public void onFailure(@NonNull Call<MovieApiResponse> call, @NonNull Throwable t) {
                         Log.d(TAG , t.getMessage());
-                        MainActivity.progressDialog.dismiss();
                     }
                 });
 

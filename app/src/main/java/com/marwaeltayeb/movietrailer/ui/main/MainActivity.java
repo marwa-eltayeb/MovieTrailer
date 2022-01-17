@@ -5,14 +5,11 @@ import static com.marwaeltayeb.movietrailer.utils.ModeStorage.getMode;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.isLightModeOn;
 import static com.marwaeltayeb.movietrailer.utils.ModeStorage.setLightMode;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -21,7 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ActivityMainBinding binding;
 
     private static final String TAG = "MainActivity";
-    public static Dialog progressDialog;
 
     MovieAdapter movieAdapter;
     SearchAdapter searchAdapter;
@@ -75,10 +71,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        progressDialog = createProgressDialog(MainActivity.this);
-
         snack = Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
-
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
@@ -241,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         } else {
-            progressDialog.dismiss();
             showSnackBar();
             return false;
         }
@@ -258,16 +250,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
         intent.putExtra(MOVIE, (movie));
         startActivity(intent);
-    }
-
-    public static Dialog createProgressDialog(Context context) {
-        Dialog progressDialog = new Dialog(context);
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.setCancelable(false);
-        progressDialog.setContentView(R.layout.dialog_layout);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        progressDialog.show();
-        return progressDialog;
     }
 
     @Override
@@ -289,18 +271,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void getMovies() {
         if (isNetworkConnected()) {
             mainViewModel.moviePagedList.observe(this, movies -> {
+                binding.loadingIndicator.setVisibility(View.VISIBLE);
                 movieAdapter.submitList(movies);
-                // When screen is rotated
-                if (movies != null && !movies.isEmpty()) {
-                    progressDialog.dismiss();
-                }
-
-                Log.d("loadMovies", "loadMovies");
-
             });
         }
 
         binding.movieList.setAdapter(movieAdapter);
+        binding.loadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     private void registerNetworkBroadcastForNougat() {
@@ -332,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public void onNetworkConnected() {
         snack.dismiss();
-        progressDialog.show();
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         mainViewModel.invalidateDataSource();
         getMovies();
