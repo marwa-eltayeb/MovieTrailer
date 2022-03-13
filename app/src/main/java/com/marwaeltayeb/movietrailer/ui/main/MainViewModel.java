@@ -38,15 +38,15 @@ public class MainViewModel extends ViewModel {
         this.movieRepository = movieRepository;
     }
 
-    public void loadMovies(String sort){
+    public void loadMovies(String sort) {
         this.moviePagedList = movieRepository.getRemoteMovies(sort);
     }
 
-    public void invalidateDataSource(){
-        if(movieDataSource != null) movieDataSource.invalidate();
+    public void invalidateDataSource() {
+        if (movieDataSource != null) movieDataSource.invalidate();
     }
 
-    public LiveData<List<Movie>> getSearchedMovies(String query) {
+    public void loadSearchedMovies(String query) {
         movieRepository.getSearchedList(query)
                 .enqueue(new Callback<MovieApiResponse>() {
                     @Override
@@ -64,7 +64,13 @@ public class MainViewModel extends ViewModel {
                         Log.d(TAG, t.getMessage());
                     }
                 });
+    }
 
+    public LiveData<List<Movie>> getSearchedMovies() {
         return mutableSearchedList;
+    }
+
+    public void clear() {
+        mutableSearchedList.setValue(null);
     }
 }

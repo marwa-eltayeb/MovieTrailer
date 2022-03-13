@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -41,8 +42,6 @@ import com.marwaeltayeb.movietrailer.utils.NetworkChangeReceiver;
 import com.marwaeltayeb.movietrailer.utils.OnNetworkListener;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -82,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setViews();
 
         getMovies();
+        getSearchedMovies();
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
@@ -114,16 +114,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (isNetworkConnected()) {
-                    Search(query);
-                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (isNetworkConnected()) {
-                    Search(newText);
+                    binding.loadingIndicator.setVisibility(View.VISIBLE);
+                    mainViewModel.loadSearchedMovies(newText);
                 }
                 return false;
             }
@@ -131,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         searchView.setOnCloseListener(() -> {
             if (searchedMovieList != null) {
+                mainViewModel.clear();
                 searchAdapter.submitList(null);
                 getMovies();
             }
@@ -183,14 +182,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Search for movies.
-     */
-    private void Search(String query) {
-        mainViewModel.getSearchedMovies(query).observe(this, movies -> {
+    private void getSearchedMovies() {
+        mainViewModel.getSearchedMovies().observe(this, movies -> {
+            Log.d("nope", "getSearchedMovies");
+
+            if (movies == null) return;
 
             if (!movies.isEmpty()) {
                 searchedMovieList = movies;
+                binding.loadingIndicator.setVisibility(View.INVISIBLE);
 
                 searchAdapter = new SearchAdapter(getApplicationContext(), movie -> {
                     Intent intent = new Intent(MainActivity.this, MovieActivity.class);
@@ -204,8 +204,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 getNoResult();
             }
         });
-
     }
+
 
     /**
      * Get no result for search.
@@ -213,18 +213,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void getNoResult() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         builder.setMessage(getResources().getString(R.string.no_match));
+        builder.setCancelable(true);
 
         // Create and show the AlertDialog
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                alertDialog.dismiss();
-                timer.cancel();
-            }
-        }, 2000);
+        Log.d(TAG, "getNoResult");
     }
 
 
@@ -271,13 +266,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void getMovies() {
         if (isNetworkConnected()) {
             mainViewModel.moviePagedList.observe(this, movies -> {
-                binding.loadingIndicator.setVisibility(View.VISIBLE);
                 movieAdapter.submitList(movies);
+                movies.addWeakCallback(null, new PagedList.Callback() {
+                    @Override
+                    public void onChanged(int position, int count) {}
+
+                    @Override
+                    public void onInserted(int position, int count) {
+                        Log.d(TAG , "Size " + count);
+                        binding.loadingIndicator.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onRemoved(int position, int count) {}
+                });
             });
+
+            binding.loadingIndicator.setVisibility(View.VISIBLE);
         }
 
+        Log.d(TAG , "getMovies");
         binding.movieList.setAdapter(movieAdapter);
-        binding.loadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     private void registerNetworkBroadcastForNougat() {
@@ -312,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         mainViewModel.invalidateDataSource();
         getMovies();
+        Log.d(TAG , "onNetworkDisconnected");
     }
 
     @Override
