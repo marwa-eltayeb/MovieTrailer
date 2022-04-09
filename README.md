@@ -1,4 +1,16 @@
 # MovieTrailer
+
+Android Movie App for displaying all popular movies, search any movie, find information about it and save it locally as a favourite movie made by using TMDb (The Movie Database) API
+
+## Download
+
+<a href='https://play.google.com/store/apps/details?id=com.marwaeltayeb.movietrailer'><img alt='Get it on Google Play' src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png' width="20%" height="60"/></a>
+<a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="20%" height="60"></a>
+<a href="https://www.amazon.com/Marwa-Eltayeb-Movie-Trailer/dp/B088B6SJ5G"><img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" alt="Amazon App Store" width="20%" height="60"></a>
+<a href="https://appgallery.huawei.com/#/app/C103183085"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Huawei_AppGallery_white_badge_EN.png" alt="Huawei AppGallery" width="20%" height="60"></a>
+
+## Features
+
 - Display all upcoming movies trailers. 
 - Get a list of popular movies of the current time.
 - Get a list of top-rated movies.
@@ -31,10 +43,4 @@ Note: Use your Api key as mine is hidden. After you get it, put it in local.prop
 | <img src="https://i.imgur.com/BNSRFe7.jpg" width="250">  | <img src="https://i.imgur.com/QtF21fJ.jpg" width="250"> | <img src="https://i.imgur.com/jpPdSeJ.jpg" width="250"> 
  
 Project Preview: [Youtube](https://youtu.be/jhYmx7ytBs0).
-
-## Download
-
-<a href="https://galaxy.store/trailers"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="20%" height="60"></a>
-<a href="https://www.amazon.com/Marwa-Eltayeb-Movie-Trailer/dp/B088B6SJ5G"><img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" alt="Amazon App Store" width="20%" height="60"></a>
-<a href="https://appgallery.huawei.com/#/app/C103183085"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Huawei_AppGallery_white_badge_EN.png" alt="Huawei AppGallery" width="20%" height="60"></a>
 
