@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (isNetworkConnected()) {
-                    binding.loadingIndicator.setVisibility(View.VISIBLE);
                     mainViewModel.loadSearchedMovies(newText);
                 }
                 return false;
@@ -184,12 +183,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private void getSearchedMovies() {
         mainViewModel.getSearchedMovies().observe(this, movies -> {
-            Log.d("nope", "getSearchedMovies");
+            Log.d(TAG, "getSearchedMovies");
 
             if (movies == null) return;
 
             if (!movies.isEmpty()) {
                 searchedMovieList = movies;
+
                 binding.loadingIndicator.setVisibility(View.INVISIBLE);
 
                 searchAdapter = new SearchAdapter(getApplicationContext(), movie -> {
@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return true;
         } else {
             showSnackBar();
+            binding.loadingIndicator.setVisibility(View.INVISIBLE);
             return false;
         }
     }
@@ -282,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 });
             });
 
-            binding.loadingIndicator.setVisibility(View.VISIBLE);
         }
 
         Log.d(TAG , "getMovies");
@@ -317,15 +317,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onNetworkConnected() {
+        Log.d(TAG , "onNetworkConnected");
         snack.dismiss();
+        binding.loadingIndicator.setVisibility(View.VISIBLE);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         mainViewModel.invalidateDataSource();
         getMovies();
-        Log.d(TAG , "onNetworkDisconnected");
     }
 
     @Override
     public void onNetworkDisconnected() {
+        Log.d(TAG , "onNetworkDisconnected");
+        binding.loadingIndicator.setVisibility(View.INVISIBLE);
         showSnackBar();
     }
 }
