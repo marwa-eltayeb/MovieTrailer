@@ -1,10 +1,12 @@
 package com.marwaeltayeb.movietrailer.ui.movie;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -63,11 +65,13 @@ public class TrailerAdapter extends ListAdapter<Trailer, TrailerAdapter.TrailerV
             this.binding = binding;
 
             binding.trailerOfMovie.setOnClickListener(v -> {
-                String key = getCurrentList().get(getAdapterPosition()).getKeyOfTrailer();
-                String url = v.getContext().getString(R.string.youtube_url) + key;
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                if (intent.resolveActivity(v.getContext().getPackageManager()) != null) {
+                try {
+                    String key = getCurrentList().get(getAdapterPosition()).getKeyOfTrailer();
+                    String url = v.getContext().getString(R.string.youtube_url) + key;
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     v.getContext().startActivity(intent);
+                } catch(ActivityNotFoundException e) {
+                    Toast.makeText(v.getContext(), "Please install Youtube app first", Toast.LENGTH_SHORT).show();
                 }
             });
         }
