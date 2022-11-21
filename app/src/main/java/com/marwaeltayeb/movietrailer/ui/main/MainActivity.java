@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (isNetworkConnected()) {
                 sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
                 mainViewModel.invalidateDataSource();
+                mainViewModel.loadMovies(sort);
             }
         }
     }
@@ -322,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         binding.loadingIndicator.setVisibility(View.VISIBLE);
         sort = sharedPreferences.getString(getString(R.string.sort_key), getString(R.string.popular_value));
         mainViewModel.invalidateDataSource();
-        getMovies();
+        mainViewModel.loadMovies(sort);
     }
 
     @Override

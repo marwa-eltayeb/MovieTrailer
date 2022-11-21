@@ -14,21 +14,14 @@ public class MovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 
     public static MovieDataSource movieDataSource;
 
-    private final MovieService movieService;
-
-    private final String sort;
-
     public MovieDataSourceFactory(MovieService movieService, String sort){
-        this.movieService = movieService;
-        this.sort = sort;
+        // Getting our Data source object
+        movieDataSource = new MovieDataSource(movieService, sort);
     }
 
     @NonNull
     @Override
     public DataSource<Integer, Movie> create() {
-        // Getting our Data source object
-        movieDataSource = new MovieDataSource(movieService, sort);
-
         // Posting the Data source to get the values
         movieLiveDataSource.postValue(movieDataSource);
 
